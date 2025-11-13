@@ -49,7 +49,11 @@ tipus Tábla:
 - tipus_nev
 
 szamitogepieszkoz Tábla (ebbe lesz bele sorolva a pc és ahoz tartozó dolgok meg a laptop, ps és a többi konzolok):
-- 
+- szamitogepieszkoz_id
+- szamitogepieszkoz_nev
+- szamitogepieszkoz_marka
+- szamitogepieszkoz_tipus
+- szamitogepieszkoz_leiras
 
 
 ### 5.2 Kapcsolatok
