@@ -33,7 +33,7 @@ Admin funkciók:
 ## 5. Adatb. terv
 
 ### 5.1 Táblák
-telefon tábla:
+telefon tábla (ebben a telefonon kívül a tabletet is bele soroljuk):
 - 
 
 marka Tábla:
@@ -42,16 +42,13 @@ marka Tábla:
 tipus Tábla:
 - 
 
+szamitogepieszkozok Tábla (ebbe lesz bele sorolva a pc és ahoz tartozó dolgok meg a laptop, ps és a többi konzolok):
+- 
+
+
 ### 5.2 Kapcsolatok
-A jatekos tábla kapcsolatban van a bejegyzés táblával, a bejegyzes_jatekos mezőn keresztül, a játékosról szóló hírek, pletykák... 
+(tervezés alatt)
 
 ## 6. Adatáramlás
-Bejegyzés létrehozásának folyamata:
-1. felh. beírja szöveg
-2. felh. kiválasztja lenyílóból a játékos nevét
-3. felh. becenevét beírja, felvitel gomb 
-4. post-os kérés indul a backendre
-5. backend tárolja adatb-ben
-6. a lapon frissül a új bejegyzéssel
-
+(tervezés alatt)
 
