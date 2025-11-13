@@ -34,7 +34,11 @@ Admin funkciók(Kornélia):
 
 ### 5.1 Táblák
 telefon tábla (ebben a telefonon kívül a tabletet is bele soroljuk):
-- 
+- telefon_id
+- telefon_nev
+- telefon_marka
+- telefon_tipus
+- telefon_leiras
 
 marka Tábla:
 - marka_id(kulcs)
@@ -44,7 +48,7 @@ tipus Tábla:
 - tipus_id
 - tipus_nev
 
-szamitogepieszkozok Tábla (ebbe lesz bele sorolva a pc és ahoz tartozó dolgok meg a laptop, ps és a többi konzolok):
+szamitogepieszkoz Tábla (ebbe lesz bele sorolva a pc és ahoz tartozó dolgok meg a laptop, ps és a többi konzolok):
 - 
 
 
