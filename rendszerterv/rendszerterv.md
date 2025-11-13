@@ -33,31 +33,34 @@ Admin funkciók(Kornélia):
 ## 5. Adatb. terv
 
 ### 5.1 Táblák
-telefon tábla (ebben a telefonon kívül a tabletet is bele soroljuk):
-- telefon_id
-- telefon_nev
-- telefon_marka
-- telefon_tipus
-- telefon_leiras
+termek tábla (ebben a telefonon kívül a tabletet is bele soroljuk):
+- termek_id(kulcs)
+- termek_nev
+- termek_ar
+- termek_szin
+- termek_kijelzo
+- termek_processzor
+- termek_kapacitás
+- termek_oprendszer
+- termek_leiras
+- termek_kep
+- termek_marka
+- termek_tipus
 
 marka Tábla:
 - marka_id(kulcs)
 - marka_nev
 
 tipus Tábla:
-- tipus_id
+- tipus_id(kulcs)
 - tipus_nev
 
-szamitogepieszkoz Tábla (ebbe lesz bele sorolva a pc és ahoz tartozó dolgok meg a laptop, ps és a többi konzolok):
-- szamitogepieszkoz_id
-- szamitogepieszkoz_nev
-- szamitogepieszkoz_marka
-- szamitogepieszkoz_tipus
-- szamitogepieszkoz_leiras
+kiegeszito Tábla:
+
 
 
 ### 5.2 Kapcsolatok
-(tervezés alatt)
+
 
 ## 6. Adatáramlás
 (tervezés alatt)
