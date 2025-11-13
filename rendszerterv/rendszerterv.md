@@ -1,7 +1,7 @@
 # Rendszerterv
 
 ## 1. Bevezetés
-A webshop lényege hogy különböző elektronikai eszközöket tudjanak egyszerűen böngészni és venni.
+A webshop lényege hogy különböző  elektronikai eszközöket tudjanak egyszerűen böngészni és venni.
 
 
 ## 2. Architektúra
@@ -18,7 +18,7 @@ Fő funkciók:
 - szűrés tipus szerint pl. pc és alkatrészei, laptop és alkatrészei, perifériák, telefonok: */szurestipus*
 - szűrés márka szerint pl. samsung, lenovo: */szuresmarka*
 
-Admin funkciók:
+Admin funkciók(Kornélia):
 - törlés
 - módosítás
 - hozzáadás
@@ -37,10 +37,12 @@ telefon tábla (ebben a telefonon kívül a tabletet is bele soroljuk):
 - 
 
 marka Tábla:
-- 
+- marka_id(kulcs)
+- marka_nev
 
 tipus Tábla:
-- 
+- tipus_id
+- tipus_nev
 
 szamitogepieszkozok Tábla (ebbe lesz bele sorolva a pc és ahoz tartozó dolgok meg a laptop, ps és a többi konzolok):
 - 
@@ -52,3 +54,5 @@ szamitogepieszkozok Tábla (ebbe lesz bele sorolva a pc és ahoz tartozó dolgok
 ## 6. Adatáramlás
 (tervezés alatt)
 
+Írta:Kis Alex János
+Dátum:2025.11.13.
