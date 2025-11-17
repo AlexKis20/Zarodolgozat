@@ -20,7 +20,24 @@ app.get('/', (req, res) => {
 
 
 //Alex végpontjai
+app.get('/termek', (req, res) => {
+    const sql=`SELECT * FROM termek`
+    pool.query(sql, ( err, result) => {
+        if (err){
+            console.log(err)
+            return res.status(500).json({error:"Hiba!"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat!"})
+        }
+        return res.status(200).json(result)
 
+    
+    })
+
+    
+
+})
 
 
 
