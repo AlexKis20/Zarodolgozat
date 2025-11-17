@@ -56,7 +56,13 @@ tipus Tábla:
 - tipus_nev
 
 kiegeszito Tábla:
-
+kiegeszito_id
+kiegeszito_nev
+kiegeszito_szin
+kiegeszito_leiras
+kiegeszito_kep
+kiegeszito_marka
+kiegeszito_tipus
 
 
 ### 5.2 Kapcsolatok
