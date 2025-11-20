@@ -40,6 +40,82 @@ app.get('/termek', (req, res) => {
 
 })
 
+app.get('/tipus', (req, res) => {
+    const sql=`SELECT * FROM tipus`
+    pool.query(sql, ( err, result) => {
+        if (err){
+            console.log(err)
+            return res.status(500).json({error:"Hiba!"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat!"})
+        }
+        return res.status(200).json(result)
+
+    
+    })
+
+    
+
+})
+
+app.post('/tipusuTermek', (req, res) => {
+        const {tipus_id} =req.body
+        const sql=`
+                select *
+                from tipus
+                inner join termek
+                on termek_tipus=tipus_id
+                inner join marka
+                on termek_marka=marka_id
+                where tipus_id=?
+                `
+
+        pool.query(sql,[tipus_id], (err, result) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({error:"Hiba"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat"})
+        }
+
+        return res.status(200).json(result)
+        })
+})
+
+app.post('/markajuTermek', (req, res) => {
+        const {marka_id} =req.body
+        const sql=`
+                select *
+                from marka
+                inner join termek
+                on termek_marka=marka_id
+                inner join tipus
+                on termek_tipus=tipus_id
+                where marka_id=?
+                `
+
+        pool.query(sql,[marka_id], (err, result) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({error:"Hiba"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat"})
+        }
+
+        return res.status(200).json(result)
+        })
+})
+
+
+
+
+
+
+
+
 
 
 

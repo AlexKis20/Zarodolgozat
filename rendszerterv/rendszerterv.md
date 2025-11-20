@@ -42,6 +42,7 @@ termek tábla (ebben a telefonon kívül a tabletet is bele soroljuk):
 - termek_processzor
 - termek_kapacitás
 - termek_oprendszer
+- termek_meret
 - termek_leiras
 - termek_kep
 - termek_marka
@@ -55,14 +56,7 @@ tipus Tábla:
 - tipus_id(kulcs)
 - tipus_nev
 
-kiegeszito Tábla:
-kiegeszito_id
-kiegeszito_nev
-kiegeszito_szin
-kiegeszito_leiras
-kiegeszito_kep
-kiegeszito_marka
-kiegeszito_tipus
+
 
 
 ### 5.2 Kapcsolatok
