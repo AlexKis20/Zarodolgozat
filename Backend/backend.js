@@ -7,6 +7,7 @@ const port = 3000
 app.use(cors())
 app.use(express.json())
 app.use("/kepek", express.static("kepek"))
+app.use("/termekKep", express.static("termekKep"))
 
 const pool = mysql.createPool({
   host: 'localhost',
@@ -22,7 +23,10 @@ app.get('/', (req, res) => {
 
 //Alex végpontjai
 app.get('/termek', (req, res) => {
-    const sql=`SELECT * FROM termek`
+    const sql=`SELECT * FROM termek inner join tipus
+                on termek_tipus=tipus_id
+                inner join marka
+                on termek_marka=marka_id`
     pool.query(sql, ( err, result) => {
         if (err){
             console.log(err)
@@ -42,6 +46,25 @@ app.get('/termek', (req, res) => {
 
 app.get('/tipus', (req, res) => {
     const sql=`SELECT * FROM tipus`
+    pool.query(sql, ( err, result) => {
+        if (err){
+            console.log(err)
+            return res.status(500).json({error:"Hiba!"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat!"})
+        }
+        return res.status(200).json(result)
+
+    
+    })
+
+    
+
+})
+
+app.get('/marka', (req, res) => {
+    const sql=`SELECT * FROM marka`
     pool.query(sql, ( err, result) => {
         if (err){
             console.log(err)
@@ -110,7 +133,27 @@ app.post('/markajuTermek', (req, res) => {
 })
 
 
+app.post('/termeknevKeres', (req, res) => {
+        const {termek_nev} =req.body
+        const sql=`
+                select *
+                from termek
+                inner join tipus
+                on termek_tipus=tipus_id
+                where termek_nev like ?
+                `
+        pool.query(sql,[`%${termek_nev}%`], (err, result) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({error:"Hiba"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat"})
+        }
 
+        return res.status(200).json(result)
+        })
+})
 
 
 
