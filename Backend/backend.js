@@ -134,15 +134,16 @@ app.post('/markajuTermek', (req, res) => {
 
 
 app.post('/termeknevKeres', (req, res) => {
-        const {termek_nev} =req.body
+        const {termek_nev,termek_oprendszer,minAr,maxAr} =req.body
         const sql=`
                 select *
                 from termek
                 inner join tipus
                 on termek_tipus=tipus_id
-                where termek_nev like ?
+                WHERE (termek_nev LIKE ? OR termek_oprendszer LIKE ?)
+                AND termek_ar BETWEEN ? AND ?
                 `
-        pool.query(sql,[`%${termek_nev}%`], (err, result) => {
+        pool.query(sql,[`%${termek_nev}%`,`%${termek_oprendszer}%`,minAr,maxAr], (err, result) => {
         if (err) {
             console.log(err)
             return res.status(500).json({error:"Hiba"})
