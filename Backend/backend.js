@@ -20,6 +20,8 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
+const login = require('./login');
+app.use('/login', login);
 
 //Alex végpontjai
 app.get('/termek', (req, res) => {
