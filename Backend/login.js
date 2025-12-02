@@ -8,7 +8,7 @@ const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'marvel_2025_login'
+  database: 'nextifyadatb'
 })
 
 const SECRET_KEY = 'your_secret_key';
