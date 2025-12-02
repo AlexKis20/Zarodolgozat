@@ -30,6 +30,12 @@ const Navbar = () => {
           <Link to="/menu1" className="link" onClick={() => setMenuOpen(false)}>
             Nyitólap
           </Link>
+          <Link to="/Termekek" className="link" onClick={() => setMenuOpen(false)}>
+            Termékek
+          </Link>
+          <Link to="/KeresNev" className="link" onClick={() => setMenuOpen(false)}>
+            Keresés
+          </Link>
           {loggedIn && role === "admin" && (
             <Link to="/admin" className="link" onClick={() => setMenuOpen(false)}>
               Admin

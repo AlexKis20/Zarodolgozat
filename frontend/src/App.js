@@ -9,6 +9,8 @@ import Login from './Login';
 import Register from './Register';
 //Bejelentkezés nélküli menük
 import Menu1 from './Menu1/Menu1';
+import Termekek from './Termekek/Termekek';
+import KeresNev from './Kereses/KeresNev';
 //Admin menük
 import Admin from './Admin/Admin';
 import Marka from './pages/marka/Marka';
@@ -37,6 +39,10 @@ function App() {
           <Route path="/" element={<Menu1 />} />
          
           <Route path="/menu1" element={<Menu1 />} />
+
+          <Route path="/Termekek" element={<Termekek />} />
+
+          <Route path="/KeresNev" element={<KeresNev />} />
 
 {/* Bejelentkezés*/}
           <Route path="/login" element={<Login />} />
