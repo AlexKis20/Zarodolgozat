@@ -11,6 +11,7 @@ import Register from './Register';
 import Menu1 from './Menu1/Menu1';
 //Admin menük
 import Admin from './Admin/Admin';
+import Marka from './pages/marka/Marka';
 //User menük
 import User from './User/User';
 
@@ -46,6 +47,15 @@ function App() {
             element={
               <ProtectedRoute role="admin">
                 <Admin />
+              </ProtectedRoute>
+            }
+          />
+
+           <Route 
+            path="/marka"
+            element={
+              <ProtectedRoute role="admin">
+                <Marka />
               </ProtectedRoute>
             }
           />
