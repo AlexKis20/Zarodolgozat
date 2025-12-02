@@ -167,6 +167,206 @@ app.post('/termeknevKeres', (req, res) => {
 
 //Kornélia végpontjai
 
+//termék törlés id alapján
+
+app.delete('/termekTorles/:termek_id', (req, res) => {
+        const {termek_id} = req.params
+        const sql = `delete from termek where termek_id=?`
+        pool.query(sql,[termek_id], (err, result) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({error:"Hiba"})
+        }
+
+        return res.status(200).json({message:"Sikeres törlés"})
+        })
+})
+
+//egy termék lekérdezése
+
+app.get('/termek/:termek_id', (req, res) => {
+    const sql=`SELECT * FROM termek where termek_id=?`
+    const {termek_id} = req.params
+    pool.query(sql,[termek_id], ( err, result) => {
+        if (err){
+            console.log(err)
+            return res.status(500).json({error:"Hiba!"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat!"})
+        }
+        return res.status(200).json(result[0])
+    
+    })   
+
+})
+
+// termék módosítás id alapján
+
+app.put('/termekModosit/:termek_id', (req, res) => {
+    const {termek_id} = req.params
+    const {termek_nev, termek_ar, termek_szin, termek_kijelzo, termek_processzor, termek_kapacitas, termek_oprendszer,
+        termek_meret, termek_leiras, termek_kep, termek_marka, termek_tipus} = req.body
+    const sql=`update termek set termek_nev=?, termek_ar=?, termek_szin=?, termek_kijelzo=?, termek_processzor=?,
+               termek_kapacitas=?, termek_oprendszer=?, termek_meret=?, termek_leiras=?, termek_kep=?, termek_marka=?,
+               termek_tipus=?
+               where termek_id=?`
+    pool.query(sql,[termek_nev, termek_ar, termek_szin, termek_kijelzo, termek_processzor, termek_kapacitas, termek_oprendszer,
+        termek_meret, termek_leiras, termek_kep, termek_marka, termek_tipus, termek_id], (err, result) => {
+    if (err) {
+        console.log(err)
+        return res.status(500).json({error:"Hiba"})
+    }
+
+    return res.status(200).json({message:"Sikeres módosítás"})
+    })
+})
+
+//termék hozzáadás
+
+app.post('/termekHozzaad', (req, res) => {
+    const {termek_nev, termek_ar, termek_szin, termek_kijelzo, termek_processzor, termek_kapacitas, termek_oprendszer,
+        termek_meret, termek_leiras, termek_kep, termek_marka, termek_tipus} = req.body
+    const sql=`insert into termek (termek_id, termek_nev, termek_ar, termek_szin, termek_kijelzo, termek_processzor,
+               termek_kapacitás, termek_oprendszer, termek_meret, termek_leiras, termek_kep, termek_marka,
+               termek_tipus)
+               values (NULL,?,?,?,?,?,?,?,?,?,?,?,?)`
+    pool.query(sql,[termek_nev, termek_ar, termek_szin, termek_kijelzo, termek_processzor, termek_kapacitas, termek_oprendszer,
+        termek_meret, termek_leiras, termek_kep, termek_marka, termek_tipus], (err, result) => {
+    if (err) {
+        console.log(err)
+        return res.status(500).json({error:"Hiba"})
+    }
+    return res.status(200).json({message:"Sikeres hozzáadás"})
+    })
+})
+
+//tipustörlés id alapján
+
+app.delete('/tipusTorles/:tipus_id', (req, res) => {
+    const { tipus_id } = req.params;
+    const sql = `DELETE FROM tipus WHERE tipus_id = ?`;
+
+    pool.query(sql, [tipus_id], (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: "Hiba" });
+        }
+
+        return res.status(200).json({ message: "Sikeres törlés" });
+    });
+});
+
+// egy tipus lekérdezése id alapján
+
+app.get('/tipus/:tipus_id', (req, res) => {
+    const sql=`SELECT * FROM tipus where tipus_id=?`
+    const {tipus_id} = req.params
+    pool.query(sql,[tipus_id], ( err, result) => {
+        if (err){
+            console.log(err)
+            return res.status(500).json({error:"Hiba!"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat!"})
+        }
+        return res.status(200).json(result[0])
+    })
+})
+
+// típus módosítás id alapján
+
+app.put('/tipusModosit/:tipus_id', (req, res) => {
+    const {tipus_id} = req.params
+    const {tipus_nev}= req.body
+    const sql=`update tipus set tipus_nev=? where tipus_id=?`
+    pool.query(sql,[tipus_nev, tipus_id], (err, result) => {
+    if (err) {
+        console.log(err)
+        return res.status(500).json({error:"Hiba"})
+    }
+
+    return res.status(200).json({message:"Sikeres módosítás"})
+    })
+})
+
+
+//típus hozzáadás
+
+app.post('/tipusHozzaad', (req, res) => {
+    const {tipus_nev}= req.body
+    const sql=`insert into tipus (tipus_nev) values (?)`
+    pool.query(sql,[tipus_nev], (err, result) => {
+    if (err) {
+        console.log(err)
+        return res.status(500).json({error:"Hiba"})
+    }
+    return res.status(200).json({message:"Sikeres hozzáadás"})
+    })
+})
+
+//márka törlés id alapján
+
+app.delete('/markaTorles/:marka_id', (req, res) => {
+        const {marka_id} = req.params
+        const sql = `delete from marka where marka_id=?`
+        pool.query(sql,[marka_id], (err, result) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({error:"Hiba"})
+        }
+
+        return res.status(200).json({message:"Sikeres törlés"})
+        })
+})
+
+// egy márka lekérdezése
+
+app.get('/marka/:marka_id', (req, res) => {
+    const sql=`SELECT * FROM marka where marka_id=?`
+    const {marka_id} = req.params
+    pool.query(sql,[marka_id], ( err, result) => {
+        if (err){
+            console.log(err)
+            return res.status(500).json({error:"Hiba!"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat!"})
+        }
+        return res.status(200).json(result[0])
+    })
+})
+
+// márka módosítás id alapján
+
+app.put('/markaModosit/:marka_id', (req, res) => {
+    const {marka_id} = req.params
+    const {marka_nev} = req.body
+    const sql=`update marka set marka_nev=? where marka_id=?`
+    pool.query(sql,[marka_nev, marka_id], (err, result) => {
+    if (err) {
+        console.log(err)
+        return res.status(500).json({error:"Hiba"})
+    }
+
+    return res.status(200).json({message:"Sikeres módosítás"})
+    })
+})
+
+//márka hozzáadás
+
+app.post('/markaHozzaad', (req, res) => {
+    const {marka_nev} = req.body
+    const sql=`insert into marka (marka_nev) values (?)`
+    pool.query(sql,[marka_nev], (err, result) => {
+    if (err) {
+        console.log(err)
+        return res.status(500).json({error:"Hiba"})
+    }
+    return res.status(200).json({message:"Sikeres hozzáadás"})
+    })
+})
+
 
 
 
