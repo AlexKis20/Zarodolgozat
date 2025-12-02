@@ -1,6 +1,6 @@
 // App.js
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import Navbar from './Navbar';
@@ -12,8 +12,11 @@ import Menu1 from './Menu1/Menu1';
 import Termekek from './Termekek/Termekek';
 import KeresNev from './Kereses/KeresNev';
 //Admin menük
-import Admin from './Admin/Admin';
-import Marka from './pages/marka/Marka';
+import Vezerlopult from './pages/admin/vezerlopult';
+import Termek from './pages/admin/termek';
+import Marka from './pages/admin/marka';
+//Sidebar
+import Sidebar from './components/Sidebar';
 //User menük
 import User from './User/User';
 
@@ -29,55 +32,116 @@ const ProtectedRoute = ({ children, role }) => {
 };
 
 
+function AppRoutes() {
+  return (
+    <Routes>
+      <Route path="/" element={<Menu1 />} />
+      <Route path="/menu1" element={<Menu1 />} />
+      <Route path="/Termekek" element={<Termekek />} />
+      <Route path="/KeresNev" element={<KeresNev />} />
+
+      {/* Bejelentkezés */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+
+      <Route
+        path="/user"
+        element={
+          <ProtectedRoute role="user">
+            <User />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute role="admin">
+            <Vezerlopult />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin/vezerlopult"
+        element={
+          <ProtectedRoute role="admin">
+            <Vezerlopult />
+          </ProtectedRoute>
+        }
+      />
+      {/* Bejelentkezés vége */}
+    </Routes>
+  );
+}
+
+function AdminRoutes() {
+  return (
+    <Routes>
+      {/* Admin route-ok */}
+      <Route path="/admin/*" element={
+        <Routes>
+          <Route path="/" element={
+            <ProtectedRoute role="admin">
+              <Vezerlopult />
+            </ProtectedRoute>
+          } />
+          <Route path="vezerlopult" element={
+            <ProtectedRoute role="admin">
+              <Vezerlopult />
+            </ProtectedRoute>
+          } />
+          <Route path="termek" element={
+            <ProtectedRoute role="admin">
+              <Termek />
+            </ProtectedRoute>
+          } />
+          <Route path="marka" element={
+            <ProtectedRoute role="admin">
+              <Marka />
+            </ProtectedRoute>
+          } />
+        </Routes>
+      } />
+    </Routes>
+  );
+}
+
+function AppLayout() {
+  const location = useLocation();
+  const adminOldal = location.pathname.startsWith('/admin');
+  const [sidebar, setSidebar] = useState(false);
+
+  return (
+    <>
+      {adminOldal ? (
+        <>
+          <Sidebar sidebar={sidebar} setSidebar={setSidebar} />
+          <div style={{
+                marginLeft: sidebar ? "250px" : "0",
+                transition: "margin-left 350ms",
+                paddingTop: "80px"
+            }}>
+              <AdminRoutes />
+          </div>
+        </>
+      ) : (
+        <>
+          <Navbar />
+          <div className="container mt-3">
+            <AppRoutes />
+          </div>
+        </>
+      )}
+    </>
+  );
+}
+
 // App komponens
 function App() {
   return (
     <Router>
-      <Navbar />
-      <div className="container mt-3">
-        <Routes>
-          <Route path="/" element={<Menu1 />} />
-         
-          <Route path="/menu1" element={<Menu1 />} />
-
-          <Route path="/Termekek" element={<Termekek />} />
-
-          <Route path="/KeresNev" element={<KeresNev />} />
-
-{/* Bejelentkezés*/}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-
-          <Route 
-            path="/admin"
-            element={
-              <ProtectedRoute role="admin">
-                <Admin />
-              </ProtectedRoute>
-            }
-          />
-
-           <Route 
-            path="/marka"
-            element={
-              <ProtectedRoute role="admin">
-                <Marka />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route 
-            path="/user"
-            element={
-              <ProtectedRoute role="user">
-                <User />
-              </ProtectedRoute>
-            }
-          />
-{/* Bejelentkezés vége*/}
-
-        </Routes>
-      </div>
+      <AppLayout />
     </Router>
   );
 }

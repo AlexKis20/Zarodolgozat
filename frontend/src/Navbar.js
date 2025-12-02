@@ -41,11 +41,6 @@ const Navbar = () => {
               Admin
             </Link>
           )}
-           {loggedIn && role === "admin" && (
-            <Link to="/marka" className="link" onClick={() => setMenuOpen(false)}>
-              Márka
-            </Link>
-          )}
           {loggedIn && role === "user" && (
             <Link to="/user" className="link" onClick={() => setMenuOpen(false)}>
               User menü

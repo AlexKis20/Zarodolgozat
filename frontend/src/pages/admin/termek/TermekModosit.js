@@ -1,25 +1,20 @@
 import { useState, useEffect } from "react"
-//import { FaRegTrashCan, FaPencil } from "react-icons/fa6";
-import "./Marka.css"
-import Cim from "../../components/Cim"
+import { FaSave } from "react-icons/fa";
+import { IoCloseSharp } from "react-icons/io5";
+import "./Termek.css"
+import Cim from "../../../components/Cim"
 
-const MarkaModosit= ({ marka_id, onClose }) => {
-    const [adat, setAdat] = useState({})
+const TermekModosit= ({ termek_id, onClose }) => {
     const [modositottAdat, setModositottAdat] = useState({})
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
-    const [siker, setSiker] = useState(false)
 
-   
-
-    useEffect(() => {
- const leToltes = async () => {
+    const leToltes = async () => {
         try {
-            const response = await fetch(Cim.Cim + "/marka/" + marka_id)
+            const response = await fetch(Cim.Cim + "/termek/" + termek_id)
             const data = await response.json()
 
             if (response.ok) {
-                setAdat(data)
                 setModositottAdat(data)
                 console.log(data)
                 setTolt(false)
@@ -33,12 +28,9 @@ const MarkaModosit= ({ marka_id, onClose }) => {
         }
     }
 
-
-
-
-
+    useEffect(() => {
         leToltes()
-    }, [marka_id])
+    }, [termek_id])
 
     const kezelesInput = (kulcs, ertek) => {
         setModositottAdat(prev => ({
@@ -48,10 +40,10 @@ const MarkaModosit= ({ marka_id, onClose }) => {
     }
 
     const modositFuggveny = async () => {
-        const biztos = window.confirm(`Biztosan módosítani szeretnéd a(z) ${modositottAdat.marka_nev} márkát?`)
+        const biztos = window.confirm(`Biztosan módosítani szeretnéd a(z) ${modositottAdat.termek_nev} termékét?`)
 
         if (biztos) {
-            const response = await fetch(Cim.Cim + "/markaModosit/" + modositottAdat.marka_id, {
+            const response = await fetch(Cim.Cim + "/termekModosit/" + modositottAdat.termek_id, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(modositottAdat)
@@ -79,7 +71,7 @@ const MarkaModosit= ({ marka_id, onClose }) => {
             <table>
                 <thead>
                     <tr>
-                        <th>Márka neve</th>
+                        <th>Termék neve</th>
                         <th>Módosítás</th>
                     </tr>
                 </thead>
@@ -100,16 +92,16 @@ const MarkaModosit= ({ marka_id, onClose }) => {
 
                 </tbody>
             </table>
-            <button className="btn btn-alert  ml-2"
+            <button className="btn ml-2"
                     onClick={modositFuggveny}
             >
-                Mentés
+                <FaSave /> Mentés
             </button>
-            <button className="btn btn-secondary ml-2" onClick={onClose}>
-                Bezárás
+            <button className="btn ml-2" onClick={onClose}>
+                <IoCloseSharp />Bezárás
             </button>
         </div>
     )
 }
 
-export default MarkaModosit
+export default TermekModosit

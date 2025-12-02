@@ -1,20 +1,15 @@
 import { useState, useEffect } from "react"
-//import { FaRegTrashCan, FaPencil } from "react-icons/fa6";
 import Cim from "../../components/Cim"
-import Modal from "../../components/Modal"
-import MarkaModosit from "./MarkaModosit"
 
-const Marka = ({ kivalasztott }) => {
+const TipusTorles= ({ kivalasztott }) => {
     const [adatok, setAdatok] = useState([])
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
     const [siker, setSiker] = useState(false)
-    const [modalOpen, setModalOpen] = useState(false)
-    const [selectedMarkaId, setSelectedMarkaId] = useState(null)
 
     const leToltes = async () => {
         try {
-            const response = await fetch(Cim.Cim + "/marka")
+            const response = await fetch(Cim.Cim + "/tipus")
             const data = await response.json()
 
             if (response.ok) {
@@ -34,12 +29,11 @@ const Marka = ({ kivalasztott }) => {
         leToltes()
     }, [siker])
 
-
-    const torlesFuggveny = async (marka_id, marka_nev) => {
-        const biztos = window.confirm(`Biztosan törölni szeretnéd a(z) ${marka_nev} márkát?`)
+    const torlesFuggveny = async (tipus_id, tipus_nev) => {
+        const biztos = window.confirm(`Biztosan törölni szeretnéd a(z) ${tipus_nev} tipust?`)
 
         if (biztos) {
-            const response = await fetch(Cim.Cim + "/marka/" +marka_id, {
+            const response = await fetch(Cim.Cim + "/tipusTorles/" + tipus_id, {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" }
             })
@@ -54,17 +48,6 @@ const Marka = ({ kivalasztott }) => {
             }
         }
     }
-    
-    const openModal = (marka_id) => {
-        setSelectedMarkaId(marka_id)
-        setModalOpen(true)
-    }
-
-    const closeModal = () => {
-        setModalOpen(false)
-        setSelectedMarkaId(null)
-    }
-
 
     if (tolt)
         return <div style={{ textAlign: "center" }}>Adatok betöltése folyamatban...</div>
@@ -77,41 +60,31 @@ const Marka = ({ kivalasztott }) => {
             <table>
                 <thead>
                     <tr>
-                        <th>Márka neve</th>
-                        <th>Törlés</th>
-                        <th>Módosítás</th>
+                        <th>Termék neve</th>
 
                     </tr>
                 </thead>
                 <tbody>
                     {adatok.map((elem, index) => (
                         <tr key={index}>
-                            <td>{elem.marka_nev}</td>
+                            <td>{elem.tipus_nev}</td>
+
+
                             <td>
                                 <button
-                                    className="btn btn-danger  ml-2"
-                                    onClick={() => torlesFuggveny(elem.marka_id, elem.marka_nev)}
+                                    className="btn btn-danger"
+                                    onClick={() => torlesFuggveny(elem.tipus_id, elem.tipus_nev)}
                                 >
-                                  b
-                                </button>
-                            </td>
-                            <td>
-                                <button
-                                    className="btn btn-alert  ml-2"
-                                    onClick={() => openModal(elem.marka_id)}
-                                >
-                                  a
+                                    
+                                    <img style={{height:"30px",width:"30px"}} src="kuka.png"/>
                                 </button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-            <Modal isOpen={modalOpen} onClose={closeModal}>
-                <MarkaModosit marka_id={selectedMarkaId} onClose={closeModal} />
-            </Modal>
         </div>
     )
 }
 
-export default Marka
+export default TipusTorles

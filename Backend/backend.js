@@ -185,7 +185,8 @@ app.delete('/termekTorles/:termek_id', (req, res) => {
 //egy termék lekérdezése
 
 app.get('/termek/:termek_id', (req, res) => {
-    const sql=`SELECT * FROM termek where termek_id=?`
+    const sql=`SELECT termek_nev, termek_ar, termek_szin, termek_kijelzo, termek_processzor, termek_kapacitas, termek_oprendszer,
+        termek_meret, termek_leiras, termek_kep, termek_marka, termek_tipus FROM termek where termek_id=?`
     const {termek_id} = req.params
     pool.query(sql,[termek_id], ( err, result) => {
         if (err){
@@ -260,7 +261,7 @@ app.delete('/tipusTorles/:tipus_id', (req, res) => {
 // egy tipus lekérdezése id alapján
 
 app.get('/tipus/:tipus_id', (req, res) => {
-    const sql=`SELECT * FROM tipus where tipus_id=?`
+    const sql=`SELECT tipus_nev FROM tipus where tipus_id=?`
     const {tipus_id} = req.params
     pool.query(sql,[tipus_id], ( err, result) => {
         if (err){
@@ -323,7 +324,7 @@ app.delete('/markaTorles/:marka_id', (req, res) => {
 // egy márka lekérdezése
 
 app.get('/marka/:marka_id', (req, res) => {
-    const sql=`SELECT * FROM marka where marka_id=?`
+    const sql=`SELECT marka_nev FROM marka where marka_id=?`
     const {marka_id} = req.params
     pool.query(sql,[marka_id], ( err, result) => {
         if (err){
