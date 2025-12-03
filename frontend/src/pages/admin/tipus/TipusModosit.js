@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react"
 import { FaSave } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
-import "./Termek.css"
+import "./Tipus.css"
 import Cim from "../../../components/Cim"
 
-const TermekModosit= ({ termek_id, onClose }) => {
+const TipusModosit= ({ tipus_id, onClose }) => {
     const [modositottAdat, setModositottAdat] = useState({})
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
 
     const leToltes = async () => {
         try {
-            const response = await fetch(Cim.Cim + "/termek/" + termek_id)
+            const response = await fetch(Cim.Cim + "/tipus/" + tipus_id)
             const data = await response.json()
 
             if (response.ok) {
@@ -30,7 +30,7 @@ const TermekModosit= ({ termek_id, onClose }) => {
 
     useEffect(() => {
         leToltes()
-    }, [termek_id])
+    }, [tipus_id])
 
     const kezelesInput = (kulcs, ertek) => {
         setModositottAdat(prev => ({
@@ -40,10 +40,10 @@ const TermekModosit= ({ termek_id, onClose }) => {
     }
 
     const modositFuggveny = async () => {
-        const biztos = window.confirm(`Biztosan módosítani szeretnéd a(z) ${modositottAdat.termek_nev} termékét?`)
+        const biztos = window.confirm(`Biztosan módosítani szeretnéd a(z) ${modositottAdat.tipus_nev} típust?`)
 
         if (biztos) {
-            const response = await fetch(Cim.Cim + "/termekModosit/" + termek_id, {
+            const response = await fetch(Cim.Cim + "/tipusModosit/" + tipus_id, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(modositottAdat)
@@ -70,7 +70,7 @@ const TermekModosit= ({ termek_id, onClose }) => {
         <div className="container">
             <div className="row mb-3">
                 <div className="col-12 text-center">
-                    <h4>Termék módosítása</h4>
+                    <h4>Márka módosítása</h4>
                 </div>
             </div>
 
@@ -105,4 +105,4 @@ const TermekModosit= ({ termek_id, onClose }) => {
     )
 }
 
-export default TermekModosit
+export default TipusModosit

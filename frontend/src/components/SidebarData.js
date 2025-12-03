@@ -16,5 +16,10 @@ export const SidebarData = [
         title: "Márka",
         path: "/admin/marka",
         icon: <IoIcons.IoIosPaper />
+    },
+    {
+        title: "Típus",
+        path: "/admin/tipus",
+        icon: <IoIcons.IoIosPaper />
     }
 ];

@@ -43,7 +43,7 @@ const MarkaModosit= ({ marka_id, onClose }) => {
         const biztos = window.confirm(`Biztosan módosítani szeretnéd a(z) ${modositottAdat.marka_nev} márkát?`)
 
         if (biztos) {
-            const response = await fetch(Cim.Cim + "/markaModosit/" + modositottAdat.marka_id, {
+            const response = await fetch(Cim.Cim + "/markaModosit/" + marka_id, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(modositottAdat)
@@ -67,39 +67,40 @@ const MarkaModosit= ({ marka_id, onClose }) => {
         return <div>Hiba történt az adatok betöltése közben.</div>
 
     return (
-        <div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Márka neve</th>
-                        <th>Módosítás</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {Object.keys(modositottAdat).map((elem, index) => (
-                        <tr key={index}>
-                            <td>{elem}</td>
-                            <td>
-                                <input 
-                                    type="text" 
-                                    value={modositottAdat[elem] || ""} 
-                                    onChange={(e) => kezelesInput(elem, e.target.value)}
-                                    style={{ width: "100%", padding: "5px" }}
-                                />
-                            </td>
-                        </tr>
-                    ))}
+        <div className="container">
+            <div className="row mb-3">
+                <div className="col-12 text-center">
+                    <h4>Márka módosítása</h4>
+                </div>
+            </div>
 
-                </tbody>
-            </table>
-            <button className="btn ml-2"
-                    onClick={modositFuggveny}
-            >
-                  <FaSave /> Mentés
-            </button>
-            <button className="btn ml-2" onClick={onClose}>
-                <IoCloseSharp />Bezárás
-            </button>
+            {Object.keys(modositottAdat).map((elem, index) => (
+                <div className="row mb-2 align-items-center" key={index}>
+                    <div className="col-sm-4">
+                        <label className="form-label" htmlFor={elem}>{elem}</label>
+                    </div>
+                    <div className="col-sm-8">
+                        <input
+                            id={elem}
+                            type="text"
+                            className="form-control"
+                            value={modositottAdat[elem] || ""} 
+                            onChange={(e) => kezelesInput(elem, e.target.value)}
+                        />
+                    </div>
+                </div>
+            ))}
+
+            <div className="row mt-3">
+                <div className="col">
+                    <button className="btn ml-2" onClick={modositFuggveny}>
+                        <FaSave /> Mentés
+                    </button>
+                    <button className="btn ml-2" onClick={onClose}>
+                        <IoCloseSharp />Bezárás
+                    </button>
+                </div>
+            </div>
         </div>
     )
 }
