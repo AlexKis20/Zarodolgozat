@@ -84,11 +84,12 @@ const KeresNev=()=>{
             <button className="btn btn-primary mt-3 mb-3" onClick={keres}>Keresés</button>
             <ul>
             {adatok.map((elem,index)=>(
-                    <div key={index} className="col-sm-3" > 
+                <div className="row" key={index}>
+                    <div className="col-lg-6" > 
                                         <div className="doboz">
                                             <div className="jatekCim">{elem.termek_nev} </div>
                                             <div style={{textAlign:"center",marginTop:"20px"}}>
-                                                <img style={{width:"200px"}} src={`${Cim.Cim}/termekKep/${elem.termek_kep}`} alt={elem.termek_nev} />
+                                                <img style={{width:"150px"}} src={`${Cim.Cim}/termekKep/${elem.termek_kep}`} alt={elem.termek_nev} />
                                             </div>
                                             <div>Ár: {elem.termek_ar} </div>
                                             <div>Szín: {elem.termek_szin} </div>
@@ -101,6 +102,7 @@ const KeresNev=()=>{
                                             <div>Termék márkája: {elem.marka_nev} </div>
                                             <div className="jatekTipus">Termék típusa: {elem.tipus_nev} </div>
                     
+                                        </div>
                                         </div>
                                         </div>
                 ) ) }

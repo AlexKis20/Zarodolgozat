@@ -11,6 +11,7 @@ import Register from './Register';
 import Menu1 from './Menu1/Menu1';
 import Termekek from './Termekek/Termekek';
 import KeresNev from './Kereses/KeresNev';
+import MarkaKeres from './Marka/MarkaKeres';
 //Admin menük
 import Vezerlopult from './pages/admin/vezerlopult';
 import Termek from './pages/admin/termek';
@@ -39,6 +40,7 @@ function AppRoutes() {
       <Route path="/menu1" element={<Menu1 />} />
       <Route path="/Termekek" element={<Termekek />} />
       <Route path="/KeresNev" element={<KeresNev />} />
+      <Route path="/MarkaKeres" element={<MarkaKeres />} />
 
       {/* Bejelentkezés */}
       <Route path="/login" element={<Login />} />

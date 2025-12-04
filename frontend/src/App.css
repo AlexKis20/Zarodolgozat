@@ -6,7 +6,8 @@ h1,h2 {
 
 .kartya{
   border:1px solid black;
-  margin:20px 150px;
+  margin: 20px auto;   /* KÖZÉPRE, NEM SZŰKÍT */
+  
   padding:30px;
   font-size: 20px;
   border-radius: 10px;
@@ -46,7 +47,7 @@ span{
 .urlapDoboz{
   border:2px solid green;
   text-align: center;
-  margin:20px 250px;
+  margin:20px ;
   padding:10px;
   border-radius: 5px;
 }
@@ -71,4 +72,30 @@ input{
     padding:10px;
   
 }
+}
+.doboz{
+  background-color: #f0f8ff;
+  border:1px solid black;
+  margin:10px;
+  padding:10px;
+  border-radius: 5px;
+  box-shadow: 3px 3px 3px;
+  align-items: center;
+}
+.containerFlex {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  width: 100%;
+}
+
+/* Kártya */
+.doboz2 {
+  padding: 15px;
+  border: 1px solid black;
+  border-radius: 8px;
+  box-shadow: 3px 3px 8px;
+  background-color: #f0f8ff;
+  height: 600px;
 }

@@ -143,7 +143,7 @@ app.post('/termeknevKeres', (req, res) => {
                 inner join tipus
                 on termek_tipus=tipus_id
                 WHERE (termek_nev LIKE ? OR termek_oprendszer LIKE ?)
-                AND termek_ar BETWEEN ? AND ?
+                OR termek_ar BETWEEN ? AND ?
                 `
         pool.query(sql,[`%${termek_nev}%`,`%${termek_oprendszer}%`,minAr,maxAr], (err, result) => {
         if (err) {

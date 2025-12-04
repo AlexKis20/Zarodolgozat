@@ -36,6 +36,9 @@ const Navbar = () => {
           <Link to="/KeresNev" className="link" onClick={() => setMenuOpen(false)}>
             Keresés
           </Link>
+          <Link to="/MarkaKeres" className="link" onClick={() => setMenuOpen(false)}>
+            Márkák
+          </Link>
           {loggedIn && role === "admin" && (
             <Link to="/admin" className="link" onClick={() => setMenuOpen(false)}>
               Admin
