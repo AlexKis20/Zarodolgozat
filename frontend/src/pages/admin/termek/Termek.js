@@ -1,16 +1,19 @@
 import { useState, useEffect } from "react"
 import { FaRegTrashCan, FaPencil } from "react-icons/fa6";
+import { FaPlus } from "react-icons/fa";
 import "./Termek.css"
 import Cim from "../../../components/Cim"
 import Modal from "../../../components/Modal"
 import TermekModosit from "./TermekModosit"
+import TermekFelvitel from "./TermekFelvitel";
 
-const Termek= ({ kivalasztott }) => {
+const Termek= () => {
     const [adatok, setAdatok] = useState([])
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
     const [siker, setSiker] = useState(false)
-    const [modalOpen, setModalOpen] = useState(false)
+        const [modalOpenModosit, setModalOpenModosit] = useState(false)
+    const [modalOpenHozzaad, setModalOpenHozzaad] = useState(false)
     const [selectedTermekId, setSelectedTermekId] = useState(null)
 
     const leToltes = async () => {
@@ -44,7 +47,7 @@ const Termek= ({ kivalasztott }) => {
                 headers: { "Content-Type": "application/json" }
             })
 
-            const data = response.json()
+            const data = await response.json()
 
             if (response.ok) {
                 alert(data["message"])
@@ -55,14 +58,22 @@ const Termek= ({ kivalasztott }) => {
         }
     }
 
-    const openModal = (termek_id) => {
+    const openModalModosit = (termek_id) => {
         setSelectedTermekId(termek_id)
-        setModalOpen(true)
+        setModalOpenModosit(true)
     }
 
-    const closeModal = () => {
-        setModalOpen(false)
+    const closeModalModosit = () => {
+        setModalOpenModosit(false)
         setSelectedTermekId(null)
+    }
+
+    const openModalHozzaad = (marka_id) => {
+        setModalOpenHozzaad(true)
+    }
+
+    const closeModalHozzaad = () => {
+        setModalOpenHozzaad(false)
     }
 
     if (tolt)
@@ -72,42 +83,49 @@ const Termek= ({ kivalasztott }) => {
         return <div>Hiba történt az adatok betöltése közben.</div>
 
     return (
-        <div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Termék neve</th>
-                        <th>Törlés</th>
-                        <th>Módosítás</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {adatok.map((elem, index) => (
-                        <tr key={index}>
-                            <td>{elem.termek_nev}</td>
-                            <td>
-                                <button
-                                    className="btn btn-danger  ml-2"
-                                    onClick={() => torlesFuggveny(elem.termek_id, elem.termek_nev)}
-                                >
-                                   <FaRegTrashCan />
-                                </button>
-                            </td>
-                            <td>
-                                <button
-                                    className="btn btn-alert  ml-2"
-                                    onClick={() => openModal(elem.termek_id)}
-                                >
-                                   <FaPencil />
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-
-            <Modal isOpen={modalOpen} onClose={closeModal}>
-                <TermekModosit termek_id={selectedTermekId} onClose={closeModal} />
+        <div className="container">
+            <div className="row mb-3">
+                <div className="col-6 text-center fw-bold">Termék neve</div>
+                <div className="col-1 text-center fw-bold">Törlés</div>
+                <div className="col-1 text-center fw-bold">Módosítás</div>
+                <div className="col-1 text-center fw-bold">Felvitel</div>
+            </div>
+            {adatok.map((elem, index) => (
+                <div class="row mb-3">
+                    <div className="col-6 text-center">{elem.termek_nev}</div>
+                    <div className="col-1 text-center">
+                        <button
+                            className="btn btn-danger  ml-2"
+                            onClick={() => torlesFuggveny(elem.termek_id, elem.termek_nev)}
+                        >
+                            <FaRegTrashCan />
+                        </button>
+                    </div>
+                    <div className="col-1 text-center">
+                        <button
+                            className="btn btn-alert  ml-2"
+                            onClick={() => openModalModosit(elem.termek_id)}
+                        >
+                            <FaPencil />
+                        </button>
+                    </div>
+                    <div className="col-1 text-center">
+                        {index == 0 &&
+                            <button
+                                className="btn btn-alert  ml-2"
+                                onClick={() => openModalHozzaad()}
+                            >
+                                <FaPlus />
+                            </button>
+                        }
+                    </div>
+                </div>
+            ))}
+            <Modal isOpen={modalOpenModosit} onClose={closeModalModosit}>
+                <TermekModosit termek_id={selectedTermekId} onClose={closeModalModosit} />
+            </Modal>
+            <Modal isOpen={modalOpenHozzaad} onClose={closeModalHozzaad}>
+                <TermekFelvitel onClose={closeModalHozzaad} />
             </Modal>
         </div>
     )

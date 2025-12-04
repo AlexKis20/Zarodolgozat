@@ -2,22 +2,23 @@ import { useState, useEffect } from "react"
 import { FaRegTrashCan, FaPencil } from "react-icons/fa6";
 import Cim from "../../../components/Cim"
 import Modal from "../../../components/Modal"
-import MarkaModosit from "./MarkaModosit"
-import MarkaFelvitel from "./MarkaFelvitel";
+import TipusFelvitel from "./TipusFelvitel";
+import TipusModosit from "./TipusModosit";
 import { FaPlus } from "react-icons/fa";
 
-const Marka = () => {
+const Tipus = () => {
     const [adatok, setAdatok] = useState([])
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
     const [siker, setSiker] = useState(false)
     const [modalOpenModosit, setModalOpenModosit] = useState(false)
     const [modalOpenHozzaad, setModalOpenHozzaad] = useState(false)
-    const [selectedMarkaId, setSelectedMarkaId] = useState(null)
+    const [selectedTipusId, setSelectedTipusId] = useState(null)
+    
 
     const leToltes = async () => {
         try {
-            const response = await fetch(Cim.Cim + "/marka")
+            const response = await fetch(Cim.Cim + "/tipus")
             const data = await response.json()
 
             if (response.ok) {
@@ -38,11 +39,11 @@ const Marka = () => {
     }, [siker])
 
 
-    const torlesFuggveny = async (marka_id, marka_nev) => {
-        const biztos = window.confirm(`Biztosan törölni szeretnéd a(z) ${marka_nev} márkát?`)
+    const torlesFuggveny = async (tipus_id, tipus_nev) => {
+        const biztos = window.confirm(`Biztosan törölni szeretnéd a(z) ${tipus_nev} típust?`)
 
         if (biztos) {
-            const response = await fetch(Cim.Cim + "/markaTorles/" + marka_id, {
+            const response = await fetch(Cim.Cim + "/tipusTorles/" + tipus_id, {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" }
             })
@@ -58,14 +59,14 @@ const Marka = () => {
         }
     }
     
-    const openModalModosit = (marka_id) => {
-        setSelectedMarkaId(marka_id)
+    const openModalModosit = (tipus_id) => {
+        setSelectedTipusId(tipus_id)
         setModalOpenModosit(true)
     }
 
     const closeModalModosit = () => {
         setModalOpenModosit(false)
-        setSelectedMarkaId(null)
+        setSelectedTipusId(null)
     }
 
     const openModalHozzaad = () => {
@@ -86,18 +87,18 @@ const Marka = () => {
     return (
         <div className="container">
             <div className="row mb-3">
-                <div className="col-6 text-center fw-bold">Márka neve</div>
+                <div className="col-6 text-center fw-bold">Típus neve</div>
                 <div className="col-1 text-center fw-bold">Törlés</div>
                 <div className="col-1 text-center fw-bold">Módosítás</div>
                 <div className="col-1 text-center fw-bold">Felvitel</div>
             </div>
             {adatok.map((elem, index) => (
                 <div class="row mb-3">
-                    <div className="col-6 text-center">{elem.marka_nev}</div>
+                    <div className="col-6 text-center">{elem.tipus_nev}</div>
                     <div className="col-1 text-center">
                         <button
                             className="btn btn-danger  ml-2"
-                            onClick={() => torlesFuggveny(elem.marka_id, elem.marka_nev)}
+                            onClick={() => torlesFuggveny(elem.tipus_id, elem.tipus_nev)}
                         >
                             <FaRegTrashCan />
                         </button>
@@ -105,7 +106,7 @@ const Marka = () => {
                     <div className="col-1 text-center">
                         <button
                             className="btn btn-alert  ml-2"
-                            onClick={() => openModalModosit(elem.marka_id)}
+                            onClick={() => openModalModosit(elem.tipus_id)}
                         >
                             <FaPencil />
                         </button>
@@ -123,13 +124,13 @@ const Marka = () => {
                 </div>
             ))}
             <Modal isOpen={modalOpenModosit} onClose={closeModalModosit}>
-                <MarkaModosit marka_id={selectedMarkaId} onClose={closeModalModosit} />
+                <TipusModosit tipus_id={selectedTipusId} onClose={closeModalModosit} />
             </Modal>
             <Modal isOpen={modalOpenHozzaad} onClose={closeModalHozzaad}>
-                <MarkaFelvitel onClose={closeModalHozzaad} />
+                <TipusFelvitel onClose={closeModalHozzaad} />
             </Modal>
         </div>
     )
 }
 
-export default Marka
+export default Tipus

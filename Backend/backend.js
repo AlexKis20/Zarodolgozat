@@ -229,7 +229,7 @@ app.post('/termekHozzaad', (req, res) => {
     const {termek_nev, termek_ar, termek_szin, termek_kijelzo, termek_processzor, termek_kapacitas, termek_oprendszer,
         termek_meret, termek_leiras, termek_kep, termek_marka, termek_tipus} = req.body
     const sql=`insert into termek (termek_id, termek_nev, termek_ar, termek_szin, termek_kijelzo, termek_processzor,
-               termek_kapacitás, termek_oprendszer, termek_meret, termek_leiras, termek_kep, termek_marka,
+               termek_kapacitas, termek_oprendszer, termek_meret, termek_leiras, termek_kep, termek_marka,
                termek_tipus)
                values (NULL,?,?,?,?,?,?,?,?,?,?,?,?)`
     pool.query(sql,[termek_nev, termek_ar, termek_szin, termek_kijelzo, termek_processzor, termek_kapacitas, termek_oprendszer,
