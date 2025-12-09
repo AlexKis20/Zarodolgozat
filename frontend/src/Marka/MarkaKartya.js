@@ -38,21 +38,35 @@ const MarkaKartya = ({ kivalasztott }) => {
         <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
             {adatok.map((elem, index) => (
                 <div
-                    key={index}
-                    onClick={() => kivalasztott(elem.marka_id)}
-                    style={{
-                        padding: "10px 15px",
-                        border: "1px solid #ccc",
-                        borderRadius: "8px",
-                        cursor: "pointer",
-                        background: "#f8f8f8",
-                        transition: "0.2s",
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = "#e6e6e6")}
-                    onMouseLeave={(e) => (e.currentTarget.style.background = "#f8f8f8")}
-                >
-                    {elem.marka_nev}
-                </div>
+        key={index}
+        onClick={() => kivalasztott(elem.marka_id)}
+        style={{
+            width: "160px",
+            height: "80px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "10px",
+            border: "1px solid #ddd",
+            borderRadius: "12px",
+            cursor: "pointer",
+            background: "#ffffff",
+            fontWeight: "600",
+            boxShadow: "0 4px 8px rgba(0,0,0,0.08)",
+            transition: "all 0.2s ease-in-out",
+            userSelect: "none",
+        }}
+        onMouseEnter={(e) => {
+            e.currentTarget.style.background = "#f0f0f0"
+            e.currentTarget.style.transform = "scale(1.05)"
+        }}
+        onMouseLeave={(e) => {
+            e.currentTarget.style.background = "#ffffff"
+            e.currentTarget.style.transform = "scale(1)"
+        }}
+    >
+        {elem.marka_nev}
+    </div>
             ))}
         </div>
     )

@@ -74,7 +74,12 @@ input{
 }
 }
 .doboz{
-  background-color: #f0f8ff;
+  background: linear-gradient(
+    135deg,
+    #c3c8ff,   /* világosabb lila */
+    #d0e0ff,   /* halvány kék */
+    #c8ffe8    /* pasztell zöldeskék */
+  );
   border:1px solid black;
   margin:10px;
   padding:10px;
@@ -96,6 +101,56 @@ input{
   border: 1px solid black;
   border-radius: 8px;
   box-shadow: 3px 3px 8px;
-  background-color: #f0f8ff;
+  background: linear-gradient(
+    135deg,
+    #c3c8ff,   /* világosabb lila */
+    #d0e0ff,   /* halvány kék */
+    #c8ffe8    /* pasztell zöldeskék */
+  );
   height: 600px;
+}
+/* Kereső blokk */
+.keresesiCimek {
+    display: flex;
+    justify-content: space-between;
+    width: 940px;
+    margin-bottom: 10px;
+}
+
+.cim1, .cim2 {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.keretKeres {
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+}
+
+.inputBlokk {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.inputBlokk input {
+    width: 300px;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+.talalat {
+    margin-top: 30px;
+}
+body{
+  background: linear-gradient(
+    135deg,
+    #d2d6ff,   /* kicsit sötétebb kékes-lila */
+    #e4e7ff,   /* közepesen világos tónus */
+    #d6f5ea    /* enyhén sötétebb zöldeskék */
+  );
+  background-attachment: fixed;
+  margin: 0;
+  padding: 0;
 }

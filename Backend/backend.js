@@ -137,15 +137,35 @@ app.post('/markajuTermek', (req, res) => {
 
 app.post('/termeknevKeres', (req, res) => {
         const {termek_nev,termek_oprendszer,minAr,maxAr} =req.body
-        const sql=`
+        //minAr és maxAr üres
+        console.log(minAr  )
+        console.log(maxAr  )
+        //console.log(typeof(minAr))
+        let min = Number(minAr)
+        let max = Number(maxAr)
+        if (minAr==""){
+            min=0
+        }
+        if (maxAr==""){
+            max=999999999
+        }
+
+        console.log(min)
+        console.log(max)    
+
+       
+
+        
+        const  sql=`
                 select *
                 from termek
                 inner join tipus
                 on termek_tipus=tipus_id
                 WHERE (termek_nev LIKE ? OR termek_oprendszer LIKE ?)
-                OR termek_ar BETWEEN ? AND ?
+                and(termek_ar BETWEEN ? AND ?)
                 `
-        pool.query(sql,[`%${termek_nev}%`,`%${termek_oprendszer}%`,minAr,maxAr], (err, result) => {
+
+             pool.query(sql,[`%${termek_nev}%`,`%${termek_oprendszer}%`,min,max], (err, result) => {
         if (err) {
             console.log(err)
             return res.status(500).json({error:"Hiba"})
@@ -155,7 +175,9 @@ app.post('/termeknevKeres', (req, res) => {
         }
 
         return res.status(200).json(result)
-        })
+        })    
+            
+       
 })
 
 

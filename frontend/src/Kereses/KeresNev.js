@@ -7,16 +7,17 @@ const KeresNev=()=>{
     const [minAr, setMinAr] = useState("");
     const [maxAr, setMaxAr] = useState("");
     const [adatok,setAdatok]=useState([])
-    const [tolt,setTolt]=useState(true)
+    //const [tolt,setTolt]=useState(true)
     const [hiba,setHiba]=useState(false)
 
     const keres=async ()=>{
+        setHiba(false)
         try{
             let bemenet={
                 termek_nev: nev,
                 termek_oprendszer: nev,
-                minAr: Number(minAr),
-                maxAr: Number(maxAr)
+                minAr: minAr,
+                maxAr: maxAr
                 
             }
             
@@ -35,11 +36,13 @@ const KeresNev=()=>{
             if (response.ok)
                 {
                     setAdatok(data)
-                    setTolt(false)}
+                    //setTolt(false)
+                }
             else 
                 {
                     setHiba(true)
-                    setTolt(false)
+                    //setTolt(false)
+                    
                 }
             }
         catch (error){
@@ -48,68 +51,80 @@ const KeresNev=()=>{
         }
         
     }
-
     return (
         <div>
-            <div className="cim1">Keresés név szerint:</div><div className="cim2">Keresés ár szerint:</div>
-            
-            <div className="keretKeres">
-                {/* Név */}
-                <input
-                    type="text"
-                    placeholder="Add meg a keresendő szót..."
-                    style={{ width: "300px" }}
-                    onChange={(e) => setNev(e.target.value)}
-                />
-
-                {/* Minimum ár */}
-                <input
-                    type="number"
-                    placeholder="Add meg a minimum árat..."
-                    style={{ width: "300px" }}
-                    onChange={(e) => setMinAr(e.target.value)}
-                />
-
-                {/* Maximum ár */}
-                <input
-                    type="number"
-                    placeholder="Add meg a maximum árat..."
-                    style={{ width: "300px" }}
-                    onChange={(e) => setMaxAr(e.target.value)}
-                />
-
-            
-
-            <br />
-            <button className="btn btn-primary mt-3 mb-3" onClick={keres}>Keresés</button>
-            <ul>
-            {adatok.map((elem,index)=>(
-                <div className="row" key={index}>
-                    <div className="col-lg-6" > 
-                                        <div className="doboz">
-                                            <div className="jatekCim">{elem.termek_nev} </div>
-                                            <div style={{textAlign:"center",marginTop:"20px"}}>
-                                                <img style={{width:"150px"}} src={`${Cim.Cim}/termekKep/${elem.termek_kep}`} alt={elem.termek_nev} />
-                                            </div>
-                                            <div>Ár: {elem.termek_ar} </div>
-                                            <div>Szín: {elem.termek_szin} </div>
-                                            <div>Kijelző: {elem.termek_kijelzo} </div>
-                                            <div>Processzor: {elem.termek_processzor} </div>
-                                            <div>Kapacitás: {elem.termek_kapacitás} </div>
-                                            <div>Operációs rendszer: {elem.termek_oprendszer} </div>
-                                            <div>Méret: {elem.termek_meret} </div>
-                                            {/* <div>Leírás: {elem.termek_leiras} </div> */}
-                                            <div>Termék márkája: {elem.marka_nev} </div>
-                                            <div className="jatekTipus">Termék típusa: {elem.tipus_nev} </div>
-                    
-                                        </div>
-                                        </div>
-                                        </div>
-                ) ) }
-
-            </ul>
-            </div>
+    {/* KERESŐ SOR */}
+    <div className="keretKeres">
+        {/* NÉV */}
+        <div className="inputBlokk">
+            <label>Keresendő név</label>    
+            <input
+                type="text"
+                placeholder="Add meg a keresendő szót..."
+                onChange={(e) => setNev(e.target.value)}
+            />
         </div>
+
+        {/* MINIMUM ÁR */}
+        <div className="inputBlokk">
+            <label>Minimum ár</label>
+            <input
+                type="text"
+                placeholder="0"
+                onChange={(e) => setMinAr(e.target.value)}
+            />
+        </div>
+
+        {/* MAXIMUM ÁR */}
+        <div className="inputBlokk">
+            <label>Maximum ár</label>
+            <input
+                type="text"
+                placeholder="0"
+                onChange={(e) => setMaxAr(e.target.value)}
+            />
+        </div>
+    </div>
+
+    {/* ✅ EZ MÁR ÚJ SORBAN VAN */}
+    <div className="talalat">
+        <button className="btn btn-primary mt-3 mb-3" onClick={keres}>
+            Keresés
+        </button>
+
+        { hiba  ? <div>Hiba!</div> :
+        <div>
+        {adatok.map((elem, index) => (
+            <div className="row" key={index}>
+                <div className="col-lg-6"> 
+                    <div className="doboz">
+                        <div className="jatekCim">{elem.termek_nev}</div>
+
+                        <div style={{ textAlign: "center", marginTop: "20px" }}>
+                            <img
+                                style={{ width: "150px" }}
+                                src={`${Cim.Cim}/termekKep/${elem.termek_kep}`}
+                                alt={elem.termek_nev}
+                            />
+                        </div>
+
+                        <div>Ár: {elem.termek_ar}</div>
+                        <div>Szín: {elem.termek_szin}</div>
+                        <div>Kijelző: {elem.termek_kijelzo}</div>
+                        <div>Processzor: {elem.termek_processzor}</div>
+                        <div>Kapacitás: {elem.termek_kapacitás}</div>
+                        <div>Operációs rendszer: {elem.termek_oprendszer}</div>
+                        <div>Méret: {elem.termek_meret}</div>
+                        <div>Termék márkája: {elem.marka_nev}</div>
+                        <div className="jatekTipus">Termék típusa: {elem.tipus_nev}</div>
+                    </div>
+                </div>
+            </div>
+        ))}
+        </div>
+        }
+    </div>
+</div>
     )
 
 }
