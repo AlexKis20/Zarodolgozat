@@ -367,6 +367,87 @@ app.post('/markaHozzaad', (req, res) => {
     return res.status(200).json({message:"Sikeres hozzáadás"})
     })
 })
+app.delete('/blogTorles/:blog_id', (req, res) => {
+        const {blog_id} = req.params
+        const sql = `delete from blog where blog_id=?`
+        pool.query(sql,[blog_id], (err, result) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({error:"Hiba"})
+        }
+
+        return res.status(200).json({message:"Sikeres törlés"})
+        })
+})
+
+// minden blog lekérdezése
+app.get('/blog', (req, res) => {
+    const sql=`SELECT * FROM  blog `
+    pool.query(sql, ( err, result) => {
+        if (err){
+            console.log(err)
+            return res.status(500).json({error:"Hiba!"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat!"})
+        }
+        return res.status(200).json(result)
+
+    
+    })
+
+    
+
+})
+
+
+// egy  blog lekérdezése
+
+app.get('/blog/:blog_id', (req, res) => {
+    const sql=`SELECT blog_cim FROM blog where blog_id=?`
+    const {blog_id} = req.params
+    pool.query(sql,[blog_id], ( err, result) => {
+        if (err){
+            console.log(err)
+            return res.status(500).json({error:"Hiba!"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat!"})
+        }
+        return res.status(200).json(result[0])
+    })
+})
+
+// blog módosítás id alapján
+
+app.put('/blogModosit/:blog_id', (req, res) => {
+    const {blog_id} = req.params
+    const {blog_cim,blog_szoveg,blog_datum,blog_kep} = req.body
+    const sql=`update blog set blog_cim=?,blog_szoveg=?,blog_datum=?,blog_kep=? where blog_id=?`
+    pool.query(sql,[blog_cim,blog_szoveg,blog_datum,blog_kep,blog_id], (err, result) => {
+    if (err) {
+        console.log(err)
+        return res.status(500).json({error:"Hiba"})
+    }
+
+    return res.status(200).json({message:"Sikeres módosítás"})
+    })
+})
+
+//blog hozzáadás
+
+app.post('/blogHozzaad', (req, res) => {
+    const {blog_cim,blog_szoveg,blog_kep} = req.body
+    const blog_datum = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    const sql=`insert into blog (blog_cim,blog_szoveg,blog_datum,blog_kep) values (?,?,?,?)`
+    pool.query(sql,[blog_cim,blog_szoveg,blog_datum,blog_kep], (err, result) => {
+    if (err) {
+        console.log(err)
+        return res.status(500).json({error:"Hiba"})
+    }
+    return res.status(200).json({message:"Sikeres hozzáadás"})
+    })
+})
 
 
 

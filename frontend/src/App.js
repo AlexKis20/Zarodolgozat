@@ -17,6 +17,7 @@ import Vezerlopult from './pages/admin/vezerlopult';
 import Termek from './pages/admin/termek';
 import Marka from './pages/admin/marka';
 import Tipus from './pages/admin/tipus';
+import Blog from './pages/admin/blog';
 //Sidebar
 import Sidebar from './components/Sidebar';
 //User menük
@@ -108,6 +109,11 @@ function AdminRoutes() {
             <ProtectedRoute role="admin">
               <Tipus />
             </ProtectedRoute>
+          } />
+          <Route path="blog" element={
+            <ProtectedRoute role="admin">
+              <Blog />
+          </ProtectedRoute>
           } />
         </Routes>
       } />
