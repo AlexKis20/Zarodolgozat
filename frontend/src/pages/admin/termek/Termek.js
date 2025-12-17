@@ -12,7 +12,8 @@ const Termek= () => {
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
     const [siker, setSiker] = useState(false)
-        const [modalOpenModosit, setModalOpenModosit] = useState(false)
+
+    const [modalOpenModosit, setModalOpenModosit] = useState(false)
     const [modalOpenHozzaad, setModalOpenHozzaad] = useState(false)
     const [selectedTermekId, setSelectedTermekId] = useState(null)
 
@@ -110,7 +111,7 @@ const Termek= () => {
                         </button>
                     </div>
                     <div className="col-1 text-center">
-                        {index == 0 &&
+                        {index === 0 &&
                             <button
                                 className="btn btn-alert  ml-2"
                                 onClick={() => openModalHozzaad()}

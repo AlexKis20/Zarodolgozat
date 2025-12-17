@@ -88,12 +88,12 @@ app.post('/tipusuTermek', (req, res) => {
         const {tipus_id} =req.body
         const sql=`
                 select *
-                from tipus
+                FROM tipus
                 inner join termek
                 on termek_tipus=tipus_id
                 inner join marka
                 on termek_marka=marka_id
-                where tipus_id=?
+                WHERE tipus_id=?
                 `
 
         pool.query(sql,[tipus_id], (err, result) => {
@@ -113,12 +113,12 @@ app.post('/markajuTermek', (req, res) => {
         const {marka_id} =req.body
         const sql=`
                 select *
-                from marka
+                FROM marka
                 inner join termek
                 on termek_marka=marka_id
                 inner join tipus
                 on termek_tipus=tipus_id
-                where marka_id=?
+                WHERE marka_id=?
                 `
 
         pool.query(sql,[marka_id], (err, result) => {
@@ -158,7 +158,7 @@ app.post('/termeknevKeres', (req, res) => {
         
         const  sql=`
                 select *
-                from termek
+                FROM termek
                 inner join tipus
                 on termek_tipus=tipus_id
                 WHERE (termek_nev LIKE ? OR termek_oprendszer LIKE ?)
@@ -193,7 +193,7 @@ app.post('/termeknevKeres', (req, res) => {
 
 app.delete('/termekTorles/:termek_id', (req, res) => {
         const {termek_id} = req.params
-        const sql = `delete from termek where termek_id=?`
+        const sql = `DELETE FROM termek WHERE termek_id=?`
         pool.query(sql,[termek_id], (err, result) => {
         if (err) {
             console.log(err)
@@ -208,7 +208,7 @@ app.delete('/termekTorles/:termek_id', (req, res) => {
 
 app.get('/termek/:termek_id', (req, res) => {
     const sql=`SELECT termek_nev, termek_ar, termek_szin, termek_kijelzo, termek_processzor, termek_kapacitas, termek_oprendszer,
-        termek_meret, termek_leiras, termek_kep, termek_marka, termek_tipus FROM termek where termek_id=?`
+        termek_meret, termek_leiras, termek_kep, termek_marka, termek_tipus FROM termek WHERE termek_id=?`
     const {termek_id} = req.params
     pool.query(sql,[termek_id], ( err, result) => {
         if (err){
@@ -230,10 +230,10 @@ app.put('/termekModosit/:termek_id', (req, res) => {
     const {termek_id} = req.params
     const {termek_nev, termek_ar, termek_szin, termek_kijelzo, termek_processzor, termek_kapacitas, termek_oprendszer,
         termek_meret, termek_leiras, termek_kep, termek_marka, termek_tipus} = req.body
-    const sql=`update termek set termek_nev=?, termek_ar=?, termek_szin=?, termek_kijelzo=?, termek_processzor=?,
+    const sql=`UPDATE termek SET termek_nev=?, termek_ar=?, termek_szin=?, termek_kijelzo=?, termek_processzor=?,
                termek_kapacitas=?, termek_oprendszer=?, termek_meret=?, termek_leiras=?, termek_kep=?, termek_marka=?,
                termek_tipus=?
-               where termek_id=?`
+               WHERE termek_id=?`
     pool.query(sql,[termek_nev, termek_ar, termek_szin, termek_kijelzo, termek_processzor, termek_kapacitas, termek_oprendszer,
         termek_meret, termek_leiras, termek_kep, termek_marka, termek_tipus, termek_id], (err, result) => {
     if (err) {
@@ -250,10 +250,10 @@ app.put('/termekModosit/:termek_id', (req, res) => {
 app.post('/termekHozzaad', (req, res) => {
     const {termek_nev, termek_ar, termek_szin, termek_kijelzo, termek_processzor, termek_kapacitas, termek_oprendszer,
         termek_meret, termek_leiras, termek_kep, termek_marka, termek_tipus} = req.body
-    const sql=`insert into termek (termek_id, termek_nev, termek_ar, termek_szin, termek_kijelzo, termek_processzor,
+    const sql=`INSERT INTO termek (termek_id, termek_nev, termek_ar, termek_szin, termek_kijelzo, termek_processzor,
                termek_kapacitas, termek_oprendszer, termek_meret, termek_leiras, termek_kep, termek_marka,
                termek_tipus)
-               values (NULL,?,?,?,?,?,?,?,?,?,?,?,?)`
+               VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?,?)`
     pool.query(sql,[termek_nev, termek_ar, termek_szin, termek_kijelzo, termek_processzor, termek_kapacitas, termek_oprendszer,
         termek_meret, termek_leiras, termek_kep, termek_marka, termek_tipus], (err, result) => {
     if (err) {
@@ -283,7 +283,7 @@ app.delete('/tipusTorles/:tipus_id', (req, res) => {
 // egy tipus lekérdezése id alapján
 
 app.get('/tipus/:tipus_id', (req, res) => {
-    const sql=`SELECT tipus_nev FROM tipus where tipus_id=?`
+    const sql=`SELECT tipus_nev FROM tipus WHERE tipus_id=?`
     const {tipus_id} = req.params
     pool.query(sql,[tipus_id], ( err, result) => {
         if (err){
@@ -302,7 +302,7 @@ app.get('/tipus/:tipus_id', (req, res) => {
 app.put('/tipusModosit/:tipus_id', (req, res) => {
     const {tipus_id} = req.params
     const {tipus_nev}= req.body
-    const sql=`update tipus set tipus_nev=? where tipus_id=?`
+    const sql=`UPDATE tipus SET tipus_nev=? WHERE tipus_id=?`
     pool.query(sql,[tipus_nev, tipus_id], (err, result) => {
     if (err) {
         console.log(err)
@@ -318,7 +318,7 @@ app.put('/tipusModosit/:tipus_id', (req, res) => {
 
 app.post('/tipusHozzaad', (req, res) => {
     const {tipus_nev}= req.body
-    const sql=`insert into tipus (tipus_nev) values (?)`
+    const sql=` INSERT INTO tipus (tipus_nev) values (?)`
     pool.query(sql,[tipus_nev], (err, result) => {
     if (err) {
         console.log(err)
@@ -332,7 +332,7 @@ app.post('/tipusHozzaad', (req, res) => {
 
 app.delete('/markaTorles/:marka_id', (req, res) => {
         const {marka_id} = req.params
-        const sql = `delete from marka where marka_id=?`
+        const sql = `DELETE FROM marka WHERE marka_id=?`
         pool.query(sql,[marka_id], (err, result) => {
         if (err) {
             console.log(err)
@@ -346,7 +346,7 @@ app.delete('/markaTorles/:marka_id', (req, res) => {
 // egy márka lekérdezése
 
 app.get('/marka/:marka_id', (req, res) => {
-    const sql=`SELECT marka_nev FROM marka where marka_id=?`
+    const sql=`SELECT marka_nev FROM marka WHERE marka_id=?`
     const {marka_id} = req.params
     pool.query(sql,[marka_id], ( err, result) => {
         if (err){
@@ -365,7 +365,7 @@ app.get('/marka/:marka_id', (req, res) => {
 app.put('/markaModosit/:marka_id', (req, res) => {
     const {marka_id} = req.params
     const {marka_nev} = req.body
-    const sql=`update marka set marka_nev=? where marka_id=?`
+    const sql=`UPDATE marka SET marka_nev=? WHERE marka_id=?`
     pool.query(sql,[marka_nev, marka_id], (err, result) => {
     if (err) {
         console.log(err)
@@ -380,7 +380,7 @@ app.put('/markaModosit/:marka_id', (req, res) => {
 
 app.post('/markaHozzaad', (req, res) => {
     const {marka_nev} = req.body
-    const sql=`insert into marka (marka_nev) values (?)`
+    const sql=`INSERT INTO marka (marka_nev) VALUES (?)`
     pool.query(sql,[marka_nev], (err, result) => {
     if (err) {
         console.log(err)
@@ -389,9 +389,12 @@ app.post('/markaHozzaad', (req, res) => {
     return res.status(200).json({message:"Sikeres hozzáadás"})
     })
 })
+
+// blog törlés id alapján
+
 app.delete('/blogTorles/:blog_id', (req, res) => {
         const {blog_id} = req.params
-        const sql = `delete from blog where blog_id=?`
+        const sql = `DELETE FROM blog WHERE blog_id=?`
         pool.query(sql,[blog_id], (err, result) => {
         if (err) {
             console.log(err)
@@ -426,7 +429,7 @@ app.get('/blog', (req, res) => {
 // egy  blog lekérdezése
 
 app.get('/blog/:blog_id', (req, res) => {
-    const sql=`SELECT blog_cim FROM blog where blog_id=?`
+    const sql=`SELECT blog_cim, blog_szoveg, blog_kep FROM blog WHERE blog_id=?`
     const {blog_id} = req.params
     pool.query(sql,[blog_id], ( err, result) => {
         if (err){
@@ -444,9 +447,9 @@ app.get('/blog/:blog_id', (req, res) => {
 
 app.put('/blogModosit/:blog_id', (req, res) => {
     const {blog_id} = req.params
-    const {blog_cim,blog_szoveg,blog_datum,blog_kep} = req.body
-    const sql=`update blog set blog_cim=?,blog_szoveg=?,blog_datum=?,blog_kep=? where blog_id=?`
-    pool.query(sql,[blog_cim,blog_szoveg,blog_datum,blog_kep,blog_id], (err, result) => {
+    const {blog_cim,blog_szoveg,blog_kep} = req.body
+    const sql=`UPDATE blog SET blog_cim=?,blog_szoveg=?,blog_datum=?,blog_kep=? WHERE blog_id=?`
+    pool.query(sql,[blog_cim,blog_szoveg,blog_kep,blog_id], (err, result) => {
     if (err) {
         console.log(err)
         return res.status(500).json({error:"Hiba"})
@@ -461,7 +464,7 @@ app.put('/blogModosit/:blog_id', (req, res) => {
 app.post('/blogHozzaad', (req, res) => {
     const {blog_cim,blog_szoveg,blog_kep} = req.body
     const blog_datum = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    const sql=`insert into blog (blog_cim,blog_szoveg,blog_datum,blog_kep) values (?,?,?,?)`
+    const sql=`INSERT INTO blog (blog_cim,blog_szoveg,blog_datum,blog_kep) VALUES (?,?,?,?)`
     pool.query(sql,[blog_cim,blog_szoveg,blog_datum,blog_kep], (err, result) => {
     if (err) {
         console.log(err)
@@ -473,6 +476,80 @@ app.post('/blogHozzaad', (req, res) => {
 
 
 
+
+// minden vélemény  lekérdezése
+
+app.get('/velemeny', (req, res) => {
+    const sql=`SELECT * FROM  velemeny ORDER BY velemeny_datum DESC`
+    pool.query(sql, ( err, result) => {
+        if (err){
+            console.log(err)
+            return res.status(500).json({error:"Hiba!"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat!"})
+        }
+        return res.status(200).json(result)
+
+    
+    })
+
+})
+
+// egy  vélemény lekérdezése
+
+app.get('/velemeny/:velemeny_id', (req, res) => {
+    const sql=`SELECT velemeny_felhasz_id, velemeny_termek_id, velemeny_ertekeles, velemeny_nev, velemeny_szoveg, velemeny_datum 
+               FROM velemeny
+               WHERE velemeny_id=?`
+    const {velemeny_id} = req.params
+    pool.query(sql,[velemeny_id], ( err, result) => {
+        if (err){
+            console.log(err)
+            return res.status(500).json({error:"Hiba!"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat!"})
+        }
+        return res.status(200).json(result[0])
+    })
+})
+
+// egy vélemény törlése id alapján
+
+app.delete('/velemenyTorles/:velemeny_id', (req, res) => {
+        const {velemeny_id} = req.params
+
+        const velemeny_sql = `DELETE FROM velemeny WHERE velemeny_id=?`
+        pool.query(velemeny_sql,[velemeny_id], (err, result) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({error:"Hiba"})
+            }
+
+        return res.status(200).json({message:"Sikeres törlés"})
+        })
+})
+
+// vélemény lekérdezése minden
+
+app.get('/velemenyMinden', (req, res) => {
+    const sql=`SELECT velemeny_id, velemeny_felhasz_id, velemeny_termek_id, velemeny_ertekeles, velemeny_szoveg, velemeny_datum, felhasznalo_nev, termek_nev 
+               FROM velemeny
+               INNER JOIN felhasznalo ON velemeny_felhasz_id=felhasznalo_id
+               INNER JOIN termek ON velemeny_termek_id=termek_id`
+               
+    pool.query(sql, ( err, result) => {
+        if (err){
+            console.log(err)
+            return res.status(500).json({error:"Hiba!"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat!"})
+        }
+        return res.status(200).json(result)
+    })
+})
 
 
 
