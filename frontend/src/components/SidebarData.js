@@ -26,5 +26,11 @@ export const SidebarData = [
         title: "Blog",
         path: "/admin/blog",
         icon: <IoIcons.IoIosPaper />
+    },
+    {
+        title: "Vélemény",
+        path: "/admin/velemeny",
+        icon: <IoIcons.IoIosPaper />
     }
+
 ];
