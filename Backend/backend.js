@@ -8,6 +8,7 @@ app.use(cors())
 app.use(express.json())
 app.use("/kepek", express.static("kepek"))
 app.use("/termekKep", express.static("termekKep"))
+app.use("/blogKep", express.static("blogKep"))
 
 const pool = mysql.createPool({
   host: 'localhost',
@@ -180,7 +181,25 @@ app.post('/termeknevKeres', (req, res) => {
        
 })
 
+//Hírekhez
+app.get('/hirek', (req, res) => {
+    const sql=`SELECT * FROM blog`
+    pool.query(sql, ( err, result) => {
+        if (err){
+            console.log(err)
+            return res.status(500).json({error:"Hiba!"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat!"})
+        }
+        return res.status(200).json(result)
 
+    
+    })
+
+    
+
+})
 
 
 

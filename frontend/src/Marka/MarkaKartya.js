@@ -29,10 +29,10 @@ const MarkaKartya = ({ kivalasztott }) => {
     }, [kivalasztott])
 
     if (tolt)
-        return <div style={{ textAlign: "center" }}>Adatok betöltése folyamatban...</div>
+        return <div style={{ textAlign: "center" , fontSize: "20px"}}>Adatok betöltése folyamatban...</div>
 
     if (hiba)
-        return <div>Hiba történt az adatok betöltése közben.</div>
+        return <div style={{  fontSize: "20px",color:"red"}}>Hiba történt az adatok betöltése közben.</div>
 
     return (
         <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>

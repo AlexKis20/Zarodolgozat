@@ -27,7 +27,7 @@ const Navbar = () => {
           ☰
         </button>
         <div className={`menu ${menuOpen ? "open" : ""}`}>
-          <Link to="/menu1" className="link" onClick={() => setMenuOpen(false)}>
+          <Link to="/Hirek" className="link" onClick={() => setMenuOpen(false)}>
             Nyitólap
           </Link>
           <Link to="/Termekek" className="link" onClick={() => setMenuOpen(false)}>

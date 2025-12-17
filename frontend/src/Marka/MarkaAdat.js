@@ -33,8 +33,8 @@ const MarkaAdat = ({ kivalasztott }) => {
     leToltes();
   }, [kivalasztott]);
 
-  if (tolt) return <div style={{ textAlign: "center" }}>Adatok betöltése folyamatban...</div>;
-  if (hiba) return <div>Hiba</div>;
+  if (tolt) return <div style={{ textAlign: "center" , fontSize: "20px"}}>Adatok betöltése folyamatban...</div>;
+  if (hiba) return <div style={{  fontSize: "20px",color:"red"}}>Hiba</div>;
 
   return (
     <div>
