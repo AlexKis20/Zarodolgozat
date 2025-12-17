@@ -8,7 +8,7 @@ const MarkaKeres=()=>{
 
     return (
         <div>
-            <div style={{textAlign:"center",marginBottom:20}}>Termékek</div>
+            <div style={{textAlign:"center",marginBottom: "20px", fontSize: "30px", fontWeight: "bold"}}>Termékek</div>
             <div className="row">
                 <div className="col-sm-4">
                     <MarkaKartya kivalasztott={setKivalasztott}/>
@@ -19,6 +19,7 @@ const MarkaKeres=()=>{
                     <MarkaAdat kivalasztott={kivalasztott}/>
                 </div>
             </div>
+
 
         </div>
     )

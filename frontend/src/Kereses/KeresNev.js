@@ -57,7 +57,7 @@ const KeresNev=()=>{
     <div className="keretKeres">
         {/* NÉV */}
         <div className="inputBlokk">
-            <label>Keresendő név</label>    
+            <label className="label">Keresendő név</label>    
             <input
                 type="text"
                 placeholder="Add meg a keresendő szót..."
@@ -67,7 +67,7 @@ const KeresNev=()=>{
 
         {/* MINIMUM ÁR */}
         <div className="inputBlokk">
-            <label>Minimum ár</label>
+            <label className="label">Minimum ár</label>
             <input
                 type="text"
                 placeholder="0"
@@ -77,7 +77,7 @@ const KeresNev=()=>{
 
         {/* MAXIMUM ÁR */}
         <div className="inputBlokk">
-            <label>Maximum ár</label>
+            <label className="label">Maximum ár</label>
             <input
                 type="text"
                 placeholder="0"
@@ -92,7 +92,7 @@ const KeresNev=()=>{
             Keresés
         </button>
 
-        { hiba  ? <div>Hiba!</div> :
+        { hiba  ? <div style={{  fontSize: "20px",color:"red"}}>Hiba!</div> :
         <div>
         {adatok.map((elem, index) => (
             <div className="row" key={index}>
@@ -112,7 +112,7 @@ const KeresNev=()=>{
                         <div>Szín: {elem.termek_szin}</div>
                         <div>Kijelző: {elem.termek_kijelzo}</div>
                         <div>Processzor: {elem.termek_processzor}</div>
-                        <div>Kapacitás: {elem.termek_kapacitás}</div>
+                        <div>Kapacitás: {elem.termek_kapacitas}</div>
                         <div>Operációs rendszer: {elem.termek_oprendszer}</div>
                         <div>Méret: {elem.termek_meret}</div>
                         <div>Termék márkája: {elem.marka_nev}</div>

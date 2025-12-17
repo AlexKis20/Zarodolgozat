@@ -50,13 +50,13 @@ const TermekTipusSzerint=({kivalasztott})=>{
 
     if (tolt)
         return (
-            <div style={{textAlign:"center"}}>Adatok betöltése folyamatban...</div>
+            <div style={{textAlign:"center", fontSize: "20px"}}>Adatok betöltése folyamatban...</div>
                 )
     else if (hiba)
         return (
-            <div>Hiba</div>
-                )       
-    
+            <div style={{  fontSize: "20px",color:"red"}}>Hiba</div>
+                )
+
     else return (
         /*
         termek_id
