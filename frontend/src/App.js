@@ -12,12 +12,14 @@ import Menu1 from './Menu1/Menu1';
 import Termekek from './Termekek/Termekek';
 import KeresNev from './Kereses/KeresNev';
 import MarkaKeres from './Marka/MarkaKeres';
+import Hirek from './Hirek/Hirek';
 //Admin menük
 import Vezerlopult from './pages/admin/vezerlopult';
 import Termek from './pages/admin/termek';
 import Marka from './pages/admin/marka';
 import Tipus from './pages/admin/tipus';
 import Blog from './pages/admin/blog';
+import Velemeny from './pages/admin/velemeny';
 //Sidebar
 import Sidebar from './components/Sidebar';
 //User menük
@@ -39,7 +41,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Menu1 />} />
-      <Route path="/menu1" element={<Menu1 />} />
+      <Route path="/Hirek" element={<Hirek />} />
       <Route path="/Termekek" element={<Termekek />} />
       <Route path="/KeresNev" element={<KeresNev />} />
       <Route path="/MarkaKeres" element={<MarkaKeres />} />
@@ -113,6 +115,11 @@ function AdminRoutes() {
           <Route path="blog" element={
             <ProtectedRoute role="admin">
               <Blog />
+          </ProtectedRoute>
+          } />
+          <Route path="velemeny" element={
+            <ProtectedRoute role="admin">
+              <Velemeny />
           </ProtectedRoute>
           } />
         </Routes>

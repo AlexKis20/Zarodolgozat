@@ -4,6 +4,7 @@ import { IoCloseSharp } from "react-icons/io5";
 import Cim from "../../../components/Cim"
 
 const  BlogModosit= ({ blog_id, onClose }) => {
+    const mezok = ["blog_cim", "blog_szoveg", "blog_kep"]
     const [modositottAdat, setModositottAdat] = useState({})
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
@@ -73,7 +74,7 @@ const  BlogModosit= ({ blog_id, onClose }) => {
                 </div>
             </div>
 
-            {Object.keys(modositottAdat).map((elem, index) => (
+            {mezok.map((elem, index) => (
                 <div className="row mb-2 align-items-center" key={index}>
                     <div className="col-sm-4">
                         <label className="form-label" htmlFor={elem}>{elem}</label>
