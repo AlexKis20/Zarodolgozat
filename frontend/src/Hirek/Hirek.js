@@ -5,23 +5,7 @@ import { useState,useEffect } from "react"
 import Cim from "../Cim"
 import "../App.css"
 
-const items = [
-{
-id: 1,
-image: "https://via.placeholder.com/300x200",
-text: "Ez az első elem szövege",
-},
-{
-id: 2,
-image: "https://via.placeholder.com/300x200/aaa",
-text: "Ez a második elem szövege",
-},
-{
-id: 3,
-image: "https://via.placeholder.com/300x200/777",
-text: "Ez a harmadik elem szövege",
-},
-];
+
 
 
 
@@ -63,7 +47,7 @@ const [direction, setDirection] = useState(0);
 
 const changeItem = (dir) => {
 setDirection(dir);
-setIndex((prev) => (prev + dir + items.length) % items.length);
+setIndex((prev) => (prev + dir + adatok.length) % adatok.length);
 };
 
 if (tolt)
@@ -77,14 +61,46 @@ if (tolt)
     
     
 else return (
-        <div className="flex items-center justify-center min-h-screen gap-6">
-        {/* Bal nyíl */}
-        <button
-        onClick={() => changeItem(-1)}
-        className="p-2 rounded-full hover:bg-gray-200"
-        >
-        <ChevronLeft size={32} />
-        </button>
+        <div className="d-flex flex-column align-items-center ">
+  
+  {/* Gombok sorban, középre igazítva */}
+  <div className="d-flex justify-content-center mb-3 gap-3">
+    <button
+      onClick={() => changeItem(-1)}
+      className="btn"
+      style={{
+        background: "linear-gradient(135deg, #5a5fdc, #7b4dff)",
+        color: "white",
+        border: "none",
+        width: "50px",
+        height: "50px",
+        borderRadius: "50%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <ChevronLeft size={32} />
+    </button>
+
+    <button
+      onClick={() => changeItem(1)}
+      className="btn"
+      style={{
+        background: "linear-gradient(135deg, #5a5fdc, #7b4dff)",
+        color: "white",
+        border: "none",
+        width: "50px",
+        height: "50px",
+        borderRadius: "50%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <ChevronRight size={32} />
+    </button>
+  </div>
 
 
         {/* Középső tartalom */}
@@ -96,13 +112,15 @@ else return (
         animate={{ x: 0, opacity: 1 }}
         exit={{ x: direction > 0 ? -100 : 100, opacity: 0 }}
         transition={{ duration: 0.4 }}
-        className="bg-white rounded-2xl shadow-lg p-4 text-center"
+        className="bg-gradient-to-br from-[#6f78e8] via-[#8a92ff] to-[#63c7b2]
+           rounded-2xl shadow-2xl ring-4 ring-black/30
+           p-4 text-center text-black"
         >
         <img
         src={`${Cim.Cim}/blogKep/${adatok[index].blog_kep}`}
         /*src={adatok[index].blog_kep}*/
         alt="slide"
-        className="w-full h-[200px] object-cover rounded-xl"
+        className="kep"
         />
         <p className="mt-4 text-lg font-medium">
         {adatok[index].blog_cim}
@@ -112,13 +130,7 @@ else return (
         </div>
 
 
-        {/* Jobb nyíl */}
-        <button
-        onClick={() => changeItem(1)}
-        className="p-2 rounded-full hover:bg-gray-200"
-        >
-        <ChevronRight size={32} />
-        </button>
+        
         </div>
         );
         }
