@@ -26,10 +26,10 @@ app.use('/login', login);
 
 //Alex végpontjai
 app.get('/termek', (req, res) => {
-    const sql=`SELECT * FROM termek inner join tipus
-                on termek_tipus=tipus_id
-                inner join marka
-                on termek_marka=marka_id`
+    const sql=`SELECT * FROM termek INNER JOIN tipus
+                ON termek_tipus=tipus_id
+                INNER JOIN marka
+                ON termek_marka=marka_id`
     pool.query(sql, ( err, result) => {
         if (err){
             console.log(err)
@@ -88,12 +88,12 @@ app.get('/marka', (req, res) => {
 app.post('/tipusuTermek', (req, res) => {
         const {tipus_id} =req.body
         const sql=`
-                select *
+                SELECT *
                 FROM tipus
-                inner join termek
-                on termek_tipus=tipus_id
-                inner join marka
-                on termek_marka=marka_id
+                INNER JOIN termek
+                ON termek_tipus=tipus_id
+                INNER JOIN marka
+                ON termek_marka=marka_id
                 WHERE tipus_id=?
                 `
 
@@ -113,12 +113,12 @@ app.post('/tipusuTermek', (req, res) => {
 app.post('/markajuTermek', (req, res) => {
         const {marka_id} =req.body
         const sql=`
-                select *
+                SELECT *
                 FROM marka
-                inner join termek
-                on termek_marka=marka_id
-                inner join tipus
-                on termek_tipus=tipus_id
+                INNER JOIN termek
+                ON termek_marka=marka_id
+                INNER JOIN tipus
+                ON termek_tipus=tipus_id
                 WHERE marka_id=?
                 `
 
@@ -158,12 +158,12 @@ app.post('/termeknevKeres', (req, res) => {
 
         
         const  sql=`
-                select *
+                SELECT *
                 FROM termek
-                inner join tipus
-                on termek_tipus=tipus_id
+                INNER JOIN tipus
+                ON termek_tipus=tipus_id
                 WHERE (termek_nev LIKE ? OR termek_oprendszer LIKE ?)
-                and(termek_ar BETWEEN ? AND ?)
+                AND (termek_ar BETWEEN ? AND ?)
                 `
 
              pool.query(sql,[`%${termek_nev}%`,`%${termek_oprendszer}%`,min,max], (err, result) => {
@@ -200,6 +200,12 @@ app.get('/hirek', (req, res) => {
     
 
 })
+
+  
+
+
+
+
 
 
 
@@ -337,7 +343,7 @@ app.put('/tipusModosit/:tipus_id', (req, res) => {
 
 app.post('/tipusHozzaad', (req, res) => {
     const {tipus_nev}= req.body
-    const sql=` INSERT INTO tipus (tipus_nev) values (?)`
+    const sql=`INSERT INTO tipus (tipus_nev) values (?)`
     pool.query(sql,[tipus_nev], (err, result) => {
     if (err) {
         console.log(err)
@@ -424,7 +430,25 @@ app.delete('/blogTorles/:blog_id', (req, res) => {
         })
 })
 
+// egy  blog lekérdezése
+
+app.get('/blog/:blog_id', (req, res) => {
+    const sql=`SELECT blog_cim, blog_szoveg, blog_kep, blog_fajta, blog_datum FROM blog WHERE blog_id=?`
+    const {blog_id} = req.params
+    pool.query(sql,[blog_id], ( err, result) => {
+    if (err){
+            console.log(err)
+            return res.status(500).json({error:"Hiba!"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat!"})
+        }
+        return res.status(200).json(result[0])
+    })
+})
+
 // minden blog lekérdezése
+
 app.get('/blog', (req, res) => {
     const sql=`SELECT * FROM  blog `
     pool.query(sql, ( err, result) => {
@@ -467,7 +491,7 @@ app.get('/blog/:blog_id', (req, res) => {
 app.put('/blogModosit/:blog_id', (req, res) => {
     const {blog_id} = req.params
     const {blog_cim,blog_szoveg,blog_kep} = req.body
-    const sql=`UPDATE blog SET blog_cim=?,blog_szoveg=?,blog_datum=?,blog_kep=? WHERE blog_id=?`
+    const sql=`UPDATE blog SET blog_cim=?,blog_szoveg=?,blog_kep=? WHERE blog_id=?`
     pool.query(sql,[blog_cim,blog_szoveg,blog_kep,blog_id], (err, result) => {
     if (err) {
         console.log(err)
@@ -483,8 +507,9 @@ app.put('/blogModosit/:blog_id', (req, res) => {
 app.post('/blogHozzaad', (req, res) => {
     const {blog_cim,blog_szoveg,blog_kep} = req.body
     const blog_datum = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    const sql=`INSERT INTO blog (blog_cim,blog_szoveg,blog_datum,blog_kep) VALUES (?,?,?,?)`
-    pool.query(sql,[blog_cim,blog_szoveg,blog_datum,blog_kep], (err, result) => {
+    const blog_fajta = 3;
+    const sql=`INSERT INTO blog (blog_cim,blog_szoveg,blog_datum,blog_kep, blog_fajta) values (?,?,?,?,?)`
+    pool.query(sql,[blog_cim,blog_szoveg,blog_datum,blog_kep, blog_fajta], (err, result) => {
     if (err) {
         console.log(err)
         return res.status(500).json({error:"Hiba"})
@@ -493,9 +518,23 @@ app.post('/blogHozzaad', (req, res) => {
     })
 })
 
+// minden vélemény  lekérdezése
+
+app.get('/velemeny', (req, res) => {
+    const sql=`SELECT * FROM  velemeny ORDER BY velemeny_datum DESC`
+    pool.query(sql, ( err, result) => {
+        if (err){
+            console.log(err)
+            return res.status(500).json({error:"Hiba!"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat!"})
+        }
+        return res.status(200).json(result)
 
 
-
+    })
+})
 // minden vélemény  lekérdezése
 
 app.get('/velemeny', (req, res) => {
@@ -571,7 +610,60 @@ app.get('/velemenyMinden', (req, res) => {
 })
 
 
+// egy  vélemény lekérdezése
 
+app.get('/velemeny/:velemeny_id', (req, res) => {
+    const sql=`SELECT velemeny_felhasz_id, velemeny_termek_id, velemeny_ertekeles, velemeny_nev, velemeny_szoveg, velemeny_datum 
+               FROM velemeny
+               WHERE velemeny_id=?`
+    const {velemeny_id} = req.params
+    pool.query(sql,[velemeny_id], ( err, result) => {
+        if (err){
+            console.log(err)
+            return res.status(500).json({error:"Hiba!"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat!"})
+        }
+        return res.status(200).json(result[0])
+    })
+})
+
+// egy vélemény törlése id alapján
+
+app.delete('/velemenyTorles/:velemeny_id', (req, res) => {
+        const {velemeny_id} = req.params
+
+        const velemeny_sql = `DELETE FROM velemeny WHERE velemeny_id=?`
+        pool.query(velemeny_sql,[velemeny_id], (err, result) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({error:"Hiba"})
+            }
+
+        return res.status(200).json({message:"Sikeres törlés"})
+        })
+})
+
+// vélemény lekérdezése minden
+
+app.get('/velemenyMinden', (req, res) => {
+    const sql=`SELECT velemeny_id, velemeny_felhasz_id, velemeny_termek_id, velemeny_ertekeles, velemeny_szoveg, velemeny_datum, felhasznalo_nev, termek_nev 
+               FROM velemeny
+               INNER JOIN felhasznalo ON velemeny_felhasz_id=felhasznalo_id
+               INNER JOIN termek ON velemeny_termek_id=termek_id`
+
+    pool.query(sql, ( err, result) => {
+        if (err){
+            console.log(err)
+            return res.status(500).json({error:"Hiba!"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat!"})
+        }
+        return res.status(200).json(result)
+    })
+})
 
 
 

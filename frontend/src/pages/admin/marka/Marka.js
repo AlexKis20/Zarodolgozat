@@ -11,7 +11,7 @@ const Marka = () => {
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
     const [siker, setSiker] = useState(false)
-    const [ures, setUres] = useState(false)
+     const [ures, setUres] = useState(false)
     const [modalOpenModosit, setModalOpenModosit] = useState(false)
     const [modalOpenHozzaad, setModalOpenHozzaad] = useState(false)
     const [selectedMarkaId, setSelectedMarkaId] = useState(null)
@@ -86,7 +86,28 @@ const Marka = () => {
     if (tolt)
         return <div style={{ textAlign: "center" }}>Adatok betöltése folyamatban...</div>
     if (ures)
-        return <div style={{ textAlign: "center" }}>Nincs adat!</div>
+        return (
+            <div className="container">
+                <div className="row mb-3">
+                    <div className="col-5"></div>
+                    <div className="col-2 text-center">Nincs adat!</div>
+                    <div className="col-5 text-center">
+                        Felvitel
+                        <div>
+                            <button
+                            className="btn btn-alert  ml-2"
+                                onClick={() => openModalHozzaad()} >      
+                                <FaPlus />
+                        </button>
+                        </div>
+                    </div>
+                </div>
+                <Modal isOpen={modalOpenHozzaad} onClose={closeModalHozzaad}>
+                    <MarkaFelvitel onClose={closeModalHozzaad} />
+                </Modal>
+            </div>
+        )
+
     if (hiba)
         return <div>Hiba történt az adatok betöltése közben.</div>
 

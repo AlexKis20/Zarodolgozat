@@ -15,7 +15,7 @@ const Blog = () => {
     const [modalOpenModosit, setModalOpenModosit] = useState(false)
     const [modalOpenHozzaad, setModalOpenHozzaad] = useState(false)
     const [selectedBlogId, setSelectedBlogId] = useState(null)
-
+        
     const leToltes = async () => {
         try {
             const response = await fetch(Cim.Cim + "/blog")
@@ -24,7 +24,7 @@ const Blog = () => {
             if (response.ok) {
                 setAdatok(data)
                 setTolt(false)
-            } 
+            }
             else if (response.status === 404) {
                 setUres(true)
                 setTolt(false)
@@ -85,8 +85,30 @@ const Blog = () => {
 
     if (tolt)
         return <div style={{ textAlign: "center" }}>Adatok betöltése folyamatban...</div>
+    
     if (ures)
-        return <div style={{ textAlign: "center" }}>Nincs adat!</div>
+        return (
+            <div className="container">
+                <div className="row mb-3">
+                    <div className="col-5"></div>
+                    <div className="col-2 text-center">Nincs adat!</div>
+                    <div className="col-5 text-center">
+                        Felvitel
+                        <div>
+                            <button
+                            className="btn btn-alert  ml-2"
+                                onClick={() => openModalHozzaad()} >      
+                                <FaPlus />
+                        </button>
+                        </div>
+                    </div>
+                </div>
+                <Modal isOpen={modalOpenHozzaad} onClose={closeModalHozzaad}>
+                    <BlogFelvitel onClose={closeModalHozzaad} />
+                </Modal>
+            </div>
+        )
+    
     if (hiba)
         return <div>Hiba történt az adatok betöltése közben.</div>
 

@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react"
 import { FaRegTrashCan } from "react-icons/fa6";
 import Cim from "../../../components/Cim"
+
+
+
 const Velemeny = () => {
     const [adatok, setAdatok] = useState([])
     const [tolt, setTolt] = useState(true)
@@ -56,7 +59,14 @@ const Velemeny = () => {
         }
     }
     
+    const datumFuggveny = (datum) => {
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone
+        const date = new Date(datum);
+        const options = { timeZone: tz, year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        const formattedDate = new Intl.DateTimeFormat('hu-HU', options).format(date);
 
+        return formattedDate;
+    }
 
 
     if (tolt)
@@ -79,7 +89,7 @@ const Velemeny = () => {
             </div>
             {adatok.map((elem, index) => (
                 <div class="row mb-3">
-                    <div className="col-2 text-center">{elem.velemeny_datum}</div>
+                    <div className="col-2 text-center">{datumFuggveny(elem.velemeny_datum)}</div>
                     <div className="col-2 text-center">{elem.felhasznalo_nev}</div>
                     <div className="col-2 text-center">{elem.termek_nev}</div>
                     <div className="col-4 text-center">{elem.velemeny_szoveg}</div>
@@ -98,5 +108,4 @@ const Velemeny = () => {
 }
 
 export default Velemeny
-
 
