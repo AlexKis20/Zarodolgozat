@@ -6,6 +6,7 @@ import TipusFelvitel from "./TipusFelvitel";
 import TipusModosit from "./TipusModosit";
 import { FaPlus } from "react-icons/fa";
 import Kereses from "../../../components/Kereses";
+import Rendezes from "../../../components/Rendezes";
 
 const Tipus = () => {
     const [adatok, setAdatok] = useState([])
@@ -73,19 +74,24 @@ const Tipus = () => {
         setModalOpenModosit(true)
     }
 
-    const closeModalModosit = () => {
+    const closeModalModosit = (frissit) => {
         setModalOpenModosit(false)
         setSelectedTipusId(null)
+        if (frissit) {
+            leToltes()
+        }
     }
 
     const openModalHozzaad = () => {
         setModalOpenHozzaad(true)
     }
 
-    const closeModalHozzaad = () => {
+    const closeModalHozzaad = (frissit) => {
         setModalOpenHozzaad(false)
+        if (frissit) {
+            leToltes()
+        }
     }
-
 
     if (tolt)
         return <div style={{ textAlign: "center" }}>Adatok betöltése folyamatban...</div>
@@ -119,6 +125,13 @@ const Tipus = () => {
             <div className="row justify-content-center mb-3">
                 <div className="col-6 text-center">
                     <Kereses adatok={adatok} keresettMezok={["tipus_nev"]} setKeresettAdatok={setKeresettAdatok} />
+                </div>
+                <div className="col-4 text-center">
+                    <Rendezes adatok={keresettAdatok} setKeresettAdatok={setKeresettAdatok}>
+                        <option value="0" disabled hidden>Rendezés</option>
+                        <option value="tipus_nev|1">Típus neve növekvő</option>
+                        <option value="tipus_nev|2">Típus neve csökkenő</option>
+                    </Rendezes>
                 </div>
             </div>
             <div className="row justify-content-center mb-3">
@@ -158,10 +171,10 @@ const Tipus = () => {
                     </div>
                 </div>
             ))}
-            <Modal isOpen={modalOpenModosit} onClose={closeModalModosit}>
+            <Modal isOpen={modalOpenModosit} onClose={() => closeModalModosit(false)}>
                 <TipusModosit tipus_id={selectedTipusId} onClose={closeModalModosit} />
             </Modal>
-            <Modal isOpen={modalOpenHozzaad} onClose={closeModalHozzaad}>
+            <Modal isOpen={modalOpenHozzaad} onClose={() => closeModalHozzaad(false)}> 
                 <TipusFelvitel onClose={closeModalHozzaad} />
             </Modal>
         </div>

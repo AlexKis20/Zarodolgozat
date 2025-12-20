@@ -6,6 +6,7 @@ import BlogModosit from "./BlogModosit"
 import BlogFelvitel from "./BlogFelvitel";
 import { FaPlus } from "react-icons/fa";
 import Kereses from "../../../components/Kereses";
+import Rendezes from "../../../components/Rendezes";
 
 const Blog = () => {
     const [adatok, setAdatok] = useState([])
@@ -72,17 +73,23 @@ const Blog = () => {
         setModalOpenModosit(true)
     }
 
-    const closeModalModosit = () => {
+    const closeModalModosit = (frissit) => {
         setModalOpenModosit(false)
         setSelectedBlogId(null)
+        if (frissit) {
+            leToltes()
+        }
     }
 
     const openModalHozzaad = () => {
         setModalOpenHozzaad(true)
     }
 
-    const closeModalHozzaad = () => {
+    const closeModalHozzaad = (frissit) => {
         setModalOpenHozzaad(false)
+        if (frissit) {
+            leToltes()
+        }
     }
 
 
@@ -120,6 +127,13 @@ const Blog = () => {
             <div className="row justify-content-center mb-3">
                 <div className="col-6 text-center">
                     <Kereses adatok={adatok} keresettMezok={["blog_cim"]} setKeresettAdatok={setKeresettAdatok} />
+                </div>
+                <div className="col-4 text-center">
+                    <Rendezes adatok={keresettAdatok} setKeresettAdatok={setKeresettAdatok}>
+                        <option value="0" disabled hidden>Rendezés</option>
+                        <option value="blog_cim|1">Blog címe növekvő</option>
+                        <option value="blog_cim|2">Blog címe csökkenő</option>
+                    </Rendezes>
                 </div>
             </div>
             <div className="row justify-content-center mb-3">
@@ -159,10 +173,10 @@ const Blog = () => {
                     </div>
                 </div>
             ))}
-            <Modal isOpen={modalOpenModosit} onClose={closeModalModosit}>
+            <Modal isOpen={modalOpenModosit} onClose={() => closeModalModosit(false)}>
                 <BlogModosit blog_id={selectedBlogId} onClose={closeModalModosit} />
             </Modal>
-            <Modal isOpen={modalOpenHozzaad} onClose={closeModalHozzaad}>
+            <Modal isOpen={modalOpenHozzaad} onClose={() => closeModalHozzaad(false)}>
                 <BlogFelvitel onClose={closeModalHozzaad} />
             </Modal>
         </div>

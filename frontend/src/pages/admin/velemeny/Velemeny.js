@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { FaRegTrashCan } from "react-icons/fa6";
 import Cim from "../../../components/Cim"
 import Kereses from "../../../components/Kereses";
+import Rendezes from "../../../components/Rendezes";
 
 
 
@@ -86,6 +87,19 @@ const Velemeny = () => {
             <div className="row justify-content-center mb-3">
                 <div className="col-6 text-center">
                     <Kereses adatok={adatok} keresettMezok={["velemeny_szoveg","felhasznalo_nev","termek_nev","velemeny_datum"]} setKeresettAdatok={setKeresettAdatok} />
+                </div>
+                <div className="col-4 text-center">
+                    <Rendezes adatok={keresettAdatok} setKeresettAdatok={setKeresettAdatok}>
+                        <option value="0" disabled hidden>Rendezés</option>
+                        <option value="velemeny_szoveg|1">Vélemény szövege növekvő</option>
+                        <option value="velemeny_szoveg|2">Vélemény szövege csökkenő</option>
+                        <option value="felhasznalo_nev|1">Felhasználó neve növekvő</option>
+                        <option value="felhasznalo_nev|2">Felhasználó neve csökkenő</option>
+                        <option value="termek_nev|1">Termék neve növekvő</option>
+                        <option value="termek_nev|2">Termék neve csökkenő</option>
+                        <option value="velemeny_datum|1">Dátum növekvő</option>
+                        <option value="velemeny_datum|2">Dátum csökkenő</option>
+                    </Rendezes>
                 </div>
             </div>
             <div className="row justify-content-center mb-3">

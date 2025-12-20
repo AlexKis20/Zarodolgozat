@@ -7,6 +7,7 @@ import Modal from "../../../components/Modal"
 import TermekModosit from "./TermekModosit"
 import TermekFelvitel from "./TermekFelvitel";
 import Kereses from "../../../components/Kereses";
+import Rendezes from "../../../components/Rendezes";
 
 const Termek= () => {
     const [adatok, setAdatok] = useState([])
@@ -72,17 +73,23 @@ const Termek= () => {
         setModalOpenModosit(true)
     }
 
-    const closeModalModosit = () => {
+    const closeModalModosit = (frissit) => {
         setModalOpenModosit(false)
         setSelectedTermekId(null)
+        if (frissit) {
+            leToltes()
+        }
     }
 
     const openModalHozzaad = (termek_id) => {
         setModalOpenHozzaad(true)
     }
 
-    const closeModalHozzaad = () => {
+    const closeModalHozzaad = (frissit) => {
         setModalOpenHozzaad(false)
+        if (frissit) {
+            leToltes()
+        }
     }
 
     if (hiba)
@@ -94,6 +101,13 @@ const Termek= () => {
                 <div className="col-6 text-center">
                     <Kereses adatok={adatok} keresettMezok={["termek_nev"]} setKeresettAdatok={setKeresettAdatok} />
                 </div>
+                <div className="col-4 text-center">
+                    <Rendezes adatok={keresettAdatok} setKeresettAdatok={setKeresettAdatok}>
+                        <option value="0" disabled hidden>Rendezés</option>
+                        <option value="termek_nev|1">Termék neve növekvő</option>
+                        <option value="termek_nev|2">Termék neve csökkenő</option>
+                    </Rendezes>
+                </div>
             </div>
             <div className="row justify-content-center mb-3">
                 <div className="col-6 text-center fw-bold">Termék neve</div>
@@ -102,7 +116,7 @@ const Termek= () => {
                 <div className="col-1 text-center fw-bold">Felvitel</div>
             </div>
             {keresettAdatok.map((elem, index) => (
-                <div class="row justify-content-center mb-3">
+                <div className="row justify-content-center mb-3" key={elem.termek_id || index}>
                     <div className="col-6 text-center">{elem.termek_nev}</div>
                     <div className="col-1 text-center">
                         <button
@@ -132,10 +146,10 @@ const Termek= () => {
                     </div>
                 </div>
             ))}
-            <Modal isOpen={modalOpenModosit} onClose={closeModalModosit}>
+            <Modal isOpen={modalOpenModosit} onClose={() => closeModalModosit(false)}>
                 <TermekModosit termek_id={selectedTermekId} onClose={closeModalModosit} />
             </Modal>
-            <Modal isOpen={modalOpenHozzaad} onClose={closeModalHozzaad}>
+            <Modal isOpen={modalOpenHozzaad} onClose={() => closeModalHozzaad(false)}>
                 <TermekFelvitel onClose={closeModalHozzaad} />
             </Modal>
         </div>
