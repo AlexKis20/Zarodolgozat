@@ -141,7 +141,7 @@ function AppLayout() {
           <div style={{
                 marginLeft: sidebar ? "250px" : "0",
                 transition: "margin-left 350ms",
-                paddingTop: "80px"
+                paddingTop: "15px"
             }}>
               <AdminRoutes />
           </div>

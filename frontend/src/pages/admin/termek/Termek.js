@@ -6,9 +6,11 @@ import Cim from "../../../components/Cim"
 import Modal from "../../../components/Modal"
 import TermekModosit from "./TermekModosit"
 import TermekFelvitel from "./TermekFelvitel";
+import Kereses from "../../../components/Kereses";
 
 const Termek= () => {
     const [adatok, setAdatok] = useState([])
+    const [keresettAdatok, setKeresettAdatok] = useState([])
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
     const [siker, setSiker] = useState(false)
@@ -24,6 +26,7 @@ const Termek= () => {
 
             if (response.ok) {
                 setAdatok(data)
+                setKeresettAdatok(data)
                 setTolt(false)
             } 
             else if (response.status === 404) {
@@ -74,7 +77,7 @@ const Termek= () => {
         setSelectedTermekId(null)
     }
 
-    const openModalHozzaad = (marka_id) => {
+    const openModalHozzaad = (termek_id) => {
         setModalOpenHozzaad(true)
     }
 
@@ -82,44 +85,24 @@ const Termek= () => {
         setModalOpenHozzaad(false)
     }
 
-    if (tolt)
-        return <div style={{ textAlign: "center" }}>Adatok betöltése folyamatban...</div>
-    if (ures)
-        return (
-            <div className="container">
-                <div className="row mb-3">
-                    <div className="col-5"></div>
-                    <div className="col-2 text-center">Nincs adat!</div>
-                    <div className="col-5 text-center">
-                        Felvitel
-                        <div>
-                            <button
-                            className="btn btn-alert  ml-2"
-                                onClick={() => openModalHozzaad()} >      
-                                <FaPlus />
-                        </button>
-                        </div>
-                    </div>
-                </div>
-                <Modal isOpen={modalOpenHozzaad} onClose={closeModalHozzaad}>
-                    <TermekFelvitel onClose={closeModalHozzaad} />
-                </Modal>
-            </div>
-        )
-
     if (hiba)
         return <div>Hiba történt az adatok betöltése közben.</div>
 
     return (
         <div className="container">
-            <div className="row mb-3">
+            <div className="row justify-content-center mb-3">
+                <div className="col-6 text-center">
+                    <Kereses adatok={adatok} keresettMezok={["termek_nev"]} setKeresettAdatok={setKeresettAdatok} />
+                </div>
+            </div>
+            <div className="row justify-content-center mb-3">
                 <div className="col-6 text-center fw-bold">Termék neve</div>
                 <div className="col-1 text-center fw-bold">Törlés</div>
                 <div className="col-1 text-center fw-bold">Módosítás</div>
                 <div className="col-1 text-center fw-bold">Felvitel</div>
             </div>
-            {adatok.map((elem, index) => (
-                <div class="row mb-3">
+            {keresettAdatok.map((elem, index) => (
+                <div class="row justify-content-center mb-3">
                     <div className="col-6 text-center">{elem.termek_nev}</div>
                     <div className="col-1 text-center">
                         <button

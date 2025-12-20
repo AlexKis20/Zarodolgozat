@@ -5,9 +5,11 @@ import Modal from "../../../components/Modal"
 import BlogModosit from "./BlogModosit"
 import BlogFelvitel from "./BlogFelvitel";
 import { FaPlus } from "react-icons/fa";
+import Kereses from "../../../components/Kereses";
 
 const Blog = () => {
     const [adatok, setAdatok] = useState([])
+    const [keresettAdatok, setKeresettAdatok] = useState([])
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
     const [siker, setSiker] = useState(false)
@@ -23,6 +25,7 @@ const Blog = () => {
 
             if (response.ok) {
                 setAdatok(data)
+                setKeresettAdatok(data)
                 setTolt(false)
             }
             else if (response.status === 404) {
@@ -114,14 +117,19 @@ const Blog = () => {
 
     return (
         <div className="container">
-            <div className="row mb-3">
+            <div className="row justify-content-center mb-3">
+                <div className="col-6 text-center">
+                    <Kereses adatok={adatok} keresettMezok={["blog_cim"]} setKeresettAdatok={setKeresettAdatok} />
+                </div>
+            </div>
+            <div className="row justify-content-center mb-3">
                 <div className="col-6 text-center fw-bold">Blog címe</div>
                 <div className="col-1 text-center fw-bold">Törlés</div>
                 <div className="col-1 text-center fw-bold">Módosítás</div>
                 <div className="col-1 text-center fw-bold">Felvitel</div>
             </div>
-            {adatok.map((elem, index) => (
-                <div class="row mb-3">
+            {keresettAdatok.map((elem, index) => (
+                <div className="row justify-content-center mb-3">
                     <div className="col-6 text-center">{elem.blog_cim}</div>
                     <div className="col-1 text-center">
                         <button

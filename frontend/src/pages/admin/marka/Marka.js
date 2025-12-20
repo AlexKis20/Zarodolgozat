@@ -5,13 +5,15 @@ import Modal from "../../../components/Modal"
 import MarkaModosit from "./MarkaModosit"
 import MarkaFelvitel from "./MarkaFelvitel";
 import { FaPlus } from "react-icons/fa";
+import Kereses from "../../../components/Kereses";
 
 const Marka = () => {
     const [adatok, setAdatok] = useState([])
+    const [keresettAdatok, setKeresettAdatok] = useState([])
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
     const [siker, setSiker] = useState(false)
-     const [ures, setUres] = useState(false)
+    const [ures, setUres] = useState(false)
     const [modalOpenModosit, setModalOpenModosit] = useState(false)
     const [modalOpenHozzaad, setModalOpenHozzaad] = useState(false)
     const [selectedMarkaId, setSelectedMarkaId] = useState(null)
@@ -23,6 +25,7 @@ const Marka = () => {
 
             if (response.ok) {
                 setAdatok(data)
+                setKeresettAdatok(data)
                 setTolt(false)
             } 
             else if (response.status === 404) {
@@ -82,13 +85,12 @@ const Marka = () => {
         setModalOpenHozzaad(false)
     }
 
-
     if (tolt)
         return <div style={{ textAlign: "center" }}>Adatok betöltése folyamatban...</div>
     if (ures)
         return (
             <div className="container">
-                <div className="row mb-3">
+                <div className="row justify-content-center mb-3">
                     <div className="col-5"></div>
                     <div className="col-2 text-center">Nincs adat!</div>
                     <div className="col-5 text-center">
@@ -113,14 +115,19 @@ const Marka = () => {
 
     return (
         <div className="container">
-            <div className="row mb-3">
+            <div className="row justify-content-center mb-3">
+                <div className="col-6 text-center">
+                    <Kereses adatok={adatok} keresettMezok={["marka_nev"]} setKeresettAdatok={setKeresettAdatok} />
+                </div>
+            </div>
+            <div className="row justify-content-center mb-3">
                 <div className="col-6 text-center fw-bold">Márka neve</div>
                 <div className="col-1 text-center fw-bold">Törlés</div>
                 <div className="col-1 text-center fw-bold">Módosítás</div>
                 <div className="col-1 text-center fw-bold">Felvitel</div>
             </div>
-            {adatok.map((elem, index) => (
-                <div class="row mb-3">
+            {keresettAdatok.map((elem, index) => (
+                <div class="row justify-content-center mb-3">
                     <div className="col-6 text-center">{elem.marka_nev}</div>
                     <div className="col-1 text-center">
                         <button

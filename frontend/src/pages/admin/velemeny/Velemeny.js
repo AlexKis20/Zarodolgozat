@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react"
 import { FaRegTrashCan } from "react-icons/fa6";
 import Cim from "../../../components/Cim"
+import Kereses from "../../../components/Kereses";
 
 
 
 const Velemeny = () => {
     const [adatok, setAdatok] = useState([])
+    const [keresettAdatok, setKeresettAdatok] = useState([])
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
     const [siker, setSiker] = useState(false)
@@ -18,6 +20,7 @@ const Velemeny = () => {
 
             if (response.ok) {
                 setAdatok(data)
+                setKeresettAdatok(data)
                 setTolt(false)
             } 
             else if (response.status === 404) {
@@ -80,15 +83,20 @@ const Velemeny = () => {
 
     return (
         <div className="container">
-            <div className="row mb-3">
+            <div className="row justify-content-center mb-3">
+                <div className="col-6 text-center">
+                    <Kereses adatok={adatok} keresettMezok={["velemeny_szoveg","felhasznalo_nev","termek_nev","velemeny_datum"]} setKeresettAdatok={setKeresettAdatok} />
+                </div>
+            </div>
+            <div className="row justify-content-center mb-3">
                 <div className="col-2 text-center fw-bold">Dátum</div>
                 <div className="col-2 text-center fw-bold">Felhasználó</div>
                 <div className="col-2 text-center fw-bold">Termék</div>
                 <div className="col-4 text-center fw-bold">Vélemény</div>
                 <div className="col-2 text-center fw-bold">Törlés</div>
             </div>
-            {adatok.map((elem, index) => (
-                <div class="row mb-3">
+            {keresettAdatok.map((elem, index) => (
+                <div className="row justify-content-center mb-3">
                     <div className="col-2 text-center">{datumFuggveny(elem.velemeny_datum)}</div>
                     <div className="col-2 text-center">{elem.felhasznalo_nev}</div>
                     <div className="col-2 text-center">{elem.termek_nev}</div>
