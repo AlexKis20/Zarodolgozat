@@ -5,9 +5,12 @@ import Modal from "../../../components/Modal"
 import BlogModosit from "./BlogModosit"
 import BlogFelvitel from "./BlogFelvitel";
 import { FaPlus } from "react-icons/fa";
+import Kereses from "../../../components/Kereses";
+import Rendezes from "../../../components/Rendezes";
 
 const Blog = () => {
     const [adatok, setAdatok] = useState([])
+    const [keresettAdatok, setKeresettAdatok] = useState([])
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
     const [siker, setSiker] = useState(false)
@@ -23,6 +26,7 @@ const Blog = () => {
 
             if (response.ok) {
                 setAdatok(data)
+                setKeresettAdatok(data)
                 setTolt(false)
             }
             else if (response.status === 404) {
@@ -69,17 +73,23 @@ const Blog = () => {
         setModalOpenModosit(true)
     }
 
-    const closeModalModosit = () => {
+    const closeModalModosit = (frissit) => {
         setModalOpenModosit(false)
         setSelectedBlogId(null)
+        if (frissit) {
+            leToltes()
+        }
     }
 
     const openModalHozzaad = () => {
         setModalOpenHozzaad(true)
     }
 
-    const closeModalHozzaad = () => {
+    const closeModalHozzaad = (frissit) => {
         setModalOpenHozzaad(false)
+        if (frissit) {
+            leToltes()
+        }
     }
 
 
@@ -114,14 +124,26 @@ const Blog = () => {
 
     return (
         <div className="container">
-            <div className="row mb-3">
+            <div className="row justify-content-center mb-3">
+                <div className="col-6 text-center">
+                    <Kereses adatok={adatok} keresettMezok={["blog_cim"]} setKeresettAdatok={setKeresettAdatok} />
+                </div>
+                <div className="col-4 text-center">
+                    <Rendezes adatok={keresettAdatok} setKeresettAdatok={setKeresettAdatok}>
+                        <option value="0" disabled hidden>Rendezés</option>
+                        <option value="blog_cim|1">Blog címe növekvő</option>
+                        <option value="blog_cim|2">Blog címe csökkenő</option>
+                    </Rendezes>
+                </div>
+            </div>
+            <div className="row justify-content-center mb-3">
                 <div className="col-6 text-center fw-bold">Blog címe</div>
                 <div className="col-1 text-center fw-bold">Törlés</div>
                 <div className="col-1 text-center fw-bold">Módosítás</div>
                 <div className="col-1 text-center fw-bold">Felvitel</div>
             </div>
-            {adatok.map((elem, index) => (
-                <div class="row mb-3">
+            {keresettAdatok.map((elem, index) => (
+                <div className="row justify-content-center mb-3">
                     <div className="col-6 text-center">{elem.blog_cim}</div>
                     <div className="col-1 text-center">
                         <button
@@ -151,10 +173,10 @@ const Blog = () => {
                     </div>
                 </div>
             ))}
-            <Modal isOpen={modalOpenModosit} onClose={closeModalModosit}>
+            <Modal isOpen={modalOpenModosit} onClose={() => closeModalModosit(false)}>
                 <BlogModosit blog_id={selectedBlogId} onClose={closeModalModosit} />
             </Modal>
-            <Modal isOpen={modalOpenHozzaad} onClose={closeModalHozzaad}>
+            <Modal isOpen={modalOpenHozzaad} onClose={() => closeModalHozzaad(false)}>
                 <BlogFelvitel onClose={closeModalHozzaad} />
             </Modal>
         </div>

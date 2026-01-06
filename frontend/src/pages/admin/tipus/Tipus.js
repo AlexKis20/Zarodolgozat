@@ -5,9 +5,12 @@ import Modal from "../../../components/Modal"
 import TipusFelvitel from "./TipusFelvitel";
 import TipusModosit from "./TipusModosit";
 import { FaPlus } from "react-icons/fa";
+import Kereses from "../../../components/Kereses";
+import Rendezes from "../../../components/Rendezes";
 
 const Tipus = () => {
     const [adatok, setAdatok] = useState([])
+    const [keresettAdatok, setKeresettAdatok] = useState([])
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
     const [siker, setSiker] = useState(false)
@@ -24,6 +27,7 @@ const Tipus = () => {
 
             if (response.ok) {
                 setAdatok(data)
+                setKeresettAdatok(data)
                 setTolt(false)
             } 
             else if (response.status === 404) {
@@ -70,26 +74,31 @@ const Tipus = () => {
         setModalOpenModosit(true)
     }
 
-    const closeModalModosit = () => {
+    const closeModalModosit = (frissit) => {
         setModalOpenModosit(false)
         setSelectedTipusId(null)
+        if (frissit) {
+            leToltes()
+        }
     }
 
     const openModalHozzaad = () => {
         setModalOpenHozzaad(true)
     }
 
-    const closeModalHozzaad = () => {
+    const closeModalHozzaad = (frissit) => {
         setModalOpenHozzaad(false)
+        if (frissit) {
+            leToltes()
+        }
     }
-
 
     if (tolt)
         return <div style={{ textAlign: "center" }}>Adatok betöltése folyamatban...</div>
     if (ures)
         return (
             <div className="container">
-                <div className="row mb-3">
+                <div className="row justify-content-center mb-3">
                     <div className="col-5"></div>
                     <div className="col-2 text-center">Nincs adat!</div>
                     <div className="col-5 text-center">
@@ -113,14 +122,26 @@ const Tipus = () => {
 
     return (
         <div className="container">
-            <div className="row mb-3">
+            <div className="row justify-content-center mb-3">
+                <div className="col-6 text-center">
+                    <Kereses adatok={adatok} keresettMezok={["tipus_nev"]} setKeresettAdatok={setKeresettAdatok} />
+                </div>
+                <div className="col-4 text-center">
+                    <Rendezes adatok={keresettAdatok} setKeresettAdatok={setKeresettAdatok}>
+                        <option value="0" disabled hidden>Rendezés</option>
+                        <option value="tipus_nev|1">Típus neve növekvő</option>
+                        <option value="tipus_nev|2">Típus neve csökkenő</option>
+                    </Rendezes>
+                </div>
+            </div>
+            <div className="row justify-content-center mb-3">
                 <div className="col-6 text-center fw-bold">Típus neve</div>
                 <div className="col-1 text-center fw-bold">Törlés</div>
                 <div className="col-1 text-center fw-bold">Módosítás</div>
                 <div className="col-1 text-center fw-bold">Felvitel</div>
             </div>
-            {adatok.map((elem, index) => (
-                <div class="row mb-3">
+            {keresettAdatok.map((elem, index) => (
+                <div className="row justify-content-center mb-3">
                     <div className="col-6 text-center">{elem.tipus_nev}</div>
                     <div className="col-1 text-center">
                         <button
@@ -150,10 +171,10 @@ const Tipus = () => {
                     </div>
                 </div>
             ))}
-            <Modal isOpen={modalOpenModosit} onClose={closeModalModosit}>
+            <Modal isOpen={modalOpenModosit} onClose={() => closeModalModosit(false)}>
                 <TipusModosit tipus_id={selectedTipusId} onClose={closeModalModosit} />
             </Modal>
-            <Modal isOpen={modalOpenHozzaad} onClose={closeModalHozzaad}>
+            <Modal isOpen={modalOpenHozzaad} onClose={() => closeModalHozzaad(false)}> 
                 <TipusFelvitel onClose={closeModalHozzaad} />
             </Modal>
         </div>

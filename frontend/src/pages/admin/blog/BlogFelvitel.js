@@ -27,7 +27,7 @@ const BlogFelvitel= ({  onClose }) => {
 
             if (response.ok) {
                 alert(data.message || "Sikeres hozzáadás!")
-                onClose()
+                onClose(true)
             } else {
                 alert(data.error || "Hiba történt a hozzáadás során!")
             }
@@ -64,7 +64,7 @@ const BlogFelvitel= ({  onClose }) => {
                     <button className="btn ml-2" onClick={felvittFuggveny}>
                         <FaSave /> Mentés
                     </button>
-                    <button className="btn ml-2" onClick={onClose}>
+                    <button className="btn ml-2" onClick={() => onClose(false)}>
                         <IoCloseSharp /> Bezárás
                     </button>
                 </div>

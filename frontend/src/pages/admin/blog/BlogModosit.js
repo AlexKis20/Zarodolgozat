@@ -53,7 +53,7 @@ const  BlogModosit= ({ blog_id, onClose }) => {
 
             if (response.ok) {
                 alert(data.message || "Sikeres módosítás!")
-                onClose()
+                onClose(true)
             } else {
                 alert(data.error || "Hiba történt a módosítás során")
             }
@@ -96,7 +96,7 @@ const  BlogModosit= ({ blog_id, onClose }) => {
                     <button className="btn ml-2" onClick={modositFuggveny}>
                         <FaSave /> Mentés
                     </button>
-                    <button className="btn ml-2" onClick={onClose}>
+                    <button className="btn ml-2" onClick={() => onClose(false)}>
                         <IoCloseSharp />Bezárás
                     </button>
                 </div>

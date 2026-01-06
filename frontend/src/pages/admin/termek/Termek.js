@@ -6,9 +6,12 @@ import Cim from "../../../components/Cim"
 import Modal from "../../../components/Modal"
 import TermekModosit from "./TermekModosit"
 import TermekFelvitel from "./TermekFelvitel";
+import Kereses from "../../../components/Kereses";
+import Rendezes from "../../../components/Rendezes";
 
 const Termek= () => {
     const [adatok, setAdatok] = useState([])
+    const [keresettAdatok, setKeresettAdatok] = useState([])
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
     const [siker, setSiker] = useState(false)
@@ -24,6 +27,7 @@ const Termek= () => {
 
             if (response.ok) {
                 setAdatok(data)
+                setKeresettAdatok(data)
                 setTolt(false)
             } 
             else if (response.status === 404) {
@@ -69,57 +73,50 @@ const Termek= () => {
         setModalOpenModosit(true)
     }
 
-    const closeModalModosit = () => {
+    const closeModalModosit = (frissit) => {
         setModalOpenModosit(false)
         setSelectedTermekId(null)
+        if (frissit) {
+            leToltes()
+        }
     }
 
-    const openModalHozzaad = (marka_id) => {
+    const openModalHozzaad = (termek_id) => {
         setModalOpenHozzaad(true)
     }
 
-    const closeModalHozzaad = () => {
+    const closeModalHozzaad = (frissit) => {
         setModalOpenHozzaad(false)
+        if (frissit) {
+            leToltes()
+        }
     }
-
-    if (tolt)
-        return <div style={{ textAlign: "center" }}>Adatok betöltése folyamatban...</div>
-    if (ures)
-        return (
-            <div className="container">
-                <div className="row mb-3">
-                    <div className="col-5"></div>
-                    <div className="col-2 text-center">Nincs adat!</div>
-                    <div className="col-5 text-center">
-                        Felvitel
-                        <div>
-                            <button
-                            className="btn btn-alert  ml-2"
-                                onClick={() => openModalHozzaad()} >      
-                                <FaPlus />
-                        </button>
-                        </div>
-                    </div>
-                </div>
-                <Modal isOpen={modalOpenHozzaad} onClose={closeModalHozzaad}>
-                    <TermekFelvitel onClose={closeModalHozzaad} />
-                </Modal>
-            </div>
-        )
 
     if (hiba)
         return <div>Hiba történt az adatok betöltése közben.</div>
 
     return (
         <div className="container">
-            <div className="row mb-3">
+            <div className="row justify-content-center mb-3">
+                <div className="col-6 text-center">
+                    <Kereses adatok={adatok} keresettMezok={["termek_nev"]} setKeresettAdatok={setKeresettAdatok} />
+                </div>
+                <div className="col-4 text-center">
+                    <Rendezes adatok={keresettAdatok} setKeresettAdatok={setKeresettAdatok}>
+                        <option value="0" disabled hidden>Rendezés</option>
+                        <option value="termek_nev|1">Termék neve növekvő</option>
+                        <option value="termek_nev|2">Termék neve csökkenő</option>
+                    </Rendezes>
+                </div>
+            </div>
+            <div className="row justify-content-center mb-3">
                 <div className="col-6 text-center fw-bold">Termék neve</div>
                 <div className="col-1 text-center fw-bold">Törlés</div>
                 <div className="col-1 text-center fw-bold">Módosítás</div>
                 <div className="col-1 text-center fw-bold">Felvitel</div>
             </div>
-            {adatok.map((elem, index) => (
-                <div class="row mb-3">
+            {keresettAdatok.map((elem, index) => (
+                <div className="row justify-content-center mb-3" key={elem.termek_id || index}>
                     <div className="col-6 text-center">{elem.termek_nev}</div>
                     <div className="col-1 text-center">
                         <button
@@ -149,10 +146,10 @@ const Termek= () => {
                     </div>
                 </div>
             ))}
-            <Modal isOpen={modalOpenModosit} onClose={closeModalModosit}>
+            <Modal isOpen={modalOpenModosit} onClose={() => closeModalModosit(false)}>
                 <TermekModosit termek_id={selectedTermekId} onClose={closeModalModosit} />
             </Modal>
-            <Modal isOpen={modalOpenHozzaad} onClose={closeModalHozzaad}>
+            <Modal isOpen={modalOpenHozzaad} onClose={() => closeModalHozzaad(false)}>
                 <TermekFelvitel onClose={closeModalHozzaad} />
             </Modal>
         </div>

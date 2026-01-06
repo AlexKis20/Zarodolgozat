@@ -52,8 +52,8 @@ const MarkaModosit= ({ marka_id, onClose }) => {
             const data = await response.json()
 
             if (response.ok) {
-                alert(data.message || "Sikeres módosítás!")
-                onClose()
+                alert(data.message || "Sikeres módosítás!") 
+                onClose(true)
             } else {
                 alert(data.error || "Hiba történt a módosítás során")
             }
@@ -96,7 +96,7 @@ const MarkaModosit= ({ marka_id, onClose }) => {
                     <button className="btn ml-2" onClick={modositFuggveny}>
                         <FaSave /> Mentés
                     </button>
-                    <button className="btn ml-2" onClick={onClose}>
+                    <button className="btn ml-2" onClick={() => onClose(false)}>
                         <IoCloseSharp />Bezárás
                     </button>
                 </div>
