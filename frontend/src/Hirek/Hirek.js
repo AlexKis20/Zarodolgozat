@@ -123,7 +123,7 @@ else return (
         className="kep"
         />
         <p className="mt-4 text-lg font-medium">
-        {adatok[index].blog_cim}
+        {adatok[index].blog_szoveg}
         </p>
         </motion.div>
         </AnimatePresence>
