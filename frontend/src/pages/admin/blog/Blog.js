@@ -8,6 +8,7 @@ import { FaPlus } from "react-icons/fa";
 import Kereses from "../../../components/Kereses";
 import Rendezes from "../../../components/Rendezes";
 
+
 const Blog = () => {
     const [adatok, setAdatok] = useState([])
     const [keresettAdatok, setKeresettAdatok] = useState([])

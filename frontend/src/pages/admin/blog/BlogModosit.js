@@ -5,6 +5,7 @@ import Cim from "../../../components/Cim"
 
 const  BlogModosit= ({ blog_id, onClose }) => {
     const mezok = ["blog_cim", "blog_szoveg", "blog_kep"]
+    const mezokMegjelenik = ["Blog cím:", "Blog szöveg:", "Blog kép:"]
     const [modositottAdat, setModositottAdat] = useState({})
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
@@ -77,7 +78,7 @@ const  BlogModosit= ({ blog_id, onClose }) => {
             {mezok.map((elem, index) => (
                 <div className="row mb-2 align-items-center" key={index}>
                     <div className="col-sm-4">
-                        <label className="form-label" htmlFor={elem}>{elem}</label>
+                        <label className="form-label" htmlFor={elem}>{mezokMegjelenik[index]}</label>
                     </div>
                     <div className="col-sm-8">
                         <input

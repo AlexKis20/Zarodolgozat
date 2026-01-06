@@ -5,6 +5,7 @@ import Cim from "../../../components/Cim"
 
 const BlogFelvitel= ({  onClose }) => {
     const mezok = ["blog_cim", "blog_szoveg", "blog_kep"]
+    const mezokMegjelenik = ["Blog cím:", "Blog szöveg:", "Blog kép:"]
     const [felvittAdat, setFelvittAdat] = useState({})
     const kezelesInput = (kulcs, ertek) => {
         setFelvittAdat(prev => ({
@@ -38,14 +39,14 @@ const BlogFelvitel= ({  onClose }) => {
         <div className="container">
             <div className="row mb-3">
                 <div className="col-12 text-center">
-                    <h4>Blog felvétele</h4>
+                    <h4>Blog felvitele</h4>
                 </div>
             </div>
 
             {mezok.map((elem, index) => (
                 <div className="row mb-2 align-items-center" key={index}>
                     <div className="col-sm-4">
-                        <label className="form-label" htmlFor={elem}>{elem}</label>
+                        <label className="form-label" htmlFor={elem}>{mezokMegjelenik[index]}</label>
                     </div>
                     <div className="col-sm-8">
                         <input

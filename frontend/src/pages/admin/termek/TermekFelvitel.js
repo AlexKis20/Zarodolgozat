@@ -7,6 +7,8 @@ import Cim from "../../../components/Cim"
 const TermekFelvitel = ({ onClose }) => {
     const mezok = ["termek_nev", "termek_ar", "termek_szin", "termek_kijelzo", "termek_processzor", "termek_kapacitas", "termek_oprendszer",
         "termek_meret", "termek_leiras", "termek_kep", "termek_marka", "termek_tipus"]
+    const mezokMegjelenik = ["Termék név:", "Termék ár:", "Termék szín:", "Termék kijelző:", "Termék processzor:", "Termék kapacitás:", "Termék oprendszer:",
+        "Termék méret:", "Termék leírás:", "Termék kép:", "Termék márka:", "Termék típus:"]
 
     const [felvittAdat, setFelvittAdat] = useState({})
 
@@ -47,14 +49,14 @@ const TermekFelvitel = ({ onClose }) => {
         <div className="container">
             <div className="row mb-3">
                 <div className="col-12 text-center">
-                    <h4>Termék felvétele</h4>
+                    <h4>Termék felvitele</h4>
                 </div>
             </div>
 
             {mezok.map((elem, index) => (
                 <div className="row mb-2 align-items-center" key={index}>
                     <div className="col-sm-4">
-                        <label className="form-label" htmlFor={elem}>{elem}</label>
+                        <label className="form-label" htmlFor={elem}>{mezokMegjelenik[index]}</label>
                     </div>
                     <div className="col-sm-8">
                         <input
