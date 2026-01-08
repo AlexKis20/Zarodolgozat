@@ -1,5 +1,8 @@
 import * as AiIcons from "react-icons/ai";
 import * as IoIcons from "react-icons/io";
+import { BiLogoBlogger } from "react-icons/bi";
+import { IoTabletPortraitSharp } from "react-icons/io5";
+import { LuType } from "react-icons/lu"; 
 
 export const SidebarData = [
         {
@@ -10,7 +13,7 @@ export const SidebarData = [
     {
         title: "Termék",
         path: "/admin/termek",
-        icon: <IoIcons.IoIosPaper />
+        icon: <IoTabletPortraitSharp />
     },
     {
         title: "Márka",
@@ -20,12 +23,13 @@ export const SidebarData = [
     {
         title: "Típus",
         path: "/admin/tipus",
-        icon: <IoIcons.IoIosPaper />
+        icon: <LuType />
     },
     {
         title: "Blog",
         path: "/admin/blog",
-        icon: <IoIcons.IoIosPaper />
+        icon:<BiLogoBlogger />
+
     },
     {
         title: "Vélemény",

@@ -6,6 +6,7 @@ import Cim from "../../../components/Cim"
 
 const TipusModosit= ({ tipus_id, onClose }) => {
     const [modositottAdat, setModositottAdat] = useState({})
+    const mezokMegjelenik = ["Típus név:"]
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
 
@@ -70,14 +71,14 @@ const TipusModosit= ({ tipus_id, onClose }) => {
         <div className="container">
             <div className="row mb-3">
                 <div className="col-12 text-center">
-                    <h4>Márka módosítása</h4>
+                    <h4>Típus módosítása</h4>
                 </div>
             </div>
 
             {Object.keys(modositottAdat).map((elem, index) => (
                 <div className="row mb-2 align-items-center" key={index}>
                     <div className="col-sm-4">
-                        <label className="form-label" htmlFor={elem}>{elem}</label>
+                        <label className="form-label" htmlFor={elem}>{mezokMegjelenik[index]}</label>
                     </div>
                     <div className="col-sm-8">
                         <input

@@ -6,6 +6,8 @@ import Cim from "../../../components/Cim"
 
 const TermekModosit= ({ termek_id, onClose }) => {
     const [modositottAdat, setModositottAdat] = useState({})
+       const mezokMegjelenik = ["Termék név:", "Termék ár:", "Termék szín:", "Termék kijelző:", "Termék processzor:", "Termék kapacitás:", "Termék oprendszer:",
+        "Termék méret:", "Termék leírás:", "Termék kép:", "Termék márka:", "Termék típus:"]
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
 
@@ -77,7 +79,7 @@ const TermekModosit= ({ termek_id, onClose }) => {
             {Object.keys(modositottAdat).map((elem, index) => (
                 <div className="row mb-2 align-items-center" key={index}>
                     <div className="col-sm-4">
-                        <label className="form-label" htmlFor={elem}>{elem}</label>
+                        <label className="form-label" htmlFor={elem}>{mezokMegjelenik[index]}</label>
                     </div>
                     <div className="col-sm-8">
                         <input

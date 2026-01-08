@@ -8,6 +8,7 @@ const MarkaModosit= ({ marka_id, onClose }) => {
     const [modositottAdat, setModositottAdat] = useState({})
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
+    const mezokMegjelenik = ["Márka név:"]
 
     const leToltes = async () => {
         try {
@@ -77,7 +78,7 @@ const MarkaModosit= ({ marka_id, onClose }) => {
             {Object.keys(modositottAdat).map((elem, index) => (
                 <div className="row mb-2 align-items-center" key={index}>
                     <div className="col-sm-4">
-                        <label className="form-label" htmlFor={elem}>{elem}</label>
+                        <label className="form-label" htmlFor={elem}>{mezokMegjelenik[index]}</label>
                     </div>
                     <div className="col-sm-8">
                         <input
