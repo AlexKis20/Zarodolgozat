@@ -235,7 +235,7 @@ else return (
 
 
         <div className="d-flex flex-column align-items-center ">
-                  <div>Új megjelenés</div>
+                  <div>Blog</div>
           
           {/* Gombok sorban, középre igazítva */}
           <div className="d-flex justify-content-center mb-3 gap-3">
