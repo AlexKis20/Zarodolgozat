@@ -182,8 +182,8 @@ app.post('/termeknevKeres', (req, res) => {
 })
 
 //Hírekhez
-app.get('/hirek', (req, res) => {
-    const sql=`SELECT * FROM blog`
+app.get('/hirek1', (req, res) => {
+    const sql=`SELECT * FROM blog WHERE blog_fajta=1 `
     pool.query(sql, ( err, result) => {
         if (err){
             console.log(err)
@@ -201,9 +201,43 @@ app.get('/hirek', (req, res) => {
 
 })
 
-  
+ app.get('/hirek2', (req, res) => {
+    const sql=`SELECT * FROM blog WHERE blog_fajta=2 `
+    pool.query(sql, ( err, result) => {
+        if (err){
+            console.log(err)
+            return res.status(500).json({error:"Hiba!"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat!"})
+        }
+        return res.status(200).json(result)
 
+    
+    })
 
+    
+
+}) 
+
+app.get('/hirek3', (req, res) => {
+    const sql=`SELECT * FROM blog WHERE blog_fajta=3 `
+    pool.query(sql, ( err, result) => {
+        if (err){
+            console.log(err)
+            return res.status(500).json({error:"Hiba!"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat!"})
+        }
+        return res.status(200).json(result)
+
+    
+    })
+
+    
+
+})
 
 
 

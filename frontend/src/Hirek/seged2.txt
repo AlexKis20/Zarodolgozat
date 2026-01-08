@@ -1,0 +1,71 @@
+<div className="d-flex flex-column align-items-center ">
+                  <div>Akció</div>
+          
+          {/* Gombok sorban, középre igazítva */}
+          <div className="d-flex justify-content-center mb-3 gap-3">
+            <button
+              onClick={() => changeItem(-1)}
+              className="btn"
+              style={{
+                background: "linear-gradient(135deg, #5a5fdc, #7b4dff)",
+                color: "white",
+                border: "none",
+                width: "50px",
+                height: "50px",
+                borderRadius: "50%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <ChevronLeft size={32} />
+            </button>
+
+            <button
+              onClick={() => changeItem(1)}
+              className="btn"
+              style={{
+                background: "linear-gradient(135deg, #5a5fdc, #7b4dff)",
+                color: "white",
+                border: "none",
+                width: "50px",
+                height: "50px",
+                borderRadius: "50%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <ChevronRight size={32} />
+            </button>
+            </div>
+              {index}
+
+                {/* Középső tartalom */}
+                <div className="w-[340px] h-[320px] overflow-hidden">
+                <AnimatePresence mode="wait">
+                <motion.div
+                key={adatok[index].blog_id}
+                initial={{ x: direction > 0 ? 100 : -100, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: direction > 0 ? -100 : 100, opacity: 0 }}
+                transition={{ duration: 0.4 }}
+                className="bg-gradient-to-br from-[#6f78e8] via-[#8a92ff] to-[#63c7b2]
+                  rounded-2xl shadow-2xl ring-4 ring-black/30
+                  p-4 text-center text-black"
+                >
+                <img
+                src={`${Cim.Cim}/blogKep/${adatok[index].blog_kep}`}
+                /*src={adatok[index].blog_kep}*/
+                alt="slide"
+                className="kep"
+                />
+                <p className="mt-4 text-lg font-medium">
+                {adatok[index].blog_szoveg}
+                </p>
+                </motion.div>
+                </AnimatePresence>
+                </div>
+
+      
+      </div>
