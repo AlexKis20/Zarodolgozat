@@ -56,15 +56,14 @@ tipus Tábla:
 - tipus_id(kulcs)
 - tipus_nev
 
-
+//mia ide tedd
 
 
 ### 5.2 Kapcsolatok
 a marka_id kapcsolódik a termek_marka és a kiegeszito_marka.
 a tipus_id kapcsolódik a termek_marka és a kiegeszito_marka.
 
-## 6. Adatáramlás
-(tervezés alatt)
+
 
 Írta:Kis Alex János
 Dátum:2025.11.13.
