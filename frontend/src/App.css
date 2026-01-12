@@ -140,9 +140,11 @@ input{
     border-radius: 6px;
     border: 1px solid #ccc;
 }
+
 .talalat {
     margin-top: 30px;
 }
+
 body{
   background: linear-gradient(
     135deg,
@@ -154,13 +156,19 @@ body{
   margin: 0;
   padding: 0;
 }
+
 .label{
   font-weight: bold;
   font-size: 30px;
 }
+
 .kep{
   width: 400px;
   height: 400px;
   object-fit: cover;
   border-radius: 8px;
+}
+
+textarea.form-control {
+  field-sizing: content;
 }

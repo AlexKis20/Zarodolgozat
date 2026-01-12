@@ -4,8 +4,11 @@ import { IoCloseSharp } from "react-icons/io5";
 import Cim from "../../../components/Cim"
 
 const  BlogModosit= ({ blog_id, onClose }) => {
-    const mezok = ["blog_cim", "blog_szoveg", "blog_kep"]
-    const mezokMegjelenik = ["Blog cím:", "Blog szöveg:", "Blog kép:"]
+    const mezok = [
+        {nev: "blog_cim", tipus: "input", megjelenit: "Blog cím:"},
+        {nev: "blog_szoveg", tipus: "textarea", megjelenit: "Blog szöveg:"},
+        {nev: "blog_kep", tipus: "input", megjelenit: "Blog kép:"}
+    ]
     const [modositottAdat, setModositottAdat] = useState({})
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
@@ -78,16 +81,25 @@ const  BlogModosit= ({ blog_id, onClose }) => {
             {mezok.map((elem, index) => (
                 <div className="row mb-2 align-items-center" key={index}>
                     <div className="col-sm-4">
-                        <label className="form-label" htmlFor={elem}>{mezokMegjelenik[index]}</label>
+                        <label className="form-label" htmlFor={elem.nev}>{elem.megjelenit}</label>
                     </div>
                     <div className="col-sm-8">
-                        <input
-                            id={elem}
-                            type="text"
-                            className="form-control"
-                            value={modositottAdat[elem] || ""} 
-                            onChange={(e) => kezelesInput(elem, e.target.value)}
-                        />
+                        {elem.tipus === "textarea" ? (
+                            <textarea
+                                id={elem.nev}
+                                className="form-control"
+                                value={modositottAdat[elem.nev] || ""}
+                                rows="3"
+                                onChange={(e) => kezelesInput(elem.nev, e.target.value)}
+                            />)
+                        : (
+                            <input
+                                id={elem.nev}
+                                type="text"
+                                className="form-control"
+                                value={modositottAdat[elem.nev] || ""}
+                                onChange={(e) => kezelesInput(elem.nev, e.target.value)}
+                            />)}
                     </div>
                 </div>
             ))}

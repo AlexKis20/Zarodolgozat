@@ -6,8 +6,7 @@ import "./Tipus.css"
 import Cim from "../../../components/Cim"
 
 const TipusFelvitel= ({  onClose }) => {
-    const mezok = ["tipus_nev"]
-    const mezokMegjelenik = ["Típus név:"]
+    const mezok= [{nev: "tipus_nev", tipus: "input", megjelenit: "Típus név:"}]
     const [felvittAdat, setFelvittAdat] = useState({})
     const kezelesInput = (kulcs, ertek) => {
         setFelvittAdat(prev => ({
@@ -48,15 +47,15 @@ const TipusFelvitel= ({  onClose }) => {
             {mezok.map((elem, index) => (
                 <div className="row mb-2 align-items-center" key={index}>
                     <div className="col-sm-4">
-                        <label className="form-label" htmlFor={elem}>{mezokMegjelenik[index]}</label>
+                        <label className="form-label" htmlFor={elem.nev}>{elem.megjelenit}</label>
                     </div>
                     <div className="col-sm-8">
                         <input
-                            id={elem}
+                            id={elem.nev}
                             type="text"
                             className="form-control"
-                            value={felvittAdat[elem] || ""}
-                            onChange={(e) => kezelesInput(elem, e.target.value)}
+                            value={felvittAdat[elem.nev] || ""}
+                            onChange={(e) => kezelesInput(elem.nev, e.target.value)}
                         />
                     </div>
                 </div>

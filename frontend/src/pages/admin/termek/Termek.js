@@ -11,6 +11,8 @@ import Rendezes from "../../../components/Rendezes";
 
 const Termek= () => {
     const [adatok, setAdatok] = useState([])
+    const [markak, setMarkak] = useState([])
+    const [tipusok, setTipusok] = useState([])
     const [keresettAdatok, setKeresettAdatok] = useState([])
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
@@ -25,12 +27,20 @@ const Termek= () => {
             const response = await fetch(Cim.Cim + "/termek")
             const data = await response.json()
 
-            if (response.ok) {
+            const markaResponse = await fetch(Cim.Cim + "/marka")
+            const markaData = await markaResponse.json()
+
+            const tipusResponse = await fetch(Cim.Cim + "/tipus")
+            const tipusData = await tipusResponse.json()
+    
+            if (response.ok && markaResponse.ok && tipusResponse.ok) {
+                setMarkak(markaData)
+                setTipusok(tipusData)
                 setAdatok(data)
                 setKeresettAdatok(data)
                 setTolt(false)
             } 
-            else if (response.status === 404) {
+            else if (response.status === 404 || markaResponse.status === 404 || tipusResponse.status === 404) {
                 setUres(true)
                 setTolt(false)
             }
@@ -81,7 +91,7 @@ const Termek= () => {
         }
     }
 
-    const openModalHozzaad = (termek_id) => {
+    const openModalHozzaad = () => {
         setModalOpenHozzaad(true)
     }
 
@@ -147,10 +157,10 @@ const Termek= () => {
                 </div>
             ))}
             <Modal isOpen={modalOpenModosit} onClose={() => closeModalModosit(false)}>
-                <TermekModosit termek_id={selectedTermekId} onClose={closeModalModosit} />
+                <TermekModosit termek_id={selectedTermekId} onClose={closeModalModosit} markak={markak} tipusok={tipusok} />
             </Modal>
             <Modal isOpen={modalOpenHozzaad} onClose={() => closeModalHozzaad(false)}>
-                <TermekFelvitel onClose={closeModalHozzaad} />
+                <TermekFelvitel onClose={closeModalHozzaad} markak={markak} tipusok={tipusok} />
             </Modal>
         </div>
     )

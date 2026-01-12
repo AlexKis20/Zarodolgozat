@@ -4,11 +4,21 @@ import { IoCloseSharp } from "react-icons/io5";
 import "./Termek.css"
 import Cim from "../../../components/Cim"
 
-const TermekFelvitel = ({ onClose }) => {
-    const mezok = ["termek_nev", "termek_ar", "termek_szin", "termek_kijelzo", "termek_processzor", "termek_kapacitas", "termek_oprendszer",
-        "termek_meret", "termek_leiras", "termek_kep", "termek_marka", "termek_tipus"]
-    const mezokMegjelenik = ["Termék név:", "Termék ár:", "Termék szín:", "Termék kijelző:", "Termék processzor:", "Termék kapacitás:", "Termék oprendszer:",
-        "Termék méret:", "Termék leírás:", "Termék kép:", "Termék márka:", "Termék típus:"]
+const TermekFelvitel = ({ onClose, markak, tipusok }) => {
+    const mezok = [
+        {nev: "termek_nev", tipus: "input", megjelenit: "Termék név:"},
+        {nev: "termek_ar", tipus: "input", megjelenit: "Termék ár:"},
+        {nev: "termek_szin", tipus: "input", megjelenit: "Termék szín:"},
+        {nev: "termek_kijelzo", tipus: "input", megjelenit: "Termék kijelző:"},
+        {nev: "termek_processzor", tipus: "input", megjelenit: "Termék processzor:"},
+        {nev: "termek_kapacitas", tipus: "input", megjelenit: "Termék kapacitás:"},
+        {nev: "termek_oprendszer", tipus: "input", megjelenit: "Termék oprendszer:"},
+        {nev: "termek_meret", tipus: "textarea", megjelenit: "Termék méret:"},
+        {nev: "termek_leiras", tipus: "textarea", megjelenit: "Termék leírás:"},
+        {nev: "termek_kep", tipus: "input", megjelenit: "Termék kép:"},
+        {nev: "termek_marka", tipus: "select", opciok: {lista: markak, id_mezo: "marka_id", nev_mezo: "marka_nev"}, megjelenit: "Termék márka:"},
+        {nev: "termek_tipus", tipus: "select", opciok: {lista: tipusok, id_mezo: "tipus_id", nev_mezo: "tipus_nev"}, megjelenit: "Termék típus:"}
+    ]
 
     const [felvittAdat, setFelvittAdat] = useState({})
 
@@ -45,6 +55,45 @@ const TermekFelvitel = ({ onClose }) => {
         }
     }
 
+    const bevitelMezo = (elem) => {
+        if (elem.tipus === "textarea") {
+            return (
+                <textarea
+                    id={elem.nev}
+                    className="form-control"
+                    value={felvittAdat[elem.nev] || ""}
+                    rows="3"
+                    onChange={(e) => kezelesInput(elem.nev, e.target.value)}
+                />
+            )
+        } else if (elem.tipus === "select") {
+            return (
+                <select
+                    id={elem.nev}
+                    className="form-control"
+                    onChange={(e) => kezelesInput(elem.nev, e.target.value)}
+                    value={felvittAdat[elem.nev] || ""}
+                >
+                    {elem.opciok.lista.map((opcio) => (
+                        <option key={opcio[elem.opciok.id_mezo]} value={opcio[elem.opciok.id_mezo]}>
+                            {opcio[elem.opciok.nev_mezo]}
+                        </option>
+                    ))}
+                </select>
+            )
+        } else {
+            return (
+                <input
+                    id={elem.nev}
+                    type="text"
+                    className="form-control"
+                    value={felvittAdat[elem.nev] || ""}
+                    onChange={(e) => kezelesInput(elem.nev, e.target.value)}
+                />
+            )
+        }
+    }
+
     return (
         <div className="container">
             <div className="row mb-3">
@@ -56,16 +105,10 @@ const TermekFelvitel = ({ onClose }) => {
             {mezok.map((elem, index) => (
                 <div className="row mb-2 align-items-center" key={index}>
                     <div className="col-sm-4">
-                        <label className="form-label" htmlFor={elem}>{mezokMegjelenik[index]}</label>
+                        <label className="form-label" htmlFor={elem.nev}>{elem.megjelenit}</label>
                     </div>
                     <div className="col-sm-8">
-                        <input
-                            id={elem}
-                            type="text"
-                            className="form-control"
-                            value={felvittAdat[elem] || ""}
-                            onChange={(e) => kezelesInput(elem, e.target.value)}
-                        />
+                        {bevitelMezo(elem)}
                     </div>
                 </div>
             ))}

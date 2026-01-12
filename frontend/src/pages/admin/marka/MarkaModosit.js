@@ -8,7 +8,7 @@ const MarkaModosit= ({ marka_id, onClose }) => {
     const [modositottAdat, setModositottAdat] = useState({})
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
-    const mezokMegjelenik = ["Márka név:"]
+    const mezok = [{nev: "marka_nev", tipus: "input", megjelenit: "Márka név:"}]
 
     const leToltes = async () => {
         try {
@@ -75,18 +75,18 @@ const MarkaModosit= ({ marka_id, onClose }) => {
                 </div>
             </div>
 
-            {Object.keys(modositottAdat).map((elem, index) => (
+            {mezok.map((elem, index) => (
                 <div className="row mb-2 align-items-center" key={index}>
                     <div className="col-sm-4">
-                        <label className="form-label" htmlFor={elem}>{mezokMegjelenik[index]}</label>
+                        <label className="form-label" htmlFor={elem.nev}>{elem.megjelenit}</label>
                     </div>
                     <div className="col-sm-8">
                         <input
-                            id={elem}
+                            id={elem.nev}
                             type="text"
                             className="form-control"
-                            value={modositottAdat[elem] || ""} 
-                            onChange={(e) => kezelesInput(elem, e.target.value)}
+                            value={modositottAdat[elem.nev] || ""} 
+                            onChange={(e) => kezelesInput(elem.nev, e.target.value)}
                         />
                     </div>
                 </div>
