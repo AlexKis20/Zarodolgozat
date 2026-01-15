@@ -42,7 +42,7 @@ const MarkaKartya = ({ kivalasztott }) => {
         onClick={() => kivalasztott(elem.marka_id)}
         style={{
             width: "160px",
-            height: "80px",
+            height: "90px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",

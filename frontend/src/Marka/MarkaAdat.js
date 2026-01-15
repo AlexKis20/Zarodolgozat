@@ -46,7 +46,7 @@ const MarkaAdat = ({ kivalasztott }) => {
 
             <div style={{ textAlign: "center", marginTop: "20px" }}>
               <img
-                style={{ width: "100%", maxWidth: "250px", height: "auto" }}
+                style={{ width: "100%", maxWidth: "250px", height: "300px" }}
                 src={`${Cim.Cim}/termekKep/${elem.termek_kep}`}
                 alt={elem.termek_nev}
               />
