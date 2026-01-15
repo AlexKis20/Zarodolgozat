@@ -181,7 +181,7 @@ app.post('/termeknevKeres', (req, res) => {
        
 })
 
-//Hírekhez
+//Hírekhez (akció)
 app.get('/hirek1', (req, res) => {
     const sql=`SELECT * FROM blog WHERE blog_fajta=1 `
     pool.query(sql, ( err, result) => {

@@ -1,6 +1,6 @@
 const User=()=>{
     return (
-        <div>User</div>
+        <div>Kosár</div>
     )
 }
 export default User

@@ -1,7 +1,7 @@
 
 const Menu1=()=>{
     return(
-        <div>Menu 1.</div>
+        <div>Végre itt vagy és nézed ezt a class oldalt.</div>
     )
 }
 export default Menu1
