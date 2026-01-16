@@ -9,6 +9,7 @@ import TermekFelvitel from "./TermekFelvitel";
 import Kereses from "../../../components/Kereses";
 import Rendezes from "../../../components/Rendezes";
 
+
 const Termek= () => {
     const [adatok, setAdatok] = useState([])
     const [markak, setMarkak] = useState([])
