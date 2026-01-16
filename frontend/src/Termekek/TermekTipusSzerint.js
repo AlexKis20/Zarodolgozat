@@ -90,7 +90,7 @@ const TermekTipusSzerint=({kivalasztott})=>{
 
       <div className="price">💰 {elem.termek_ar} Ft</div>
 
-      <div className="specList">
+     <div className="specList">
   {elem.termek_szin && (
     <span><strong>Szín:</strong> {elem.termek_szin}</span>
   )}
