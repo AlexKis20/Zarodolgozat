@@ -8,7 +8,7 @@ import Navbar from './Navbar';
 import Login from './Login';
 import Register from './Register';
 //Bejelentkezés nélküli menük
-import Menu1 from './Menu1/Menu1';
+
 import Termekek from './Termekek/Termekek';
 import KeresNev from './Kereses/KeresNev';
 import MarkaKeres from './Marka/MarkaKeres';
@@ -31,7 +31,7 @@ const ProtectedRoute = ({ children, role }) => {
 
   if (!token) return <Navigate to="/login" />;
 
-  if (role && userRole !== role) return <Navigate to="/menu1" />;
+  if (role && userRole !== role) return <Navigate to="/Hirek" />;
 
   return children;
 };
@@ -40,7 +40,7 @@ const ProtectedRoute = ({ children, role }) => {
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Menu1 />} />
+      <Route path="/" element={<Hirek />} />
       <Route path="/Hirek" element={<Hirek />} />
       <Route path="/Termekek" element={<Termekek />} />
       <Route path="/KeresNev" element={<KeresNev />} />

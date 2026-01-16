@@ -75,29 +75,56 @@ const TermekTipusSzerint=({kivalasztott})=>{
         */
         <div>
                 {/*kivalasztott*/}
-                <div class="row">
-                {adatok.map((elem,index)=>(
-                    <div key={index} className="col-sm-4" > 
-                    <div className="doboz">
-                        <div className="jatekCim">{elem.termek_nev} </div>
-                        <div style={{textAlign:"center",marginTop:"20px"}}>
-                            <img style={{width:"200px"}} src={`${Cim.Cim}/termekKep/${elem.termek_kep}`} alt={elem.termek_nev} />
-                        </div>
-                        <div>Ár: {elem.termek_ar} </div>
-                        <div>Szín: {elem.termek_szin} </div>
-                        <div>Kijelző: {elem.termek_kijelzo} </div>
-                        <div>Processzor: {elem.termek_processzor} </div>
-                        <div>Kapacitás: {elem.termek_kapacitás} </div>
-                        <div>Operációs rendszer: {elem.termek_oprendszer} </div>
-                        <div>Méret: {elem.termek_meret} </div>
-                        {/* <div>Leírás: {elem.termek_leiras} </div> */}
-                        <div>Termék márkája: {elem.marka_nev} </div>
-                        <div className="jatekTipus">Termék típusa: {elem.tipus_nev} </div>
+                <div className="containerFlex">
+  {adatok.map((elem, index) => (
+    <div key={index} className="productCard">
+      
+      <h2 className="productTitle">{elem.termek_nev}</h2>
 
-                    </div>
-                    </div>
-                ))}
-                </div>
+      <div className="imageWrapper">
+        <img
+          src={`${Cim.Cim}/termekKep/${elem.termek_kep}`}
+          alt={elem.termek_nev}
+        />
+      </div>
+
+      <div className="price">💰 {elem.termek_ar} Ft</div>
+
+      <div className="specList">
+  {elem.termek_szin && (
+    <span><strong>Szín:</strong> {elem.termek_szin}</span>
+  )}
+
+  {elem.termek_kijelzo && (
+    <span><strong>Kijelző:</strong> {elem.termek_kijelzo}</span>
+  )}
+
+  {elem.termek_processzor && (
+    <span><strong>Processzor:</strong> {elem.termek_processzor}</span>
+  )}
+
+  {elem.termek_kapacitás && (
+    <span><strong>Kapacitás:</strong> {elem.termek_kapacitás}</span>
+  )}
+
+  {elem.termek_oprendszer && (
+    <span><strong>OS:</strong> {elem.termek_oprendszer}</span>
+  )}
+
+  {elem.termek_meret && (
+    <span><strong>Méret:</strong> {elem.termek_meret}</span>
+  )}
+
+  {elem.marka_nev && (
+    <span><strong>Márka:</strong> {elem.marka_nev}</span>
+  )}
+</div>
+
+      <div className="productType">{elem.tipus_nev}</div>
+
+    </div>
+  ))}
+</div>
            
         </div>
     )
