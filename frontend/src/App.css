@@ -196,9 +196,9 @@ textarea.form-control {
 }
 
 .productTitle {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 12px;
+  font-size: 1.25rem;     /* volt 1.1rem */
+  font-weight: 700;
+  margin-bottom: 14px;
   color: #111827;
   text-align: center;
 }
@@ -216,32 +216,47 @@ textarea.form-control {
 }
 
 .price {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #2563eb;
+  font-size: 1.35rem;     /* volt 1.2rem */
+  font-weight: 800;
+  color: #05bd1e;
   text-align: center;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .specList {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  font-size: 0.9rem;
+  gap: 10px;
   color: #374151;
 }
 
+/* csak a külső sorokra */
+.specList > span {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* címkék */
 .specList strong {
+  font-size: 1.1rem;
+  font-weight: 600;
   color: #111827;
+}
+
+/* ⬅️ AZ ADAT – MOST MÁR BIZTOSAN NAGYOBB */
+.specList .specValue {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #1f2937;
 }
 
 .productType {
   margin-top: 14px;
   text-align: center;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: #2563eb;
   background: #eff6ff;
-  padding: 6px 12px;
+  padding: 8px 14px;
   border-radius: 999px;
 }
