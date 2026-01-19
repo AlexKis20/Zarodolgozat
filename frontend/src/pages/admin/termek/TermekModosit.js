@@ -137,14 +137,15 @@ const TermekModosit= ({ termek_id, onClose, markak, tipusok }) => {
                     </div>
                 </div>
             ))}
-
             <div className="row mt-3">
                 <div className="col">
-                    <button className="btn ml-2" onClick={modositFuggveny}>
+                    <button className="btn" onClick={modositFuggveny}>
                         <FaSave /> Mentés
                     </button>
-                    <button className="btn ml-2" onClick={() => onClose(false)}>
-                        <IoCloseSharp />Bezárás
+                </div>
+                <div className="col text-end">
+                    <button className="btn" onClick={() => onClose(false)}>
+                        <IoCloseSharp /> Bezárás
                     </button>
                 </div>
             </div>

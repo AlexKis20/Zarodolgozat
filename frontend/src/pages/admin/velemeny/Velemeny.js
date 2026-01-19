@@ -3,7 +3,7 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import Cim from "../../../components/Cim"
 import Kereses from "../../../components/Kereses";
 import Rendezes from "../../../components/Rendezes";
-
+import { datumFuggveny } from "../../../utils/datum";
 
 
 const Velemeny = () => {
@@ -62,16 +62,6 @@ const Velemeny = () => {
             }
         }
     }
-    
-    const datumFuggveny = (datum) => {
-        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone
-        const date = new Date(datum);
-        const options = { timeZone: tz, year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-        const formattedDate = new Intl.DateTimeFormat('hu-HU', options).format(date);
-
-        return formattedDate;
-    }
-
 
     if (tolt)
         return <div style={{ textAlign: "center" }}>Adatok betöltése folyamatban...</div>

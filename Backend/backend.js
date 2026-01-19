@@ -699,6 +699,177 @@ app.get('/velemenyMinden', (req, res) => {
     })
 })
 
+// akció termékek lekérdezése
+app.get('/akcioTermekek/:akcio_id', (req, res) => {
+    const {akcio_id} = req.params
+    const sql=`SELECT termek_id, termek_nev, termek_ar
+               FROM termek
+               WHERE termek_akcio_id=?`
+               
+    pool.query(sql, [akcio_id], (err, result) => {
+        if (err){
+            console.log(err)
+            return res.status(500).json({error:"Hiba!"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat!"})
+        }
+        return res.status(200).json(result)
+    })
+})
+
+// akció lekérdezése minden
+app.get('/akcioMinden', (req, res) => {
+    const sql=`SELECT akcio_id, akcio_nev, akcio_kedvezmeny, akcio_tipus, akcio_kezdete, akcio_vege
+               FROM akcio
+               GROUP BY akcio_id, akcio_nev, akcio_kedvezmeny, akcio_tipus, akcio_kezdete, akcio_vege
+               `
+               
+    pool.query(sql, ( err, result) => {
+        if (err){
+            console.log(err)
+            return res.status(500).json({error:"Hiba!"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat!"})
+        }
+        return res.status(200).json(result)
+    })
+})
+
+// egy akció lekérdezése id alapján
+app.get('/akcio/:akcio_id', (req, res) => {
+    const sql=`SELECT akcio_nev, akcio_kedvezmeny, akcio_tipus, akcio_kezdete, akcio_vege
+               FROM akcio
+               WHERE akcio_id=?`
+    const {akcio_id} = req.params
+    pool.query(sql, [akcio_id], (err, result) => {
+        if (err){
+            console.log(err)
+            return res.status(500).json({error:"Hiba!"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat!"})
+        }
+        return res.status(200).json(result[0])
+    })
+})
+
+// akció módosítás id alapján
+
+app.put('/akcioModosit/:akcio_id', (req, res) => {
+    const {akcio_id} = req.params
+    const {akcio_nev, akcio_kedvezmeny, akcio_tipus, akcio_kezdete, akcio_vege, termek_id_lista} = req.body
+    const termek_id_lista_str = termek_id_lista.length > 0 ? `(${termek_id_lista.join(',')})` : '(NULL)';
+
+    pool.getConnection((err, connection) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: "Hiba a kapcsolat létrehozásakor" });
+        }
+
+        connection.beginTransaction((err) => {
+            if (err) { throw err; }
+
+            const akcioSql = 
+                `UPDATE akcio SET akcio_nev=?, akcio_kedvezmeny=?, akcio_tipus=?, akcio_kezdete=?, akcio_vege=? WHERE akcio_id=?`
+            connection.query(akcioSql, [akcio_nev, akcio_kedvezmeny, akcio_tipus, akcio_kezdete, akcio_vege, akcio_id], (err, result) => {
+                if (err) {
+                    return connection.rollback(() => {
+                        console.log(err);
+                        res.status(500).json({ error: "Hiba az akció frissítésekor" });
+                    }
+                )}
+                const termekAkcioTorlesSql = 
+                    `UPDATE termek SET termek_akcio_id=NULL WHERE termek_akcio_id=?`
+                connection.query(termekAkcioTorlesSql, [akcio_id], (err, result) => {
+                    if (err) {
+                        return connection.rollback(() => {
+                            console.log(err);
+                            res.status(500).json({ error: "Hiba a termék akció törlésekor" });
+                        }
+                    )}
+                    const termekAkcioFrissitesSql = 
+                        `UPDATE termek SET termek_akcio_id=? WHERE termek_id IN ${termek_id_lista_str}`
+                    connection.query(termekAkcioFrissitesSql, [akcio_id], (err, result) => {
+                        if (err) {
+                            return connection.rollback(() => {
+                                console.log(err);
+                                res.status(500).json({ error: "Hiba a termék akció frissítésekor" });
+                            }
+                        )}
+                        connection.commit((err) => {
+                            if (err) {
+                                return connection.rollback(() => {
+                                    console.log(err);
+                                    res.status(500).json({ error: "Hiba a tranzakció véglegesítésekor" });
+                                }
+                            )}
+                            return res.status(200).json({ message: "Sikeres módosítás" });
+                        });
+                    });
+                });
+            });
+        });
+    });
+})
+
+// akció törlése id alapján
+
+app.delete('/akcioTorles/:akcio_id', (req, res) => {
+        const {akcio_id} = req.params
+
+        const akcio_sql = `DELETE FROM akcio WHERE akcio_id=?`
+        pool.query(akcio_sql,[akcio_id], (err, result) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({error:"Hiba"})
+            }
+
+        return res.status(200).json({message:"Sikeres törlés"})
+        })
+})
+// akció felvitele
+
+app.post('/akcioHozzaad', (req, res) => {
+    const {akcio_nev, akcio_kedvezmeny, akcio_tipus, akcio_kezdete, akcio_vege, termek_id_lista} = req.body
+    const termek_id_lista_str = termek_id_lista.length > 0 ? `(${termek_id_lista.join(',')})` : '(NULL)';
+    const sql=`INSERT INTO akcio (akcio_nev, akcio_kedvezmeny, akcio_tipus, akcio_kezdete, akcio_vege) values (?,?,?,?,?)`
+    pool.getConnection((err, connection) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: "Hiba a kapcsolat létrehozásakor" });
+        }
+        connection.beginTransaction((err) => {
+            if (err) { throw err; }
+            connection.query(sql, [akcio_nev, akcio_kedvezmeny, akcio_tipus, akcio_kezdete, akcio_vege], (err, result) => {
+                if (err) {
+                    return connection.rollback(() => {
+                        console.log(err);
+                        res.status(500).json({ error: "Hiba az akció hozzáadásakor" });
+                    })}
+                const akcio_id = result.insertId;
+                const termekAkcioFrissitesSql = 
+                    `UPDATE termek SET termek_akcio_id=? WHERE termek_id IN ${termek_id_lista_str}`
+                connection.query(termekAkcioFrissitesSql, [akcio_id], (err, result) => {
+                    if (err) {
+                        return connection.rollback(() => {
+                            console.log(err);
+                            res.status(500).json({ error: "Hiba a termék akció frissítésekor" });
+                        })}
+                    connection.commit((err) => {
+                        if (err) {
+                            return connection.rollback(() => {
+                                console.log(err);
+                                res.status(500).json({ error: "Hiba a tranzakció véglegesítésekor" });
+                            })}
+                        return res.status(200).json({ message: "Sikeres hozzáadás" });
+                    }); 
+                });
+            });
+        });
+    });
+})
 
 
 

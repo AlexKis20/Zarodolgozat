@@ -20,6 +20,7 @@ import Marka from './pages/admin/marka';
 import Tipus from './pages/admin/tipus';
 import Blog from './pages/admin/blog';
 import Velemeny from './pages/admin/velemeny';
+import Akcio from './pages/admin/akcio/Akcio';
 //Sidebar
 import Sidebar from './components/Sidebar';
 //User menük
@@ -110,6 +111,11 @@ function AdminRoutes() {
           <Route path="tipus" element={
             <ProtectedRoute role="admin">
               <Tipus />
+            </ProtectedRoute>
+          } />
+          <Route path="akcio" element={
+            <ProtectedRoute role="admin">
+              <Akcio />
             </ProtectedRoute>
           } />
           <Route path="blog" element={

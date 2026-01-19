@@ -115,10 +115,12 @@ const TermekFelvitel = ({ onClose, markak, tipusok }) => {
 
             <div className="row mt-3">
                 <div className="col">
-                    <button className="btn ml-2" onClick={felvittFuggveny}>
+                    <button className="btn" onClick={felvittFuggveny}>
                         <FaSave /> Mentés
                     </button>
-                    <button className="btn ml-2" onClick={() => onClose(false)}>
+                </div>
+                <div className="col text-end">
+                    <button className="btn" onClick={() => onClose(false)}>
                         <IoCloseSharp /> Bezárás
                     </button>
                 </div>

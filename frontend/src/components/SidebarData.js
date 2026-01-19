@@ -27,6 +27,11 @@ export const SidebarData = [
         path: "/admin/tipus",
         icon: <LuType />
     },
+{
+        title: "Akció",
+        path: "/admin/Akcio",
+        icon: <FiPercent />
+    },
     {
         title: "Blog",
         path: "/admin/blog",
