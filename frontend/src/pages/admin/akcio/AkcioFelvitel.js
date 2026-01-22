@@ -3,10 +3,17 @@ import { FaSave } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
 import Cim from "../../../components/Cim"
 import { keresAkcio } from "./keresAkcio";
+import BeviteliMezo from "../../../components/BeviteliMezo";
+import { mezoValidalas } from "../../../components/BeviteliMezo";
 
-
-
-const AkcioFelvitel = ({  onClose }) => {
+const AkcioFelvitel = ({ onClose }) => {
+    const mezok = [
+        {nev: "akcio_nev", tipus: "input", megjelenit: "Akció név:"},
+        {nev: "akcio_kedvezmeny", tipus: "input", megjelenit: "Kedvezmény:"},
+        {nev: "akcio_tipus", tipus: "select"},
+        {nev: "akcio_kezdete", tipus: "datetime-local", megjelenit: "Akció kezdete:"},
+        {nev: "akcio_vege", tipus: "datetime-local", megjelenit: "Akció vége:"}
+    ]
     const [felvittAdat, setFelvittAdat] = useState({})
     const [termekek, setTermekek] = useState([])
     const [keresettTermekek, setKeresettTermekek] = useState([])
@@ -20,7 +27,6 @@ const AkcioFelvitel = ({  onClose }) => {
             const termekData = await termekResponse.json()
 
             if (termekResponse.ok) {
-                setFelvittAdat({akcio_nev: "", akcio_kedvezmeny: "", akcio_tipus: "szazalek", akcio_kezdete: "", akcio_vege: ""})
                 setTermekek(termekData.map(termek => ({...termek, kivalaszott: false, keresett: undefined})))
                 setKeresettTermekek(termekData.map(termek => ({...termek, kivalaszott: false, keresett: undefined})))
                 setKeresettAkciosTermekek(termekData.map(termek => ({...termek, kivalaszott: false, keresett: undefined})))
@@ -74,6 +80,11 @@ const AkcioFelvitel = ({  onClose }) => {
         const biztos = window.confirm(`Biztosan hozzá szeretnéd adni a(z) ${felvittAdat.akcio_nev} akciót?`)
 
         if (biztos) {
+            if (!mezok.every(mezo => mezoValidalas(felvittAdat, mezo))) {
+                alert("Minden mezőt ki kell tölteni!")
+                return
+            }
+
             let body = {...felvittAdat}
             const kivalasztottTermekIdLista = termekek.filter(t => t.kivalaszott).map(t => t.termek_id)
             body.termek_id_lista = kivalasztottTermekIdLista
@@ -115,13 +126,7 @@ const AkcioFelvitel = ({  onClose }) => {
                     <label className="form-label" htmlFor="akcio_nev">Akció neve:</label>
                 </div>
                 <div className="col-sm-8">
-                    <input
-                        id="akcio_nev"
-                        type="text"
-                        className="form-control"
-                        value={felvittAdat.akcio_nev || ""} 
-                        onChange={(e) => kezelesInput("akcio_nev", e.target.value)}
-                    />
+                    <BeviteliMezo elem={mezok.find(m => m.nev === "akcio_nev")} adatModFel={felvittAdat} kezelesInput={kezelesInput}/>
                 </div>
             </div>
 
@@ -132,13 +137,7 @@ const AkcioFelvitel = ({  onClose }) => {
                 <div className="col-sm-8">
                     <div className="row mb-2">
                         <div className="col-6">
-                            <input
-                                id="akcio_kedvezmeny"
-                                type="text"
-                                className="form-control"
-                                value={felvittAdat.akcio_kedvezmeny || ""} 
-                                onChange={(e) => kezelesInput("akcio_kedvezmeny", e.target.value)}
-                            />
+                            <BeviteliMezo elem={mezok.find(m => m.nev === "akcio_kedvezmeny")} adatModFel={felvittAdat} kezelesInput={kezelesInput}/>
                         </div>
                         <div className="col-6">
                             <select
@@ -146,8 +145,9 @@ const AkcioFelvitel = ({  onClose }) => {
                                 className="form-control"
                                 style={{margin: "5px"}}
                                 onChange={(e) => kezelesInput("akcio_tipus", e.target.value)}
-                                value={felvittAdat.akcio_tipus === "ft" ? "ft" : "szazalek"}
+                                value={felvittAdat.akcio_tipus || ""}
                             >
+                                <option value="" disabled hidden>Válassz...</option>
                                 <option value="szazalek">%</option>
                                 <option value="ft">Ft</option>
                             </select>
@@ -161,12 +161,7 @@ const AkcioFelvitel = ({  onClose }) => {
                     <label className="form-label" htmlFor="akcio_kezdete">Akció kezdete:</label>
                 </div>
                 <div className="col-sm-8">
-                    <input
-                        id="akcio_kezdete"
-                        type="datetime-local"
-                        className="form-control"
-                        onChange={(e) => kezelesInput("akcio_kezdete", e.target.value)}
-                    />
+                    <BeviteliMezo elem={mezok.find(m => m.nev === "akcio_kezdete")} adatModFel={felvittAdat} kezelesInput={kezelesInput}/>
                 </div>
             </div>
 
@@ -175,12 +170,7 @@ const AkcioFelvitel = ({  onClose }) => {
                     <label className="form-label" htmlFor="akcio_vege">Akció vége:</label>
                 </div>
                 <div className="col-sm-8">
-                    <input
-                        id="akcio_vege"
-                        type="datetime-local"
-                        className="form-control"
-                        onChange={(e) => kezelesInput("akcio_vege", e.target.value)}
-                    />
+                    <BeviteliMezo elem={mezok.find(m => m.nev === "akcio_vege")} adatModFel={felvittAdat} kezelesInput={kezelesInput}/>
                 </div>
             </div>
 

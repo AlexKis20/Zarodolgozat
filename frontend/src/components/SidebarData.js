@@ -13,6 +13,12 @@ export const SidebarData = [
         icon: <AiIcons.AiFillHome />
     },
     {
+        title: "Kezdőlap",
+        path: "/admin/kezdolap",
+        icon: <TfiWrite />
+
+    },
+    {
         title: "Termék",
         path: "/admin/termek",
         icon: <IoTabletPortraitSharp />
@@ -27,16 +33,10 @@ export const SidebarData = [
         path: "/admin/tipus",
         icon: <LuType />
     },
-{
+    {
         title: "Akció",
         path: "/admin/Akcio",
         icon: <FiPercent />
-    },
-    {
-        title: "Blog",
-        path: "/admin/blog",
-        icon: <TfiWrite />
-
     },
     {
         title: "Vélemény",

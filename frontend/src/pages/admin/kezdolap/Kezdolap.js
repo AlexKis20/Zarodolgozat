@@ -2,15 +2,16 @@ import { useState, useEffect } from "react"
 import { FaRegTrashCan, FaPencil } from "react-icons/fa6";
 import Cim from "../../../components/Cim"
 import Modal from "../../../components/Modal"
-import BlogModosit from "./BlogModosit"
-import BlogFelvitel from "./BlogFelvitel";
+import KezdolapModosit from "./KezdolapModosit";
+import KezdolapFelvitel from "./KezdolapFelvitel";
 import { FaPlus } from "react-icons/fa";
 import Kereses from "../../../components/Kereses";
 import Rendezes from "../../../components/Rendezes";
 
 
-const Blog = () => {
+const Kezdolap= () => {
     const [adatok, setAdatok] = useState([])
+    const [fajtak, setFajtak] = useState([])
     const [keresettAdatok, setKeresettAdatok] = useState([])
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
@@ -22,15 +23,18 @@ const Blog = () => {
         
     const leToltes = async () => {
         try {
-            const response = await fetch(Cim.Cim + "/blog")
+            const response = await fetch(Cim.Cim + "/kezdolap")
             const data = await response.json()
+            const fajtaResponse = await fetch(Cim.Cim + "/fajta")
+            const fajtaData = await fajtaResponse.json()
 
-            if (response.ok) {
+            if (response.ok && fajtaResponse.ok) {
                 setAdatok(data)
+                setFajtak(fajtaData)
                 setKeresettAdatok(data)
                 setTolt(false)
             }
-            else if (response.status === 404) {
+            else if (response.status === 404 || fajtaResponse.status === 404) {
                 setUres(true)
                 setTolt(false)
             }
@@ -50,10 +54,10 @@ const Blog = () => {
 
 
     const torlesFuggveny = async (blog_id, blog_cim) => {
-        const biztos = window.confirm(`Biztosan törölni szeretnéd a(z) ${blog_cim} blogot?`)
+        const biztos = window.confirm(`Biztosan törölni szeretnéd a(z) ${blog_cim} kezdőlapot?`)
 
         if (biztos) {
-            const response = await fetch(Cim.Cim + "/blogTorles/" + blog_id, {
+            const response = await fetch(Cim.Cim + "/kezdolapTorles/" + blog_id, {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" }
             })
@@ -115,7 +119,7 @@ const Blog = () => {
                     </div>
                 </div>
                 <Modal isOpen={modalOpenHozzaad} onClose={closeModalHozzaad}>
-                    <BlogFelvitel onClose={closeModalHozzaad} />
+                    <KezdolapFelvitel onClose={closeModalHozzaad} />
                 </Modal>
             </div>
         )
@@ -132,13 +136,13 @@ const Blog = () => {
                 <div className="col-4 text-center">
                     <Rendezes adatok={keresettAdatok} setKeresettAdatok={setKeresettAdatok}>
                         <option value="0" disabled hidden>Rendezés</option>
-                        <option value="blog_cim|1">Blog címe növekvő</option>
-                        <option value="blog_cim|2">Blog címe csökkenő</option>
+                        <option value="blog_cim|1">Kezdőlap címe növekvő</option>
+                        <option value="blog_cim|2">Kezdőlap címe csökkenő</option>
                     </Rendezes>
                 </div>
             </div>
             <div className="row justify-content-center mb-3">
-                <div className="col-6 text-center fw-bold">Blog címe</div>
+                <div className="col-6 text-center fw-bold">Kezdőlap címe</div>
                 <div className="col-1 text-center fw-bold">Törlés</div>
                 <div className="col-1 text-center fw-bold">Módosítás</div>
                 <div className="col-1 text-center fw-bold">Felvitel</div>
@@ -175,14 +179,14 @@ const Blog = () => {
                 </div>
             ))}
             <Modal isOpen={modalOpenModosit} onClose={() => closeModalModosit(false)}>
-                <BlogModosit blog_id={selectedBlogId} onClose={closeModalModosit} />
+                <KezdolapModosit blog_id={selectedBlogId} onClose={closeModalModosit} fajtak={fajtak} />
             </Modal>
             <Modal isOpen={modalOpenHozzaad} onClose={() => closeModalHozzaad(false)}>
-                <BlogFelvitel onClose={closeModalHozzaad} />
+                <KezdolapFelvitel onClose={closeModalHozzaad} fajtak={fajtak} />
             </Modal>
         </div>
     )
 }
 
-export default Blog
+export default Kezdolap
 

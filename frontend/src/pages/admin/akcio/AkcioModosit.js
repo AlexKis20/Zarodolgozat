@@ -3,8 +3,17 @@ import { FaSave } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
 import Cim from "../../../components/Cim"
 import { keresAkcio } from "./keresAkcio";
+import BeviteliMezo from "../../../components/BeviteliMezo";
+import { mezoValidalas } from "../../../components/BeviteliMezo";
 
 const AkcioModosit= ({ akcio_id, onClose }) => {
+    const mezok = [
+        {nev: "akcio_nev", tipus: "input", megjelenit: "Akció név:"},
+        {nev: "akcio_kedvezmeny", tipus: "input", megjelenit: "Kedvezmény:"},
+        {nev: "akcio_tipus", tipus: "select"},
+        {nev: "akcio_kezdete", tipus: "datetime-local", megjelenit: "Akció kezdete:"},
+        {nev: "akcio_vege", tipus: "datetime-local", megjelenit: "Akció vége:"}
+    ]
     const [modositottAdat, setModositottAdat] = useState({})
     const [termekek, setTermekek] = useState([])
     const [keresettTermekek, setKeresettTermekek] = useState([])
@@ -75,6 +84,11 @@ const AkcioModosit= ({ akcio_id, onClose }) => {
         const biztos = window.confirm(`Biztosan módosítani szeretnéd a(z) ${modositottAdat.akcio_nev} akciót?`)
 
         if (biztos) {
+            if (!mezok.every(mezo => mezoValidalas(modositottAdat, mezo, true))) {
+                alert("Minden mezőt ki kell tölteni!")
+                return
+            }
+
             let body = {...modositottAdat}
             const kivalasztottTermekIdLista = termekek.filter(t => t.kivalaszott).map(t => t.termek_id)
             body.termek_id_lista = kivalasztottTermekIdLista
@@ -116,13 +130,7 @@ const AkcioModosit= ({ akcio_id, onClose }) => {
                     <label className="form-label" htmlFor={akcio_id}>Akció neve:</label>
                 </div>
                 <div className="col-sm-8">
-                    <input
-                        id="akcio_nev"
-                        type="text"
-                        className="form-control"
-                        value={modositottAdat.akcio_nev || ""} 
-                        onChange={(e) => kezelesInput("akcio_nev", e.target.value)}
-                    />
+                    <BeviteliMezo elem={mezok.find(m => m.nev === "akcio_nev")} adatModFel={modositottAdat} kezelesInput={kezelesInput}/>
                 </div>
             </div>
 
@@ -133,13 +141,7 @@ const AkcioModosit= ({ akcio_id, onClose }) => {
                 <div className="col-sm-8">
                     <div className="row mb-2">
                         <div className="col-6">
-                            <input
-                                id="akcio_kedvezmeny"
-                                type="text"
-                                className="form-control"
-                                value={modositottAdat.akcio_kedvezmeny || ""} 
-                                onChange={(e) => kezelesInput("akcio_kedvezmeny", e.target.value)}
-                            />
+                            <BeviteliMezo elem={mezok.find(m => m.nev === "akcio_kedvezmeny")} adatModFel={modositottAdat} kezelesInput={kezelesInput}/>
                         </div>
                         <div className="col-6">
                             <select
@@ -162,13 +164,7 @@ const AkcioModosit= ({ akcio_id, onClose }) => {
                     <label className="form-label" htmlFor={akcio_id}>Akció kezdete:</label>
                 </div>
                 <div className="col-sm-8">
-                    <input
-                        id="akcio_kezdete"
-                        type="datetime-local"
-                        className="form-control"
-                        value={modositottAdat.akcio_kezdete.slice(0, 16) || ""} 
-                        onChange={(e) => kezelesInput("akcio_kezdete", e.target.value)}
-                    />
+                    <BeviteliMezo elem={mezok.find(m => m.nev === "akcio_kezdete")} adatModFel={modositottAdat} kezelesInput={kezelesInput}/>
                 </div>
             </div>
 
@@ -177,13 +173,7 @@ const AkcioModosit= ({ akcio_id, onClose }) => {
                     <label className="form-label" htmlFor={akcio_id}>Akció vége:</label>
                 </div>
                 <div className="col-sm-8">
-                    <input
-                        id="akcio_vege"
-                        type="datetime-local"
-                        className="form-control"
-                        value={modositottAdat.akcio_vege.slice(0, 16) || ""} 
-                        onChange={(e) => kezelesInput("akcio_vege", e.target.value)}
-                    />
+                    <BeviteliMezo elem={mezok.find(m => m.nev === "akcio_vege")} adatModFel={modositottAdat} kezelesInput={kezelesInput}/>
                 </div>
             </div>
 

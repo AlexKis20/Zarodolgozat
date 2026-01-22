@@ -2,6 +2,8 @@ import { useState, useEffect } from "react"
 import { FaSave } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
 import "./Tipus.css"
+import BeviteliMezo from "../../../components/BeviteliMezo"
+import { mezoValidalas } from "../../../components/BeviteliMezo"
 import Cim from "../../../components/Cim"
 
 const TipusModosit= ({ tipus_id, onClose }) => {
@@ -44,6 +46,11 @@ const TipusModosit= ({ tipus_id, onClose }) => {
         const biztos = window.confirm(`Biztosan módosítani szeretnéd a(z) ${modositottAdat.tipus_nev} típust?`)
 
         if (biztos) {
+            if (!mezok.every(mezo => mezoValidalas(modositottAdat, mezo, true))) {
+                alert("Minden mezőt ki kell tölteni!")
+                return
+            }
+
             const response = await fetch(Cim.Cim + "/tipusModosit/" + tipus_id, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
@@ -81,13 +88,7 @@ const TipusModosit= ({ tipus_id, onClose }) => {
                         <label className="form-label" htmlFor={elem.nev}>{elem.megjelenit}</label>
                     </div>
                     <div className="col-sm-8">
-                        <input
-                            id={elem.nev}
-                            type="text"
-                            className="form-control"
-                            value={modositottAdat[elem.nev] || ""} 
-                            onChange={(e) => kezelesInput(elem.nev, e.target.value)}
-                        />
+                        <BeviteliMezo elem={elem} adatModFel={modositottAdat} kezelesInput={kezelesInput}/>
                     </div>
                 </div>
             ))}

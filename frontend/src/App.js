@@ -15,16 +15,17 @@ import MarkaKeres from './Marka/MarkaKeres';
 import Hirek from './Hirek/Hirek';
 //Admin menük
 import Vezerlopult from './pages/admin/vezerlopult';
+import Kezdolap from './pages/admin/kezdolap';
 import Termek from './pages/admin/termek';
 import Marka from './pages/admin/marka';
 import Tipus from './pages/admin/tipus';
-import Blog from './pages/admin/blog';
 import Velemeny from './pages/admin/velemeny';
 import Akcio from './pages/admin/akcio/Akcio';
 //Sidebar
 import Sidebar from './components/Sidebar';
 //User menük
 import User from './User/User';
+import { Import } from 'lucide-react';
 
 const ProtectedRoute = ({ children, role }) => {
   const token = localStorage.getItem("token");
@@ -98,6 +99,11 @@ function AdminRoutes() {
               <Vezerlopult />
             </ProtectedRoute>
           } />
+          <Route path="kezdolap" element={
+            <ProtectedRoute role="admin">
+              <Kezdolap />
+          </ProtectedRoute>
+          } />
           <Route path="termek" element={
             <ProtectedRoute role="admin">
               <Termek />
@@ -117,11 +123,6 @@ function AdminRoutes() {
             <ProtectedRoute role="admin">
               <Akcio />
             </ProtectedRoute>
-          } />
-          <Route path="blog" element={
-            <ProtectedRoute role="admin">
-              <Blog />
-          </ProtectedRoute>
           } />
           <Route path="velemeny" element={
             <ProtectedRoute role="admin">

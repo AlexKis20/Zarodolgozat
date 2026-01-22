@@ -3,6 +3,8 @@ import { FaSave } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
 import { FaPlus } from "react-icons/fa";
 import "./Tipus.css"
+import BeviteliMezo from "../../../components/BeviteliMezo"
+import { mezoValidalas } from "../../../components/BeviteliMezo"
 import Cim from "../../../components/Cim"
 
 const TipusFelvitel= ({  onClose }) => {
@@ -19,6 +21,11 @@ const TipusFelvitel= ({  onClose }) => {
         const biztos = window.confirm(`Biztosan hozzá szeretnéd adni a(z) ${felvittAdat.tipus_nev} típust?`)
 
         if (biztos) {
+            if (!mezok.every(mezo => mezoValidalas(felvittAdat, mezo))) {
+                alert("Minden mezőt ki kell tölteni!")
+                return
+            }
+
             const response = await fetch(Cim.Cim + "/tipusHozzaad", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -50,13 +57,7 @@ const TipusFelvitel= ({  onClose }) => {
                         <label className="form-label" htmlFor={elem.nev}>{elem.megjelenit}</label>
                     </div>
                     <div className="col-sm-8">
-                        <input
-                            id={elem.nev}
-                            type="text"
-                            className="form-control"
-                            value={felvittAdat[elem.nev] || ""}
-                            onChange={(e) => kezelesInput(elem.nev, e.target.value)}
-                        />
+                        <BeviteliMezo elem={elem} adatModFel={felvittAdat} kezelesInput={kezelesInput}/>
                     </div>
                 </div>
             ))}

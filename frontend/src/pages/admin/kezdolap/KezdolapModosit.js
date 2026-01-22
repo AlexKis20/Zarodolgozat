@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react"
 import { FaSave } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
+import { mezoValidalas } from "../../../components/BeviteliMezo"
+import BeviteliMezo from "../../../components/BeviteliMezo"
 import Cim from "../../../components/Cim"
 
-const  BlogModosit= ({ blog_id, onClose }) => {
+const  KezdolapModosit= ({ blog_id, fajtak, onClose }) => {
     const mezok = [
-        {nev: "blog_cim", tipus: "input", megjelenit: "Blog cím:"},
-        {nev: "blog_szoveg", tipus: "textarea", megjelenit: "Blog szöveg:"},
-        {nev: "blog_kep", tipus: "input", megjelenit: "Blog kép:"}
+        {nev: "blog_cim", tipus: "input", megjelenit: "Kezdőlap cím:"},
+        {nev: "blog_szoveg", tipus: "textarea", megjelenit: "Kezdőlap szöveg:"},
+        {nev: "blog_fajta", tipus: "select", opciok: {lista: fajtak, id_mezo: "fajta_id", nev_mezo: "fajta_nev"}, megjelenit: "Kezdőlap fajta:"},
+        {nev: "blog_kep", tipus: "file", megjelenit: "Kezdőlap kép:"}
     ]
     const [modositottAdat, setModositottAdat] = useState({})
     const [tolt, setTolt] = useState(true)
@@ -15,7 +18,7 @@ const  BlogModosit= ({ blog_id, onClose }) => {
 
     const leToltes = async () => {
         try {
-            const response = await fetch(Cim.Cim + "/blog/" + blog_id)
+            const response = await fetch(Cim.Cim + "/kezdolap/" + blog_id)
             const data = await response.json()
 
             if (response.ok) {
@@ -44,13 +47,26 @@ const  BlogModosit= ({ blog_id, onClose }) => {
     }
 
     const modositFuggveny = async () => {
-        const biztos = window.confirm(`Biztosan módosítani szeretnéd a(z) ${modositottAdat.blog_nev} blogot?`)
+        const biztos = window.confirm(`Biztosan módosítani szeretnéd a(z) ${modositottAdat.blog_cim} kezdőlapot?`)
 
         if (biztos) {
-            const response = await fetch(Cim.Cim + "/blogModosit/" + blog_id, {
+            if (!mezok.every(mezo => mezoValidalas(modositottAdat, mezo, true))) {
+                alert("Minden mezőt ki kell tölteni!")
+                return
+            }
+
+            const formData = new FormData()
+            formData.append("blog_cim", modositottAdat.blog_cim)
+            formData.append("blog_szoveg", modositottAdat.blog_szoveg)
+            formData.append("blog_fajta", modositottAdat.blog_fajta)
+            
+            if (modositottAdat.blog_kep instanceof File) {
+                formData.append("blog_kep", modositottAdat.blog_kep)
+            }
+
+            const response = await fetch(Cim.Cim + "/kezdolapModosit/" + blog_id, {
                 method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(modositottAdat)
+                body: formData
             })
 
             const data = await response.json()
@@ -74,7 +90,7 @@ const  BlogModosit= ({ blog_id, onClose }) => {
         <div className="container">
             <div className="row mb-3">
                 <div className="col-12 text-center">
-                    <h4>Blog módosítása</h4>
+                    <h4>Kezdőlap módosítása</h4>
                 </div>
             </div>
 
@@ -84,33 +100,20 @@ const  BlogModosit= ({ blog_id, onClose }) => {
                         <label className="form-label" htmlFor={elem.nev}>{elem.megjelenit}</label>
                     </div>
                     <div className="col-sm-8">
-                        {elem.tipus === "textarea" ? (
-                            <textarea
-                                id={elem.nev}
-                                className="form-control"
-                                value={modositottAdat[elem.nev] || ""}
-                                rows="3"
-                                onChange={(e) => kezelesInput(elem.nev, e.target.value)}
-                            />)
-                        : (
-                            <input
-                                id={elem.nev}
-                                type="text"
-                                className="form-control"
-                                value={modositottAdat[elem.nev] || ""}
-                                onChange={(e) => kezelesInput(elem.nev, e.target.value)}
-                            />)}
+                        <BeviteliMezo elem={elem} adatModFel={modositottAdat} kezelesInput={kezelesInput}/>
                     </div>
                 </div>
             ))}
 
             <div className="row mt-3">
                 <div className="col">
-                    <button className="btn ml-2" onClick={modositFuggveny}>
+                    <button className="btn" onClick={modositFuggveny}>
                         <FaSave /> Mentés
                     </button>
-                    <button className="btn ml-2" onClick={() => onClose(false)}>
-                        <IoCloseSharp />Bezárás
+                </div>
+                <div className="col text-end">
+                    <button className="btn" onClick={() => onClose(false)}>
+                        <IoCloseSharp /> Bezárás
                     </button>
                 </div>
             </div>
@@ -118,5 +121,5 @@ const  BlogModosit= ({ blog_id, onClose }) => {
     )
 }
 
-export default BlogModosit
+export default KezdolapModosit
 

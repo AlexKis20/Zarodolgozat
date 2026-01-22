@@ -1,11 +1,27 @@
 const express = require('express')
 const mysql = require('mysql')
 const cors = require('cors')
+const multer = require('multer')
+const path = require('path')
+const fs = require('fs')
 const app = express()
 const port = 3000
 
+// Multer storage konfigurációja
+const storage = (mappa) => multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, mappa)
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname)
+    }
+})
+
+const upload = (mappa) => multer({ storage: storage(mappa) })
+
 app.use(cors())
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use("/kepek", express.static("kepek"))
 app.use("/termekKep", express.static("termekKep"))
 app.use("/blogKep", express.static("blogKep"))
@@ -252,14 +268,34 @@ app.get('/hirek3', (req, res) => {
 
 app.delete('/termekTorles/:termek_id', (req, res) => {
         const {termek_id} = req.params
-        const sql = `DELETE FROM termek WHERE termek_id=?`
-        pool.query(sql,[termek_id], (err, result) => {
-        if (err) {
-            console.log(err)
-            return res.status(500).json({error:"Hiba"})
-        }
-
-        return res.status(200).json({message:"Sikeres törlés"})
+        
+        // Először lekérdezzük a kép fájlnevét
+        const selectSql = `SELECT termek_kep FROM termek WHERE termek_id=?`
+        pool.query(selectSql, [termek_id], (err, result) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({error:"Hiba"})
+            }
+            
+            // Kép törlése a termekKep mappából
+            if (result.length > 0 && result[0].termek_kep) {
+                const imagePath = path.join('termekKep/', result[0].termek_kep)
+                if (fs.existsSync(imagePath)) {
+                    fs.unlink(imagePath, (err) => {
+                        if (err) console.log('Kép törlési hiba:', err)
+                    })
+                }
+            }
+            
+            // Adatbázisban törlés
+            const deleteSql = `DELETE FROM termek WHERE termek_id=?`
+            pool.query(deleteSql, [termek_id], (err, result) => {
+                if (err) {
+                    console.log(err)
+                    return res.status(500).json({error:"Hiba"})
+                }
+                return res.status(200).json({message:"Sikeres törlés"})
+            })
         })
 })
 
@@ -285,30 +321,68 @@ app.get('/termek/:termek_id', (req, res) => {
 
 // termék módosítás id alapján
 
-app.put('/termekModosit/:termek_id', (req, res) => {
+app.put('/termekModosit/:termek_id', upload("termekKep/").single('termek_kep'), (req, res) => {
     const {termek_id} = req.params
     const {termek_nev, termek_ar, termek_szin, termek_kijelzo, termek_processzor, termek_kapacitas, termek_oprendszer,
-        termek_meret, termek_leiras, termek_kep, termek_marka, termek_tipus} = req.body
-    const sql=`UPDATE termek SET termek_nev=?, termek_ar=?, termek_szin=?, termek_kijelzo=?, termek_processzor=?,
-               termek_kapacitas=?, termek_oprendszer=?, termek_meret=?, termek_leiras=?, termek_kep=?, termek_marka=?,
-               termek_tipus=?
-               WHERE termek_id=?`
-    pool.query(sql,[termek_nev, termek_ar, termek_szin, termek_kijelzo, termek_processzor, termek_kapacitas, termek_oprendszer,
-        termek_meret, termek_leiras, termek_kep, termek_marka, termek_tipus, termek_id], (err, result) => {
-    if (err) {
-        console.log(err)
-        return res.status(500).json({error:"Hiba"})
-    }
+        termek_meret, termek_leiras, termek_marka, termek_tipus} = req.body
+    
+    if (req.file) {
+        // Régi kép törlése
+        let oldImageSql = `SELECT termek_kep FROM termek WHERE termek_id=?`
+        pool.query(oldImageSql, [termek_id], (err, result) => {
+            if (!err && result.length > 0 && result[0].termek_kep) {
+                const oldImagePath = path.join('termekKep/', result[0].termek_kep)
+                if (fs.existsSync(oldImagePath)) {
+                    fs.unlink(oldImagePath, (err) => {
+                        if (err) console.log('Régi kép törlési hiba:', err)
+                    })
+                }
+            }
+        })
 
-    return res.status(200).json({message:"Sikeres módosítás"})
-    })
+        let termek_kep = req.file.originalname
+        let sql=`UPDATE termek SET termek_nev=?, termek_ar=?, termek_szin=?, termek_kijelzo=?, termek_processzor=?,
+            termek_kapacitas=?, termek_oprendszer=?, termek_meret=?, termek_leiras=?, termek_kep=?, termek_marka=?,
+            termek_tipus=?
+            WHERE termek_id=?`
+        pool.query(sql,[termek_nev, termek_ar, termek_szin, termek_kijelzo, termek_processzor, termek_kapacitas, termek_oprendszer,
+            termek_meret, termek_leiras, termek_kep, termek_marka, termek_tipus, termek_id], (err, result) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({error:"Hiba"})
+            }
+
+            return res.status(200).json({message:"Sikeres módosítás"})
+        })
+    } else {
+        // Ha nincs új kép, csak a többi mező update-lése
+        let sql=`UPDATE termek SET termek_nev=?, termek_ar=?, termek_szin=?, termek_kijelzo=?, termek_processzor=?,
+            termek_kapacitas=?, termek_oprendszer=?, termek_meret=?, termek_leiras=?, termek_marka=?,
+            termek_tipus=?
+            WHERE termek_id=?`
+        pool.query(sql,[termek_nev, termek_ar, termek_szin, termek_kijelzo, termek_processzor, termek_kapacitas, termek_oprendszer,
+            termek_meret, termek_leiras, termek_marka, termek_tipus, termek_id], (err, result) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({error:"Hiba"})
+            }
+
+            return res.status(200).json({message:"Sikeres módosítás"})
+        })
+    }
 })
 
 //termék hozzáadás
 
-app.post('/termekHozzaad', (req, res) => {
+app.post('/termekHozzaad', upload("termekKep/").single('termek_kep'), (req, res) => {
     const {termek_nev, termek_ar, termek_szin, termek_kijelzo, termek_processzor, termek_kapacitas, termek_oprendszer,
-        termek_meret, termek_leiras, termek_kep, termek_marka, termek_tipus} = req.body
+        termek_meret, termek_leiras, termek_marka, termek_tipus} = req.body
+    let termek_kep = ""
+    
+    if (req.file) {
+        termek_kep = req.file.originalname
+    }
+    
     const sql=`INSERT INTO termek (termek_id, termek_nev, termek_ar, termek_szin, termek_kijelzo, termek_processzor,
                termek_kapacitas, termek_oprendszer, termek_meret, termek_leiras, termek_kep, termek_marka,
                termek_tipus)
@@ -377,7 +451,7 @@ app.put('/tipusModosit/:tipus_id', (req, res) => {
 
 app.post('/tipusHozzaad', (req, res) => {
     const {tipus_nev}= req.body
-    const sql=`INSERT INTO tipus (tipus_nev) values (?)`
+    const sql=`INSERT INTO tipus (tipus_nev) VALUES (?)`
     pool.query(sql,[tipus_nev], (err, result) => {
     if (err) {
         console.log(err)
@@ -449,24 +523,44 @@ app.post('/markaHozzaad', (req, res) => {
     })
 })
 
-// blog törlés id alapján
+// kezdolap törlés id alapján
 
-app.delete('/blogTorles/:blog_id', (req, res) => {
+app.delete('/kezdolapTorles/:blog_id', (req, res) => {
         const {blog_id} = req.params
-        const sql = `DELETE FROM blog WHERE blog_id=?`
-        pool.query(sql,[blog_id], (err, result) => {
-        if (err) {
-            console.log(err)
-            return res.status(500).json({error:"Hiba"})
-        }
-
-        return res.status(200).json({message:"Sikeres törlés"})
+        
+        // Lekérdezzük a kép fájlnevét
+        const selectSql = `SELECT blog_kep FROM blog WHERE blog_id=?`
+        pool.query(selectSql, [blog_id], (err, result) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({error:"Hiba"})
+            }
+            
+            // Kép törlése a blogKep mappából
+            if (result.length > 0 && result[0].blog_kep) {
+                const imagePath = path.join('blogKep/', result[0].blog_kep)
+                if (fs.existsSync(imagePath)) {
+                    fs.unlink(imagePath, (err) => {
+                        if (err) console.log('Kép törlési hiba:', err)
+                    })
+                }
+            }
+            
+            // Adatbázisban törlés
+            const deleteSql = `DELETE FROM blog WHERE blog_id=?`
+            pool.query(deleteSql, [blog_id], (err, result) => {
+                if (err) {
+                    console.log(err)
+                    return res.status(500).json({error:"Hiba"})
+                }
+                return res.status(200).json({message:"Sikeres törlés"})
+            })
         })
 })
 
-// egy  blog lekérdezése
+// egy  kezdolap lekérdezése
 
-app.get('/blog/:blog_id', (req, res) => {
+app.get('/kezdolap/:blog_id', (req, res) => {
     const sql=`SELECT blog_cim, blog_szoveg, blog_kep, blog_fajta, blog_datum FROM blog WHERE blog_id=?`
     const {blog_id} = req.params
     pool.query(sql,[blog_id], ( err, result) => {
@@ -481,9 +575,9 @@ app.get('/blog/:blog_id', (req, res) => {
     })
 })
 
-// minden blog lekérdezése
+// minden kezdolap lekérdezése
 
-app.get('/blog', (req, res) => {
+app.get('/kezdolap', (req, res) => {
     const sql=`SELECT * FROM  blog `
     pool.query(sql, ( err, result) => {
         if (err){
@@ -494,19 +588,15 @@ app.get('/blog', (req, res) => {
             return res.status(404).json({error:"Nincs adat!"})
         }
         return res.status(200).json(result)
-
     
     })
-
-    
-
 })
 
 
-// egy  blog lekérdezése
+// egy kezdolap lekérdezése
 
-app.get('/blog/:blog_id', (req, res) => {
-    const sql=`SELECT blog_cim, blog_szoveg, blog_kep FROM blog WHERE blog_id=?`
+app.get('/kezdolap/:blog_id', (req, res) => {
+    const sql=`SELECT blog_cim, blog_szoveg, blog_kep, blog_fajta FROM blog WHERE blog_id=?`
     const {blog_id} = req.params
     pool.query(sql,[blog_id], ( err, result) => {
         if (err){
@@ -520,30 +610,61 @@ app.get('/blog/:blog_id', (req, res) => {
     })
 })
 
-// blog módosítás id alapján
+// kezdolap módosítás id alapján
 
-app.put('/blogModosit/:blog_id', (req, res) => {
+app.put('/kezdolapModosit/:blog_id', upload("blogKep/").single('blog_kep'), (req, res) => {
     const {blog_id} = req.params
-    const {blog_cim,blog_szoveg,blog_kep} = req.body
-    const sql=`UPDATE blog SET blog_cim=?,blog_szoveg=?,blog_kep=? WHERE blog_id=?`
-    pool.query(sql,[blog_cim,blog_szoveg,blog_kep,blog_id], (err, result) => {
-    if (err) {
-        console.log(err)
-        return res.status(500).json({error:"Hiba"})
-    }
+    const {blog_cim,blog_szoveg,blog_fajta} = req.body
 
-    return res.status(200).json({message:"Sikeres módosítás"})
-    })
+    if (req.file) {
+        // Régi kép törlése
+        const oldImageSql = `SELECT blog_kep FROM blog WHERE blog_id=?`
+        pool.query(oldImageSql, [blog_id], (err, result) => {
+            if (!err && result.length > 0 && result[0].blog_kep) {
+                const oldImagePath = path.join('blogKep/', result[0].blog_kep)
+                if (fs.existsSync(oldImagePath)) {
+                    fs.unlink(oldImagePath, (err) => {
+                        if (err) console.log('Régi kép törlési hiba:', err)
+                    })
+                }
+            }
+        })
+        
+        const blog_kep = req.file.originalname
+        const sql=`UPDATE blog SET blog_cim=?,blog_szoveg=?,blog_kep=?,blog_fajta=? WHERE blog_id=?`
+        pool.query(sql,[blog_cim,blog_szoveg,blog_kep,blog_fajta,blog_id], (err, result) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({error:"Hiba"})
+            }
+            return res.status(200).json({message:"Sikeres módosítás"})
+        })
+    } else {
+        // Ha nincs új kép, csak a többi mező update-lése
+        const sql=`UPDATE blog SET blog_cim=?,blog_szoveg=?,blog_fajta=? WHERE blog_id=?`
+        pool.query(sql,[blog_cim,blog_szoveg,blog_fajta,blog_id], (err, result) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({error:"Hiba"})
+            }
+            return res.status(200).json({message:"Sikeres módosítás"})
+        })
+    }
 })
 
-//blog hozzáadás
+//kezdőlap hozzáadás
 
-app.post('/blogHozzaad', (req, res) => {
-    const {blog_cim,blog_szoveg,blog_kep} = req.body
+app.post('/kezdolapHozzaad', upload("blogKep/").single('blog_kep'), (req, res) => {
+    const {blog_cim,blog_szoveg,blog_fajta} = req.body
     const blog_datum = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    const blog_fajta = 3;
-    const sql=`INSERT INTO blog (blog_cim,blog_szoveg,blog_datum,blog_kep, blog_fajta) values (?,?,?,?,?)`
-    pool.query(sql,[blog_cim,blog_szoveg,blog_datum,blog_kep, blog_fajta], (err, result) => {
+    let blog_kep = ""
+
+    if (req.file) {
+        blog_kep = req.file.originalname
+    }
+
+    const sql=`INSERT INTO blog (blog_cim,blog_szoveg,blog_datum,blog_kep,blog_fajta) VALUES (?,?,?,?,?)`
+    pool.query(sql,[blog_cim,blog_szoveg,blog_datum,blog_kep,blog_fajta], (err, result) => {
     if (err) {
         console.log(err)
         return res.status(500).json({error:"Hiba"})
@@ -552,11 +673,11 @@ app.post('/blogHozzaad', (req, res) => {
     })
 })
 
-// minden vélemény  lekérdezése
+//minden fajta lekérdezése
 
-app.get('/velemeny', (req, res) => {
-    const sql=`SELECT * FROM  velemeny ORDER BY velemeny_datum DESC`
-    pool.query(sql, ( err, result) => {
+app.get('/fajta', (req, res) => {   
+    const sql=`SELECT fajta_id, fajta_nev FROM fajta`
+    pool.query(sql, (err, result) => {
         if (err){
             console.log(err)
             return res.status(500).json({error:"Hiba!"})
@@ -565,10 +686,9 @@ app.get('/velemeny', (req, res) => {
             return res.status(404).json({error:"Nincs adat!"})
         }
         return res.status(200).json(result)
-
-
     })
 })
+
 // minden vélemény  lekérdezése
 
 app.get('/velemeny', (req, res) => {
@@ -583,9 +703,8 @@ app.get('/velemeny', (req, res) => {
         }
         return res.status(200).json(result)
 
-    
-    })
 
+    })
 })
 
 // egy  vélemény lekérdezése
@@ -834,7 +953,7 @@ app.delete('/akcioTorles/:akcio_id', (req, res) => {
 app.post('/akcioHozzaad', (req, res) => {
     const {akcio_nev, akcio_kedvezmeny, akcio_tipus, akcio_kezdete, akcio_vege, termek_id_lista} = req.body
     const termek_id_lista_str = termek_id_lista.length > 0 ? `(${termek_id_lista.join(',')})` : '(NULL)';
-    const sql=`INSERT INTO akcio (akcio_nev, akcio_kedvezmeny, akcio_tipus, akcio_kezdete, akcio_vege) values (?,?,?,?,?)`
+    const sql=`INSERT INTO akcio (akcio_nev, akcio_kedvezmeny, akcio_tipus, akcio_kezdete, akcio_vege) VALUES (?,?,?,?,?)`
     pool.getConnection((err, connection) => {
         if (err) {
             console.log(err);
@@ -870,6 +989,14 @@ app.post('/akcioHozzaad', (req, res) => {
         });
     });
 })
+
+
+
+
+
+
+
+
 
 
 
