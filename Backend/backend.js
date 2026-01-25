@@ -948,6 +948,7 @@ app.delete('/akcioTorles/:akcio_id', (req, res) => {
         return res.status(200).json({message:"Sikeres törlés"})
         })
 })
+
 // akció felvitele
 
 app.post('/akcioHozzaad', (req, res) => {
@@ -989,6 +990,95 @@ app.post('/akcioHozzaad', (req, res) => {
         });
     });
 })
+// rendelés hozzáad
+
+app.post('/rendelesHozzaadTermekkel', (req, res) => {
+    const {rendeles_felhasznalo_id, rendeles_nev, rendeles_cim, rendeles_telefonszam, rendeles_datum, rendeles_teljesitve, rendeles_termekek} = req.body
+
+    const sql=`INSERT INTO rendeles (rendeles_id, rendeles_felhasznalo_id, rendeles_nev, rendeles_cim, rendeles_telefonszam, rendeles_datum, rendeles_teljesitve) VALUES (NULL,?,?,?,?,?,?)`
+    pool.getConnection((err, connection) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: "Hiba a kapcsolat létrehozásakor" });
+        }
+        connection.beginTransaction((err) => {
+            if (err) { throw err; }
+                connection.query(sql,[rendeles_felhasznalo_id, rendeles_nev, rendeles_cim, rendeles_telefonszam, rendeles_datum, rendeles_teljesitve], (err, result) => {
+                if (err) {
+                    return connection.rollback(() => {
+                        console.log(err);
+                        res.status(500).json({ error: "Hiba a rendelés hozzáadásakor" });
+                    })}
+                const rendeles_id = result.insertId;
+
+                let rendelesTermekParameterek = []
+                let rendelesTermekKerdojelek = ""
+                for (let termek of rendeles_termekek) {
+                    rendelesTermekParameterek.push(rendeles_id, termek.rendeles_termek_id, termek.rendeles_ar, termek.rendeles_darab)
+                    rendelesTermekKerdojelek += rendelesTermekKerdojelek ? ",(?,?,?,?)" : "(?,?,?,?)"
+                }
+                let rendelesTermekHozzadasSql = `INSERT INTO rendeles_termek (rendeles_id, rendeles_termek_id, rendeles_ar, rendeles_darab) VALUES ${rendelesTermekKerdojelek}`
+                connection.query(rendelesTermekHozzadasSql, rendelesTermekParameterek, (err, result) => {
+                    if (err) {
+                        return connection.rollback(() => {
+                            console.log(err);
+                            res.status(500).json({ error: "Hiba a rendelés termék hozzáadásakor" });
+                        })}
+                    connection.commit((err) => {
+                        if (err) {
+                            return connection.rollback(() => {
+                                console.log(err);
+                                res.status(500).json({ error: "Hiba a tranzakció véglegesítésekor" });
+                            })}
+                        return res.status(200).json({ message: "Sikeres hozzáadás" });
+                    }); 
+                });
+            });
+        });
+    });
+})
+
+// rendeles hozzáadás
+
+app.post('/rendelesHozzaad', (req, res) => {
+    const {rendeles_felhasznalo_id, rendeles_nev, rendeles_cim, rendeles_telefonszam, rendeles_datum, rendeles_teljesitve} = req.body
+    
+    const sql=`INSERT INTO rendeles (rendeles_id, rendeles_felhasznalo_id, rendeles_nev, rendeles_cim, rendeles_telefonszam, rendeles_datum, rendeles_teljesitve)
+               VALUES (NULL,?,?,?,?,?,?)`
+    pool.query(sql,[rendeles_felhasznalo_id, rendeles_nev, rendeles_cim, rendeles_telefonszam, rendeles_datum, rendeles_teljesitve], (err, result) => {
+    if (err) {
+        console.log(err)
+        return res.status(500).json({error:"Hiba"})
+    }
+    return res.status(200).json({message:"Sikeres hozzáadás"})
+    })
+})
+
+//rendeles termék hozzáad
+
+app.post('/rendelesTermekHozzaad', (req, res) => {
+    const {rendeles_id, rendeles_termekek} = req.body
+    let rendelesTermekParameterek = []
+    let rendelesTermekKerdojelek = ""
+    for (let termek of rendeles_termekek) {
+        rendelesTermekParameterek.push(rendeles_id, termek.rendeles_termek_id, termek.rendeles_ar, termek.rendeles_darab)
+        rendelesTermekKerdojelek += rendelesTermekKerdojelek ? ",(?,?,?,?)" : "(?,?,?,?)"
+    }
+    let rendelesTermekHozzadasSql = `INSERT INTO rendeles_termek (rendeles_id, rendeles_termek_id, rendeles_ar, rendeles_darab) VALUES ${rendelesTermekKerdojelek}`
+    pool.query(rendelesTermekHozzadasSql,rendelesTermekParameterek, (err, result) => {
+    if (err) {
+        console.log(err)
+        return res.status(500).json({error:"Hiba"})
+    }
+    return res.status(200).json({message:"Sikeres hozzáadás"})
+    })
+})
+
+
+
+
+
+
 
 
 
