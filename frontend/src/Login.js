@@ -27,9 +27,10 @@ const Login = () => {
 
       localStorage.setItem('token', data.token);
       localStorage.setItem('role', data.role);
+      localStorage.setItem('fid', data.fid);
 
       alert('Sikeres bejelentkezés!');
-      navigate('/menu1');
+      navigate('/Hirek');
     } catch (err) {
       setError(err.message);
     }

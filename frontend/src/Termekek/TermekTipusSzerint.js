@@ -3,13 +3,16 @@
 import { useState,useEffect } from "react"
 import Cim from "../Cim"
 import "../App.css"
+import { div } from "framer-motion/m"
 
 const TermekTipusSzerint=({kivalasztott})=>{
     const [adatok,setAdatok]=useState([])
     const [tolt,setTolt]=useState(true)
     const [hiba,setHiba]=useState(false)
 
-
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+    const loggedIn = !!token;
 
     useEffect(()=>{
 
@@ -47,6 +50,22 @@ const TermekTipusSzerint=({kivalasztott})=>{
 
         leToltes()
     },[kivalasztott])
+
+//kosárba helyezés---------------------------------
+    const vasarlas = (termek_id) => {
+        //alert(termek_id)
+        let kosar = localStorage.getItem("kosar");
+        if (kosar===null){
+            kosar=""+termek_id;
+            alert("ures")
+        }
+        else{
+            kosar=kosar+","+termek_id;
+        }
+        
+        localStorage.setItem('kosar', kosar);
+    }
+//-------------------------------------------------
 
     if (tolt)
         return (
@@ -88,7 +107,7 @@ const TermekTipusSzerint=({kivalasztott})=>{
         />
       </div>
 
-      <div className="price">💰 {elem.termek_ar} Ft</div>
+      <div className="price">💵 {elem.termek_ar} Ft</div>
 
      <div className="specList">
   {elem.termek_szin && (
@@ -121,6 +140,15 @@ const TermekTipusSzerint=({kivalasztott})=>{
 </div>
 
       <div className="productType">{elem.tipus_nev}</div>
+
+
+{loggedIn ? (
+            <button onClick={() => vasarlas(elem.termek_id)} className="cartButton">
+                <span className="cartIcon">🛒</span>
+            </button>
+        ) : null}
+
+
 
     </div>
   ))}

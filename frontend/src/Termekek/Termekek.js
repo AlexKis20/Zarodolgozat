@@ -5,7 +5,7 @@ import TermekTipusSzerint from './TermekTipusSzerint';
 
 const Termekek=()=>{
     const [kivalasztott,setKivalasztott]=useState(1)
-
+    
     return (
         <div>
             <div style={{textAlign:"center",marginBottom: "20px", fontSize: "30px", fontWeight: "bold"}}>Termékek</div>

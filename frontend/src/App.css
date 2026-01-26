@@ -260,3 +260,117 @@ textarea.form-control {
   padding: 8px 14px;
   border-radius: 999px;
 }
+
+.blogTitle {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+  color: #111827;
+  position: relative;
+}
+
+/* finom aláhúzás */
+.blogTitle::after {
+  content: "";
+  display: block;
+  width: auto;
+  height: 4px;
+  background: linear-gradient(90deg, #2563eb, #60a5fa);
+  border-radius: 999px;
+  margin-top: 8px;
+}
+
+.blogText {
+  font-size: 1.15rem;
+  line-height: 1.75;
+  color: #374151;
+  max-width: 750px;
+  margin-top: 16px;
+  font-weight: 400;
+}
+
+/* opcionális: első betű kiemelése (magazin stílus) */
+.blogText::first-letter {
+  font-size: 2.5rem;
+  font-weight: 700;
+  float: left;
+  line-height: 1;
+  padding-right: 6px;
+  color: #2563eb;
+}
+
+.productCard {
+  position: relative; /* FONTOS */
+}
+
+.cartButton {
+  position: absolute;
+   bottom: 16px;   /* ⬅️ ALUL */
+  right: 16px;    /* ⬅️ JOBBRA */
+
+  background: #2563eb;
+  border: none;
+  border-radius: 999px;
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cartButton:hover {
+  transform: scale(1.08);
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.45);
+}
+
+.cartIcon {
+  font-size: 1.4rem;
+  color: white;
+}
+
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative; /* fontos a középre pozicionáláshoz */
+}
+.navbar-center {
+  animation: fadeDown 0.6s ease-out;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  pointer-events: none; /* ne legyen kattintható */
+
+  background: linear-gradient(90deg, #e0f2fe, #c7d2fe);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-center {
+    font-size: 20px;
+    letter-spacing: 2px;
+  }
+}

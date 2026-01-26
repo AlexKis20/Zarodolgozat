@@ -78,7 +78,7 @@ if (tolt)
 else return (
 <div>
 <div className="d-flex flex-column align-items-center ">
-                  <div>Akció</div>
+                  <div className="blogTitle">Akció</div>
           
           {/* Gombok sorban, középre igazítva */}
           <div className="d-flex justify-content-center mb-3 gap-3">
@@ -153,7 +153,7 @@ else return (
 
 
         <div className="d-flex flex-column align-items-center ">
-                  <div>Új megjelenés</div>
+                  <div className="blogTitle">Új megjelenés</div>
           
           {/* Gombok sorban, középre igazítva */}
           <div className="d-flex justify-content-center mb-3 gap-3">
@@ -235,7 +235,7 @@ else return (
 
 
         <div className="d-flex flex-column align-items-center ">
-                  <div>Blog</div>
+                  <h2 className="blogTitle">Blog</h2>
           
           {/* Gombok sorban, középre igazítva */}
           <div className="d-flex justify-content-center mb-3 gap-3">
@@ -297,8 +297,8 @@ else return (
                 alt="slide"
                 className="kep"
                 />
-                <p className="mt-4 text-lg font-medium">
-                {adatok3[index3].blog_szoveg}
+                <p className="blogText">
+                  {adatok3[index3].blog_szoveg}
                 </p>
                 </motion.div>
                 </AnimatePresence>

@@ -13,6 +13,7 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
+    localStorage.removeItem("kosar");
     navigate("/Hirek");
   };
 
@@ -46,11 +47,17 @@ const Navbar = () => {
           )}
           {loggedIn && role === "user" && (
             <Link to="/user" className="link" onClick={() => setMenuOpen(false)}>
-              User menü
+              Kosár
             </Link>
           )}
         </div>
       </div>
+      
+        {/* 🔥 KÖZÉPSŐ DÍSZ FELIRAT */}
+  <div className="navbar-center">
+    NEXTIFY
+  </div>
+{/*jobb oldal */}
 
       <div className="navbar-right">
         {loggedIn ? (

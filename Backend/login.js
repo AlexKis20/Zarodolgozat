@@ -54,7 +54,8 @@ router.post('/login', (req, res) => {
       const token = jwt.sign(
         {
           username: rows[0].felhasznalo_nev,
-          role: rows[0].role
+          role: rows[0].role,
+          fid: rows[0].felhasznalo_id
         },
         SECRET_KEY,
         { expiresIn: '1h' }
@@ -62,7 +63,8 @@ router.post('/login', (req, res) => {
 
       return res.json({
         token: token,
-        role: rows[0].role
+        role: rows[0].role,
+        fid: rows[0].felhasznalo_id
       });
     });
   });
