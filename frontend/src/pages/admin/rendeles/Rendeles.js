@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react"
 import { FaRegTrashCan, FaPencil } from "react-icons/fa6";
-import { FaPlus } from "react-icons/fa";
+import { FaList } from "react-icons/fa";
 import Cim from "../../../components/Cim"
 import Modal from "../../../components/Modal"
 import RendelesModosit from "./RendelesModosit"
+import RendelesTermekek from "./RendelesTermekek";
 import Kereses from "../../../components/Kereses";
 import Rendezes from "../../../components/Rendezes";
 
@@ -15,6 +16,7 @@ const Rendeles = () => {
     const [siker, setSiker] = useState(false)
     const [ures, setUres] = useState(false)
     const [modalOpenModosit, setModalOpenModosit] = useState(false)
+    const [modalOpenTermekek, setModalOpenTermekek] = useState(false)
     const [selectedRendelesId, setSelectedRendelesId] = useState(null)
 
     const leToltes = async () => {
@@ -79,6 +81,18 @@ const Rendeles = () => {
         }
     }
 
+    const openModalTermekek = (rendeles_id) => {
+        setSelectedRendelesId(rendeles_id)
+        setModalOpenTermekek(true)
+    }
+
+    const closeModalTermekek = (frissit) => {
+        setModalOpenTermekek(false)
+        if (frissit) {
+            leToltes()
+        }
+    }
+
     const teljesitPipa = async (rendeles_id) => {
         let adat = adatok.find(elem => elem.rendeles_id === rendeles_id)
         adat.rendeles_teljesitve = adat.rendeles_teljesitve === 1 ? 0 : 1
@@ -123,6 +137,7 @@ const Rendeles = () => {
                 <div className="col-2 text-center fw-bold">Név</div>
                 <div className="col-2 text-center fw-bold">Cím</div>
                 <div className="col-2 text-center fw-bold">Dátum</div>
+                <div className="col-1 text-center fw-bold">Termékek</div>
                 <div className="col-1 text-center fw-bold">Teljesített</div>
                 <div className="col-1 text-center fw-bold">Törlés</div>
                 <div className="col-1 text-center fw-bold">Módosítás</div>
@@ -132,6 +147,14 @@ const Rendeles = () => {
                     <div className="col-2 text-center">{elem.rendeles_nev}</div>
                     <div className="col-2 text-center">{elem.rendeles_cim}</div>
                     <div className="col-2 text-center">{new Date(elem.rendeles_datum).toLocaleString('hu-HU')}</div>
+                    <div className="col-1 text-center">
+                        <button
+                            className="btn btn-primary  ml-2"
+                            onClick={() => openModalTermekek(elem.rendeles_id)}
+                        >
+                            <FaList />
+                        </button>
+                    </div>
                     <div className="col-1 text-center">
                         <input 
                             type="checkbox" 
@@ -159,6 +182,9 @@ const Rendeles = () => {
             ))}
             <Modal isOpen={modalOpenModosit} onClose={() => closeModalModosit(false)}>
                 <RendelesModosit rendeles_id={selectedRendelesId} onClose={closeModalModosit} />
+            </Modal>
+            <Modal isOpen={modalOpenTermekek} onClose={() => closeModalTermekek(false)}>
+                <RendelesTermekek rendeles_id={selectedRendelesId} onClose={closeModalTermekek} />
             </Modal>
         </div>
     )

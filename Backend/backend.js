@@ -1195,7 +1195,25 @@ app.delete('/rendelesTorles/:rendeles_id', (req, res) => {
 })
 
 
-
+// rendeles termékek lekérdezése
+app.get('/rendelesTermekek/:rendeles_id', (req, res) => {
+    const {rendeles_id} = req.params
+    const sql=`SELECT termek_id, termek_nev, rendeles_ar, rendeles_darab
+               FROM rendeles_termek
+               JOIN termek ON rendeles_termek_id = termek_id
+               WHERE rendeles_id=?`
+               
+    pool.query(sql, [rendeles_id], (err, result) => {
+        if (err){
+            console.log(err)
+            return res.status(500).json({error:"Hiba!"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat!"})
+        }
+        return res.status(200).json(result)
+    })
+})
 
 
 
