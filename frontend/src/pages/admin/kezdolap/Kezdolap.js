@@ -1,19 +1,17 @@
 import { useState, useEffect } from "react"
 import { FaRegTrashCan, FaPencil } from "react-icons/fa6";
-import { FaPlus } from "react-icons/fa";
-import "./Termek.css"
 import Cim from "../../../components/Cim"
 import Modal from "../../../components/Modal"
-import TermekModosit from "./TermekModosit"
-import TermekFelvitel from "./TermekFelvitel";
+import KezdolapModosit from "./KezdolapModosit";
+import KezdolapFelvitel from "./KezdolapFelvitel";
+import { FaPlus } from "react-icons/fa";
 import Kereses from "../../../components/Kereses";
 import Rendezes from "../../../components/Rendezes";
 
 
-const Termek= () => {
+const Kezdolap= () => {
     const [adatok, setAdatok] = useState([])
-    const [markak, setMarkak] = useState([])
-    const [tipusok, setTipusok] = useState([])
+    const [fajtak, setFajtak] = useState([])
     const [keresettAdatok, setKeresettAdatok] = useState([])
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
@@ -21,27 +19,22 @@ const Termek= () => {
     const [ures, setUres] = useState(false)
     const [modalOpenModosit, setModalOpenModosit] = useState(false)
     const [modalOpenHozzaad, setModalOpenHozzaad] = useState(false)
-    const [selectedTermekId, setSelectedTermekId] = useState(null)
-
+    const [selectedBlogId, setSelectedBlogId] = useState(null)
+        
     const leToltes = async () => {
         try {
-            const response = await fetch(Cim.Cim + "/termek")
+            const response = await fetch(Cim.Cim + "/kezdolap")
             const data = await response.json()
+            const fajtaResponse = await fetch(Cim.Cim + "/fajta")
+            const fajtaData = await fajtaResponse.json()
 
-            const markaResponse = await fetch(Cim.Cim + "/marka")
-            const markaData = await markaResponse.json()
-
-            const tipusResponse = await fetch(Cim.Cim + "/tipus")
-            const tipusData = await tipusResponse.json()
-    
-            if (response.ok && markaResponse.ok && tipusResponse.ok) {
-                setMarkak(markaData)
-                setTipusok(tipusData)
+            if (response.ok && fajtaResponse.ok) {
                 setAdatok(data)
+                setFajtak(fajtaData)
                 setKeresettAdatok(data)
                 setTolt(false)
-            } 
-            else if (response.status === 404 || markaResponse.status === 404 || tipusResponse.status === 404) {
+            }
+            else if (response.status === 404 || fajtaResponse.status === 404) {
                 setUres(true)
                 setTolt(false)
             }
@@ -59,11 +52,12 @@ const Termek= () => {
         leToltes()
     }, [siker])
 
-    const torlesFuggveny = async (termek_id, termek_nev) => {
-        const biztos = window.confirm(`Biztosan törölni szeretnéd a(z) ${termek_nev} termékét?`)
+
+    const torlesFuggveny = async (blog_id, blog_cim) => {
+        const biztos = window.confirm(`Biztosan törölni szeretnéd a(z) ${blog_cim} kezdőlapot?`)
 
         if (biztos) {
-            const response = await fetch(Cim.Cim + "/termekTorles/" + termek_id, {
+            const response = await fetch(Cim.Cim + "/kezdolapTorles/" + blog_id, {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" }
             })
@@ -78,15 +72,15 @@ const Termek= () => {
             }
         }
     }
-
-    const openModalModosit = (termek_id) => {
-        setSelectedTermekId(termek_id)
+    
+    const openModalModosit = (blog_id) => {
+        setSelectedBlogId(blog_id)
         setModalOpenModosit(true)
     }
 
     const closeModalModosit = (frissit) => {
         setModalOpenModosit(false)
-        setSelectedTermekId(null)
+        setSelectedBlogId(null)
         if (frissit) {
             leToltes()
         }
@@ -103,6 +97,33 @@ const Termek= () => {
         }
     }
 
+
+    if (tolt)
+        return <div style={{ textAlign: "center" }}>Adatok betöltése folyamatban...</div>
+    
+    if (ures)
+        return (
+            <div className="container">
+                <div className="row mb-3">
+                    <div className="col-5"></div>
+                    <div className="col-2 text-center">Nincs adat!</div>
+                    <div className="col-5 text-center">
+                        Felvitel
+                        <div>
+                            <button
+                            className="btn btn-alert  ml-2"
+                                onClick={() => openModalHozzaad()} >      
+                                <FaPlus />
+                        </button>
+                        </div>
+                    </div>
+                </div>
+                <Modal isOpen={modalOpenHozzaad} onClose={closeModalHozzaad}>
+                    <KezdolapFelvitel onClose={closeModalHozzaad} />
+                </Modal>
+            </div>
+        )
+    
     if (hiba)
         return <div>Hiba történt az adatok betöltése közben.</div>
 
@@ -110,29 +131,29 @@ const Termek= () => {
         <div className="container">
             <div className="row justify-content-center mb-3">
                 <div className="col-6 text-center">
-                    <Kereses adatok={adatok} keresettMezok={["termek_nev"]} setKeresettAdatok={setKeresettAdatok} />
+                    <Kereses adatok={adatok} keresettMezok={["blog_cim"]} setKeresettAdatok={setKeresettAdatok} />
                 </div>
                 <div className="col-4 text-center">
                     <Rendezes adatok={keresettAdatok} setKeresettAdatok={setKeresettAdatok}>
                         <option value="0" disabled hidden>Rendezés</option>
-                        <option value="termek_nev|1">Termék neve növekvő</option>
-                        <option value="termek_nev|2">Termék neve csökkenő</option>
+                        <option value="blog_cim|1">Kezdőlap címe növekvő</option>
+                        <option value="blog_cim|2">Kezdőlap címe csökkenő</option>
                     </Rendezes>
                 </div>
             </div>
             <div className="row justify-content-center mb-3">
-                <div className="col-6 text-center fw-bold">Termék neve</div>
+                <div className="col-6 text-center fw-bold">Kezdőlap címe</div>
                 <div className="col-1 text-center fw-bold">Törlés</div>
                 <div className="col-1 text-center fw-bold">Módosítás</div>
                 <div className="col-1 text-center fw-bold">Felvitel</div>
             </div>
             {keresettAdatok.map((elem, index) => (
-                <div className="row justify-content-center mb-3" key={elem.termek_id || index}>
-                    <div className="col-6 text-center">{elem.termek_nev}</div>
+                <div className="row justify-content-center mb-3">
+                    <div className="col-6 text-center">{elem.blog_cim}</div>
                     <div className="col-1 text-center">
                         <button
                             className="btn btn-danger  ml-2"
-                            onClick={() => torlesFuggveny(elem.termek_id, elem.termek_nev)}
+                            onClick={() => torlesFuggveny(elem.blog_id, elem.blog_cim)}
                         >
                             <FaRegTrashCan />
                         </button>
@@ -140,7 +161,7 @@ const Termek= () => {
                     <div className="col-1 text-center">
                         <button
                             className="btn btn-alert  ml-2"
-                            onClick={() => openModalModosit(elem.termek_id)}
+                            onClick={() => openModalModosit(elem.blog_id)}
                         >
                             <FaPencil />
                         </button>
@@ -158,13 +179,14 @@ const Termek= () => {
                 </div>
             ))}
             <Modal isOpen={modalOpenModosit} onClose={() => closeModalModosit(false)}>
-                <TermekModosit termek_id={selectedTermekId} onClose={closeModalModosit} markak={markak} tipusok={tipusok} />
+                <KezdolapModosit blog_id={selectedBlogId} onClose={closeModalModosit} fajtak={fajtak} />
             </Modal>
             <Modal isOpen={modalOpenHozzaad} onClose={() => closeModalHozzaad(false)}>
-                <TermekFelvitel onClose={closeModalHozzaad} markak={markak} tipusok={tipusok} />
+                <KezdolapFelvitel onClose={closeModalHozzaad} fajtak={fajtak} />
             </Modal>
         </div>
     )
 }
 
-export default Termek
+export default Kezdolap
+

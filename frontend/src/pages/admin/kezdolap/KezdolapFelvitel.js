@@ -1,14 +1,17 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { FaSave } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
-import { FaPlus } from "react-icons/fa";
-import BeviteliMezo from "../../../components/BeviteliMezo"
 import { mezoValidalas } from "../../../components/BeviteliMezo"
-import "./Marka.css"
+import BeviteliMezo from "../../../components/BeviteliMezo"
 import Cim from "../../../components/Cim"
 
-const MarkaFelvitel= ({  onClose }) => {
-    const mezok = [{nev: "marka_nev", tipus: "input", megjelenit: "Márka név:"}]
+const KezdolapFelvitel= ({ fajtak, onClose }) => {
+    const mezok = [
+        {nev: "blog_cim", tipus: "input", megjelenit: "Kezdőlap cím:"},
+        {nev: "blog_szoveg", tipus: "textarea", megjelenit: "Kezdőlap szöveg:"},
+        {nev: "blog_fajta", tipus: "select", opciok: {lista: fajtak, id_mezo: "fajta_id", nev_mezo: "fajta_nev"}, megjelenit: "Kezdőlap fajta:"},
+        {nev: "blog_kep", tipus: "file", megjelenit: "Kezdőlap kép:"}
+    ]
     const [felvittAdat, setFelvittAdat] = useState({})
     const kezelesInput = (kulcs, ertek) => {
         setFelvittAdat(prev => ({
@@ -18,7 +21,7 @@ const MarkaFelvitel= ({  onClose }) => {
     }
 
     const felvittFuggveny = async () => {
-        const biztos = window.confirm(`Biztosan hozzá szeretnéd adni a(z) ${felvittAdat.marka_nev} márkát?`)
+        const biztos = window.confirm(`Biztosan hozzá szeretnéd adni a(z) ${felvittAdat.blog_cim} kezdőlapot?`)
 
         if (biztos) {
             if (!mezok.every(mezo => mezoValidalas(felvittAdat, mezo))) {
@@ -26,10 +29,18 @@ const MarkaFelvitel= ({  onClose }) => {
                 return
             }
 
-            const response = await fetch(Cim.Cim + "/markaHozzaad", {
+            const formData = new FormData()
+            formData.append("blog_cim", felvittAdat.blog_cim)
+            formData.append("blog_szoveg", felvittAdat.blog_szoveg)
+            formData.append("blog_fajta", felvittAdat.blog_fajta)
+
+            if (felvittAdat.blog_kep instanceof File) {
+                formData.append("blog_kep", felvittAdat.blog_kep)
+            }
+
+            const response = await fetch(Cim.Cim + "/kezdolapHozzaad", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(felvittAdat)
+                body: formData
             })
 
             const data = await response.json()
@@ -47,10 +58,10 @@ const MarkaFelvitel= ({  onClose }) => {
         <div className="container">
             <div className="row mb-3">
                 <div className="col-12 text-center">
-                    <h4>Márka felvitele</h4>
+                    <h4>Kezdőlap felvitele</h4>
                 </div>
             </div>
-            
+
             {mezok.map((elem, index) => (
                 <div className="row mb-2 align-items-center" key={index}>
                     <div className="col-sm-4">
@@ -78,4 +89,5 @@ const MarkaFelvitel= ({  onClose }) => {
     )
 }
 
-export default MarkaFelvitel
+export default KezdolapFelvitel
+

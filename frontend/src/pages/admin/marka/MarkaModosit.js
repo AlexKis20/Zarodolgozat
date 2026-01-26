@@ -2,6 +2,8 @@ import { useState, useEffect } from "react"
 import { FaSave } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
 import "./Marka.css"
+import BeviteliMezo from "../../../components/BeviteliMezo"
+import { mezoValidalas } from "../../../components/BeviteliMezo"
 import Cim from "../../../components/Cim"
 
 const MarkaModosit= ({ marka_id, onClose }) => {
@@ -44,6 +46,10 @@ const MarkaModosit= ({ marka_id, onClose }) => {
         const biztos = window.confirm(`Biztosan módosítani szeretnéd a(z) ${modositottAdat.marka_nev} márkát?`)
 
         if (biztos) {
+            if (!mezok.every(mezo => mezoValidalas(modositottAdat, mezo, true))) {
+                alert("Minden mezőt ki kell tölteni!")
+                return
+            }
             const response = await fetch(Cim.Cim + "/markaModosit/" + marka_id, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
@@ -81,24 +87,20 @@ const MarkaModosit= ({ marka_id, onClose }) => {
                         <label className="form-label" htmlFor={elem.nev}>{elem.megjelenit}</label>
                     </div>
                     <div className="col-sm-8">
-                        <input
-                            id={elem.nev}
-                            type="text"
-                            className="form-control"
-                            value={modositottAdat[elem.nev] || ""} 
-                            onChange={(e) => kezelesInput(elem.nev, e.target.value)}
-                        />
+                        <BeviteliMezo elem={elem} adatModFel={modositottAdat} kezelesInput={kezelesInput}/>
                     </div>
                 </div>
             ))}
 
             <div className="row mt-3">
                 <div className="col">
-                    <button className="btn ml-2" onClick={modositFuggveny}>
+                    <button className="btn" onClick={modositFuggveny}>
                         <FaSave /> Mentés
                     </button>
-                    <button className="btn ml-2" onClick={() => onClose(false)}>
-                        <IoCloseSharp />Bezárás
+                </div>
+                <div className="col text-end">
+                    <button className="btn" onClick={() => onClose(false)}>
+                        <IoCloseSharp /> Bezárás
                     </button>
                 </div>
             </div>

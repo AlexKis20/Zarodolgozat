@@ -1,14 +1,22 @@
 import * as AiIcons from "react-icons/ai";
-import * as IoIcons from "react-icons/io";
-import { BiLogoBlogger } from "react-icons/bi";
 import { IoTabletPortraitSharp } from "react-icons/io5";
 import { LuType } from "react-icons/lu"; 
+import { FiPercent } from "react-icons/fi";
+import { TbBrandApple } from "react-icons/tb";
+import { TbFileLike } from "react-icons/tb";
+import { TfiWrite } from "react-icons/tfi";
 
 export const SidebarData = [
         {
         title: "Vezérlőpult",
         path: "/admin/vezerlopult",
         icon: <AiIcons.AiFillHome />
+    },
+    {
+        title: "Kezdőlap",
+        path: "/admin/kezdolap",
+        icon: <TfiWrite />
+
     },
     {
         title: "Termék",
@@ -18,7 +26,7 @@ export const SidebarData = [
     {
         title: "Márka",
         path: "/admin/marka",
-        icon: <IoIcons.IoIosPaper />
+        icon: <TbBrandApple />
     },
     {
         title: "Típus",
@@ -26,15 +34,14 @@ export const SidebarData = [
         icon: <LuType />
     },
     {
-        title: "Blog",
-        path: "/admin/blog",
-        icon:<BiLogoBlogger />
-
+        title: "Akció",
+        path: "/admin/Akcio",
+        icon: <FiPercent />
     },
     {
         title: "Vélemény",
         path: "/admin/velemeny",
-        icon: <IoIcons.IoIosPaper />
+        icon: <TbFileLike />
     }
 
 ];

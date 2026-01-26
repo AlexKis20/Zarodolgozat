@@ -2,6 +2,8 @@ import { useState } from "react"
 import { FaSave } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
 import "./Termek.css"
+import BeviteliMezo from "../../../components/BeviteliMezo"
+import { mezoValidalas } from "../../../components/BeviteliMezo"
 import Cim from "../../../components/Cim"
 
 const TermekFelvitel = ({ onClose, markak, tipusok }) => {
@@ -15,9 +17,9 @@ const TermekFelvitel = ({ onClose, markak, tipusok }) => {
         {nev: "termek_oprendszer", tipus: "input", megjelenit: "Termék oprendszer:"},
         {nev: "termek_meret", tipus: "textarea", megjelenit: "Termék méret:"},
         {nev: "termek_leiras", tipus: "textarea", megjelenit: "Termék leírás:"},
-        {nev: "termek_kep", tipus: "input", megjelenit: "Termék kép:"},
         {nev: "termek_marka", tipus: "select", opciok: {lista: markak, id_mezo: "marka_id", nev_mezo: "marka_nev"}, megjelenit: "Termék márka:"},
-        {nev: "termek_tipus", tipus: "select", opciok: {lista: tipusok, id_mezo: "tipus_id", nev_mezo: "tipus_nev"}, megjelenit: "Termék típus:"}
+        {nev: "termek_tipus", tipus: "select", opciok: {lista: tipusok, id_mezo: "tipus_id", nev_mezo: "tipus_nev"}, megjelenit: "Termék típus:"},
+        {nev: "termek_kep", tipus: "file", megjelenit: "Termék kép:"},
     ]
 
     const [felvittAdat, setFelvittAdat] = useState({})
@@ -34,63 +36,44 @@ const TermekFelvitel = ({ onClose, markak, tipusok }) => {
         const biztos = window.confirm(`Biztosan hozzá szeretnéd adni a(z) ${nev} terméket?`)
 
         if (biztos) {
-            try {
-                const response = await fetch(Cim.Cim + "/termekHozzaad", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(felvittAdat)
-                })
-
-                const data = await response.json()
-
-                if (response.ok) {
-                    alert(data.message || "Sikeres hozzáadás!")
-                     onClose(true)
-                } else {
-                    alert(data.error || "Hiba történt a hozzáadás során!")
-                }
-            } catch (err) {
-                alert("Hálózati hiba: " + err.message)
+            if (!mezok.every(mezo => mezoValidalas(felvittAdat, mezo))) {
+                alert("Minden mezőt ki kell tölteni!")
+                return
             }
-        }
-    }
 
-    const bevitelMezo = (elem) => {
-        if (elem.tipus === "textarea") {
-            return (
-                <textarea
-                    id={elem.nev}
-                    className="form-control"
-                    value={felvittAdat[elem.nev] || ""}
-                    rows="3"
-                    onChange={(e) => kezelesInput(elem.nev, e.target.value)}
-                />
-            )
-        } else if (elem.tipus === "select") {
-            return (
-                <select
-                    id={elem.nev}
-                    className="form-control"
-                    onChange={(e) => kezelesInput(elem.nev, e.target.value)}
-                    value={felvittAdat[elem.nev] || ""}
-                >
-                    {elem.opciok.lista.map((opcio) => (
-                        <option key={opcio[elem.opciok.id_mezo]} value={opcio[elem.opciok.id_mezo]}>
-                            {opcio[elem.opciok.nev_mezo]}
-                        </option>
-                    ))}
-                </select>
-            )
-        } else {
-            return (
-                <input
-                    id={elem.nev}
-                    type="text"
-                    className="form-control"
-                    value={felvittAdat[elem.nev] || ""}
-                    onChange={(e) => kezelesInput(elem.nev, e.target.value)}
-                />
-            )
+            const formData = new FormData()
+            formData.append("termek_nev", felvittAdat.termek_nev)
+            formData.append("termek_ar", felvittAdat.termek_ar)
+            formData.append("termek_szin", felvittAdat.termek_szin)
+            formData.append("termek_kijelzo", felvittAdat.termek_kijelzo)
+            formData.append("termek_processzor", felvittAdat.termek_processzor)
+            formData.append("termek_kapacitas", felvittAdat.termek_kapacitas)
+            formData.append("termek_oprendszer", felvittAdat.termek_oprendszer)
+            formData.append("termek_meret", felvittAdat.termek_meret)
+            formData.append("termek_leiras", felvittAdat.termek_leiras)
+            formData.append("termek_marka", felvittAdat.termek_marka)
+            formData.append("termek_tipus", felvittAdat.termek_tipus)
+            
+            if (felvittAdat.termek_kep instanceof File) {
+                formData.append("termek_kep", felvittAdat.termek_kep)
+            } else {
+                alert("Hibás kép fájl!")
+                return
+            }
+
+            const response = await fetch(Cim.Cim + "/termekHozzaad", {
+                method: "POST",
+                body: formData
+            })
+
+            const data = await response.json()
+
+            if (response.ok) {
+                alert(data.message || "Sikeres hozzáadás!")
+                    onClose(true)
+            } else {
+                alert(data.error || "Hiba történt a hozzáadás során!")
+            }
         }
     }
 
@@ -108,17 +91,19 @@ const TermekFelvitel = ({ onClose, markak, tipusok }) => {
                         <label className="form-label" htmlFor={elem.nev}>{elem.megjelenit}</label>
                     </div>
                     <div className="col-sm-8">
-                        {bevitelMezo(elem)}
+                        <BeviteliMezo elem={elem} adatModFel={felvittAdat} kezelesInput={kezelesInput}/>
                     </div>
                 </div>
             ))}
 
             <div className="row mt-3">
                 <div className="col">
-                    <button className="btn ml-2" onClick={felvittFuggveny}>
+                    <button className="btn" onClick={felvittFuggveny}>
                         <FaSave /> Mentés
                     </button>
-                    <button className="btn ml-2" onClick={() => onClose(false)}>
+                </div>
+                <div className="col text-end">
+                    <button className="btn" onClick={() => onClose(false)}>
                         <IoCloseSharp /> Bezárás
                     </button>
                 </div>
