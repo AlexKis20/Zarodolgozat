@@ -260,9 +260,7 @@ app.get('/hirek3', (req, res) => {
 app.post('/termekSelectIn', (req, res) => {
     const { termekIds } = req.body; // várjuk pl.: "1,3,7"
 
-    if (!termekIds || typeof termekIds !== "string") {
-        return res.status(400).json({ error: "Adj meg egy vesszővel elválasztott termék ID listát szövegként!" });
-    }
+    
 
     // A stringet tömbbé alakítjuk
     const idsArray = termekIds.split(",").map(id => id.trim());
@@ -281,9 +279,7 @@ app.post('/termekSelectIn', (req, res) => {
             console.log(err);
             return res.status(500).json({ error: "Hiba a lekérdezés során!" });
         }
-        if (result.length === 0) {
-            return res.status(404).json({ error: "Nincs adat!" });
-        }
+        
         return res.status(200).json(result);
     });
 });

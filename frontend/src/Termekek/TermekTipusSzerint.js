@@ -53,11 +53,11 @@ const TermekTipusSzerint=({kivalasztott})=>{
 
 //kosárba helyezés---------------------------------
     const vasarlas = (termek_id) => {
-        //alert(termek_id)
+        alert("A termék kosárba lett helyezve!");
         let kosar = localStorage.getItem("kosar");
         if (kosar===null){
             kosar=""+termek_id;
-            alert("ures")
+            //alert("ures")
         }
         else{
             kosar=kosar+","+termek_id;
