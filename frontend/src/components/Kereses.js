@@ -23,7 +23,7 @@ const Kereses = ({ adatok, keresettMezok, setKeresettAdatok}) => {
     return (
         <>
             <div className="search">
-                 <input type="text" class="form-control" placeholder="Keresés" onChange={(e) => kereses(e.target.value)} />
+                 <input type="text" className="form-control" placeholder="Keresés" onChange={(e) => kereses(e.target.value)} />
             </div>
         </>
     );

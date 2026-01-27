@@ -1100,8 +1100,116 @@ app.post('/rendelesTermekHozzaad', (req, res) => {
     })
 })
 
+// rendelés listázása
+app.get('/rendeles', (req, res) => {
+    const sql = `SELECT * FROM rendeles`
+    pool.query(sql, (err, result) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({ error: "Hiba!" })
+        }
+        if (result.length === 0) {
+            return res.status(404).json({ error: "Nincs adat!" })
+        }
+        return res.status(200).json(result)
+    })
+})
+
+// rendelés lekérése ID alapján
+app.get('/rendeles/:rendeles_id', (req, res) => {
+    const rendeles_id = req.params.rendeles_id
+    const sql = `SELECT * FROM rendeles WHERE rendeles_id = ?`
+    pool.query(sql, [rendeles_id], (err, result) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({ error: "Hiba!" })
+        }
+        if (result.length === 0) {
+            return res.status(404).json({ error: "Nincs adat!" })
+        }
+        return res.status(200).json(result[0])
+    })
+})
+
+// rendelés módosítása
+app.put('/rendelesModosit/:rendeles_id', (req, res) => {
+    const rendeles_id = req.params.rendeles_id
+    const { rendeles_nev, rendeles_cim, rendeles_telefonszam, rendeles_teljesitve } = req.body
+    
+    const sql = `UPDATE rendeles SET rendeles_nev = ?, rendeles_cim = ?, rendeles_telefonszam = ?, rendeles_teljesitve = ? WHERE rendeles_id = ?`
+    pool.query(sql, [rendeles_nev, rendeles_cim, rendeles_telefonszam, rendeles_teljesitve, rendeles_id], (err, result) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).json({ error: "Hiba a rendelés módosítása során" })
+        }
+        return res.status(200).json({ message: "Sikeres módosítás" })
+    })
+})
+
+// rendeles törlés
+app.delete('/rendelesTorles/:rendeles_id', (req, res) => {
+    const rendeles_id = req.params.rendeles_id;
+
+    pool.getConnection((err, connection) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: "Hiba a kapcsolat létrehozásakor" });
+        }
+        connection.beginTransaction((err) => {
+            if (err) { throw err; }
+            
+            const deleteTermekSql = `DELETE FROM rendeles_termek WHERE rendeles_id = ?`;
+            connection.query(deleteTermekSql, [rendeles_id], (err, result) => {
+                if (err) {
+                    return connection.rollback(() => {
+                        console.log(err);
+                        res.status(500).json({ error: "Hiba a rendelés termékei törlésekor" });
+                    })
+                }
+                const deleteRendelesSql = `DELETE FROM rendeles WHERE rendeles_id = ?`;
+                connection.query(deleteRendelesSql, [rendeles_id], (err, result) => {
+                    if (err) {
+                        return connection.rollback(() => {
+                            console.log(err);
+                            res.status(500).json({ error: "Hiba a rendelés törlésekor" });
+                        })
+                    }
+                    
+                    connection.commit((err) => {
+                        if (err) {
+                            return connection.rollback(() => {
+                                console.log(err);
+                                res.status(500).json({ error: "Hiba a tranzakció véglegesítésekor" });
+                            })
+                        }
+                        return res.status(200).json({ message: "Sikeres törlés" });
+                    });
+                });
+            });
+        });
+    });
+})
 
 
+// rendeles termékek lekérdezése
+app.get('/rendelesTermekek/:rendeles_id', (req, res) => {
+    const {rendeles_id} = req.params
+    const sql=`SELECT termek_id, termek_nev, rendeles_ar, rendeles_darab
+               FROM rendeles_termek
+               JOIN termek ON rendeles_termek_id = termek_id
+               WHERE rendeles_id=?`
+               
+    pool.query(sql, [rendeles_id], (err, result) => {
+        if (err){
+            console.log(err)
+            return res.status(500).json({error:"Hiba!"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat!"})
+        }
+        return res.status(200).json(result)
+    })
+})
 
 
 

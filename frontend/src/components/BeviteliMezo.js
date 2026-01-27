@@ -48,6 +48,14 @@ const BeviteliMezo = ({ elem, adatModFel, kezelesInput}) => {
                 onChange={(e) => kezelesInput(elem.nev, e.target.value)}
             />
         )
+    } else if (elem.tipus === "checkbox") {
+        return (
+            <input 
+                type="checkbox" 
+                checked={adatModFel[elem.nev] || false}
+                onChange={(e) => kezelesInput(elem.nev, e.target.checked)}
+            />
+        )
     } else {
         return (
             <input

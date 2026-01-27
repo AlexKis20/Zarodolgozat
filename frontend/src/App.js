@@ -19,13 +19,15 @@ import Kezdolap from './pages/admin/kezdolap';
 import Termek from './pages/admin/termek';
 import Marka from './pages/admin/marka';
 import Tipus from './pages/admin/tipus';
-import Velemeny from './pages/admin/velemeny';
+import Rendeles from './pages/admin/rendeles';
 import Akcio from './pages/admin/akcio/Akcio';
+import Velemeny from './pages/admin/velemeny';
 //Sidebar
 import Sidebar from './components/Sidebar';
 //User menük
 import User from './User/User';
 import { Import } from 'lucide-react';
+
 
 const ProtectedRoute = ({ children, role }) => {
   const token = localStorage.getItem("token");
@@ -117,6 +119,11 @@ function AdminRoutes() {
           <Route path="tipus" element={
             <ProtectedRoute role="admin">
               <Tipus />
+            </ProtectedRoute>
+          } />
+          <Route path="rendeles" element={
+            <ProtectedRoute role="admin">
+              <Rendeles />
             </ProtectedRoute>
           } />
           <Route path="akcio" element={

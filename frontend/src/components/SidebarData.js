@@ -5,6 +5,7 @@ import { FiPercent } from "react-icons/fi";
 import { TbBrandApple } from "react-icons/tb";
 import { TbFileLike } from "react-icons/tb";
 import { TfiWrite } from "react-icons/tfi";
+import { CiShoppingBasket } from "react-icons/ci";
 
 export const SidebarData = [
         {
@@ -32,10 +33,15 @@ export const SidebarData = [
         title: "Típus",
         path: "/admin/tipus",
         icon: <LuType />
+    },    
+    {
+        title: "Rendelés",
+        path: "/admin/rendeles",
+        icon: <CiShoppingBasket />
     },
     {
         title: "Akció",
-        path: "/admin/Akcio",
+        path: "/admin/akcio",
         icon: <FiPercent />
     },
     {
