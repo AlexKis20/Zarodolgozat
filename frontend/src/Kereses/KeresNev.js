@@ -10,6 +10,10 @@ const KeresNev=()=>{
     //const [tolt,setTolt]=useState(true)
     const [hiba,setHiba]=useState(false)
 
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+    const loggedIn = !!token;
+
     const keres=async ()=>{
         setHiba(false)
         try{
@@ -51,6 +55,23 @@ const KeresNev=()=>{
         }
         
     }
+
+//kosárba helyezés---------------------------------
+    const vasarlas = (termek_id) => {
+        alert("A termék kosárba lett helyezve!");
+        let kosar = localStorage.getItem("kosar");
+        if (kosar===null){
+            kosar=""+termek_id;
+            //alert("ures")
+        }
+        else{
+            kosar=kosar+","+termek_id;
+        }
+        
+        localStorage.setItem('kosar', kosar);
+    }
+//-------------------------------------------------
+
     return (
         <div>
     {/* KERESŐ SOR */}
@@ -140,6 +161,18 @@ const KeresNev=()=>{
 
       <div className="productType">{elem.tipus_nev}</div>
 
+
+
+
+
+{loggedIn ? (
+            <button onClick={() => vasarlas(elem.termek_id)} className="cartButton">
+                <span className="cartIcon">🛒</span>
+            </button>
+        ) : null}
+
+
+        
     </div>
   ))}
 </div>

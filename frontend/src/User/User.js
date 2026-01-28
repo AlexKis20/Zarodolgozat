@@ -28,7 +28,7 @@ const User=()=>{
                     body: JSON.stringify(bemenet)
             })
             const data=await response.json()
-            alert(JSON.stringify(data))
+            //alert(JSON.stringify(data))
             //console.log(data)
             if (response.ok)
                 {

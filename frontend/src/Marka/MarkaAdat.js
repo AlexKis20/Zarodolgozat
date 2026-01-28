@@ -7,6 +7,10 @@ const MarkaAdat = ({ kivalasztott }) => {
   const [tolt, setTolt] = useState(true);
   const [hiba, setHiba] = useState(false);
 
+  const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+    const loggedIn = !!token;
+
   useEffect(() => {
     const leToltes = async () => {
       try {
@@ -32,6 +36,22 @@ const MarkaAdat = ({ kivalasztott }) => {
     };
     leToltes();
   }, [kivalasztott]);
+
+  //kosárba helyezés---------------------------------
+    const vasarlas = (termek_id) => {
+        alert("A termék kosárba lett helyezve!");
+        let kosar = localStorage.getItem("kosar");
+        if (kosar===null){
+            kosar=""+termek_id;
+            //alert("ures")
+        }
+        else{
+            kosar=kosar+","+termek_id;
+        }
+        
+        localStorage.setItem('kosar', kosar);
+    }
+//-------------------------------------------------
 
   if (tolt) return <div style={{ textAlign: "center" , fontSize: "20px"}}>Adatok betöltése folyamatban...</div>;
   if (hiba) return <div style={{  fontSize: "20px",color:"red"}}>Hiba</div>;
@@ -85,6 +105,15 @@ const MarkaAdat = ({ kivalasztott }) => {
 </div>
 
       <div className="productType">{elem.tipus_nev}</div>
+
+
+ {loggedIn ? (
+            <button onClick={() => vasarlas(elem.termek_id)} className="cartButton">
+                <span className="cartIcon">🛒</span>
+            </button>
+        ) : null}
+
+
 
     </div>
   ))}
