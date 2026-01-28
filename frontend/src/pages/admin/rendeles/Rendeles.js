@@ -130,6 +130,8 @@ const Rendeles = () => {
                         <option value="0" disabled hidden>Rendezés</option>
                         <option value="rendeles_datum|1">Dátum növekvő</option>
                         <option value="rendeles_datum|2">Dátum csökkenő</option>
+                        <option value="rendeles_teljesitve|2">Teljesített rendelés</option>
+                        <option value="rendeles_teljesitve|1">Nem teljesített rendelés</option>
                     </Rendezes>
                 </div>
             </div>

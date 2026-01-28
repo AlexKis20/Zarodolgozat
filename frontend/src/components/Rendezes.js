@@ -6,9 +6,17 @@ const Rendezes = ({ adatok, setKeresettAdatok, children}) => {
         let rendezesTipus = val[1]
         let rendezettAdatok = [...adatok]
         if (rendezesTipus === "1") {
-            rendezettAdatok.sort((a, b) => a[mezo].localeCompare(b[mezo]))
+            rendezettAdatok.sort((a, b) => {
+                let aString = a[mezo].toString();
+                let bString = b[mezo].toString();
+                return aString.localeCompare(bString);
+            });
         } else if (rendezesTipus === "2") {
-            rendezettAdatok.sort((a, b) => b[mezo].localeCompare(a[mezo]))
+            rendezettAdatok.sort((a, b) => {
+                let aString = a[mezo].toString();
+                let bString = b[mezo].toString();
+                return bString.localeCompare(aString);
+            });
         }
         setKeresettAdatok(rendezettAdatok)
     }
