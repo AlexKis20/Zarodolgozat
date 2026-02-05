@@ -51,7 +51,7 @@ const RendelesTermekek= ({ rendeles_id, onClose }) => {
         <div className="container">
             <div className="row mb-3">
                 <div className="col-12 text-center">
-                    <h4>Akció termékek</h4>
+                    <h4>Rendelt termékek</h4>
                 </div>
             </div>
 
@@ -85,7 +85,7 @@ const RendelesTermekek= ({ rendeles_id, onClose }) => {
             </div>
 
             <div className="row mt-3">
-                <div className="col">
+                <div className="col text-end">
                     <button className="btn ml-2" onClick={() => onClose(false)}>
                         <IoCloseSharp />Bezárás
                     </button>
