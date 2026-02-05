@@ -139,7 +139,7 @@ else return (
                 alt="slide"
                 className="kep"
                 />
-                <p className="mt-4 text-lg font-medium">
+                <p className="blogText">
                 {adatok[index].blog_szoveg}
                 </p>
                 </motion.div>
@@ -215,7 +215,7 @@ else return (
                 alt="slide"
                 className="kep"
                 />
-                <p className="mt-4 text-lg font-medium">
+                <p className="blogText">
                 {adatok2[index2].blog_szoveg}
                 </p>
                 </motion.div>

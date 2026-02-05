@@ -1,6 +1,7 @@
 //useState, useEffect,state-be le tárolni,
 import { useState,useEffect } from "react"
 import Cim from "../Cim"
+import { div } from "framer-motion/m";
 
 const User=()=>{
     const [kosar, setKosar] = useState([]);
@@ -8,6 +9,12 @@ const User=()=>{
     const [adatok,setAdatok]=useState([])
     const [tolt,setTolt]=useState(true)
     const [hiba,setHiba]=useState(false)
+
+    const [vegosszeg, setVegosszeg] = useState(0);
+    const [megrendeles, setMegrendeles] = useState(false);
+    const [nev, setNev] = useState("");
+    const [lakcim, setLakcim] = useState("");
+    const [telefonszam, setTelefonszam] = useState("");
 
     useEffect(() => {
         // const storedKosar = localStorage.getItem("kosar");
@@ -50,6 +57,14 @@ const User=()=>{
         leToltes()
     }, [kosarSzoveg]);
 
+    useEffect(() => {
+  const osszeg = adatok.reduce((sum, elem) => {
+    return sum + Number(elem.termek_ar);
+  }, 0);
+
+  setVegosszeg(osszeg);
+}, [adatok]);
+
     return (
         <div>
       <h2>Kosár</h2>
@@ -71,10 +86,11 @@ const User=()=>{
         </div>
       )} */}
 
+      <div className="pageLayout">
 
 
 
-
+<div className="kosarOldal">
 <div className="containerFlex">
   {adatok.map((elem, index) => (
     <div key={index} className="productCard">
@@ -132,11 +148,80 @@ const User=()=>{
 </div>
 
 
+</div>
+
+
+<div className="osszegzoWrapper">
+  <div className="osszegzoPanel">
+    <h3>Összegzés</h3>
+
+    <p><strong>Végösszeg:</strong></p>
+    <h2>{vegosszeg} Ft</h2>
+
+    <button onClick={() => setMegrendeles(true)}>
+      Vásárlás folytatása
+    </button>
+  </div>
+
+  {megrendeles && (
+    <div className="megrendelesPanel">
+      <h2>Megrendelési adatok</h2>
+
+      <label>
+        Név:
+        <input
+          type="text"
+          value={nev}
+          onChange={(e) => setNev(e.target.value)}
+        />
+      </label>
+
+      <label>
+        Lakcím:
+        <input
+          type="text"
+          value={lakcim}
+          onChange={(e) => setLakcim(e.target.value)}
+        />
+
+
+      </label>
+
+
+            <label>
+        Telefonszám:
+        <input
+          type="text"
+          value={telefonszam}
+          onChange={(e) => setTelefonszam(e.target.value)}
+        />
+      </label>
+
+      {/* Vásárlás gomb */}
+    
+  <div className="gombKeret">
+  <button
+    className="vasarlasGomb"
+    onClick={() => {
+      console.log("Megrendelés leadva");
+    }}
+  >
+    Megrendelés
+  </button>
+</div>
+
 
 
 
 
     </div>
+  )}
+
+  
+</div>
+</div>
+</div>
     )
+    
 }
 export default User

@@ -291,14 +291,7 @@ textarea.form-control {
 }
 
 /* opcionális: első betű kiemelése (magazin stílus) */
-.blogText::first-letter {
-  font-size: 2.5rem;
-  font-weight: 700;
-  float: left;
-  line-height: 1;
-  padding-right: 6px;
-  color: #2563eb;
-}
+
 
 .productCard {
   position: relative; /* FONTOS */
@@ -373,4 +366,118 @@ textarea.form-control {
     font-size: 20px;
     letter-spacing: 2px;
   }
+}
+
+.pageLayout {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.kosarOldal {
+  flex: 3;
+}
+
+.osszegzoPanel {
+  flex: 1;
+  border: 1px solid #ccc;
+  padding: 20px;
+  position: sticky;
+  top: 20px;
+  background: #f9f9f9;
+}
+
+.osszegzoPanel button {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+.megrendelesPanel {
+  margin-top: 40px;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+.megrendelesPanel label {
+  display: block;
+  margin-bottom: 15px;
+}
+
+@media (max-width: 768px) {
+  .pageLayout {
+    flex-direction: column;
+  }
+
+  /* összegző MENJEN FELÜLRE */
+  .osszegzoWrapper {
+    order: -1;
+    width: 100%;
+  }
+
+  .osszegzoPanel {
+    position: static; /* sticky kikapcsolása mobilon */
+  }
+
+  .kosarOldal {
+    width: 100%;
+  }
+
+  .megrendelesPanel {
+    margin-top: 20px;
+  }
+}
+
+
+/* Gomb keret – középre igazítás */
+.gombKeret {
+  display: flex;
+  justify-content: center;
+  margin-top: 18px;
+}
+
+/* Vásárlás gomb kinézet */
+.vasarlasGomb {
+  padding: 12px 32px;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+
+  /* Sötét gradient háttér */
+  background: linear-gradient(
+    90deg,
+    #1f1f1f,
+    #0f0f0f,
+    #000000
+  );
+
+  border: none;
+  border-radius: 12px;
+
+  /* Árnyék */
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.45);
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Hover effekt */
+.vasarlasGomb:hover {
+  background: linear-gradient(
+    90deg,
+    #000000,
+    #1a1a1a,
+    #000000
+  );
+
+  transform: scale(1.05);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.6);
+}
+
+/* Kattintás animáció */
+.vasarlasGomb:active {
+  transform: scale(0.95);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
