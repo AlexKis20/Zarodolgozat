@@ -1,0 +1,29 @@
+.vezerlopult {
+    padding: 20px;
+}
+
+.szekcio {
+    margin-bottom: 40px;
+}
+
+.carousel {
+    display: flex;
+    align-items: center;
+}
+
+.kartyak {
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.kartya {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    text-align: center;
+    width: 30%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
