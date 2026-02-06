@@ -19,6 +19,7 @@ router.post('/login', (req, res) => {
 
   const query = `
     SELECT 
+      felhasznalo_id,
       felhasznalo_nev, 
       felhasznalo_jelszo,
       rang_nev AS role

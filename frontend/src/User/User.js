@@ -15,6 +15,7 @@ const User=()=>{
     const [nev, setNev] = useState("");
     const [lakcim, setLakcim] = useState("");
     const [telefonszam, setTelefonszam] = useState("");
+  const felhasznaloId = localStorage.getItem("fid"); 
 
     useEffect(() => {
         // const storedKosar = localStorage.getItem("kosar");
@@ -22,6 +23,7 @@ const User=()=>{
         //     setKosar(storedKosar.split(","));
         //     setKosarSzoveg(storedKosar);
         // }
+        //alert(localStorage.getItem("fid"))
         const leToltes=async ()=>{
         try{
             let bemenet={
@@ -65,6 +67,82 @@ const User=()=>{
   setVegosszeg(osszeg);
 }, [adatok]);
 
+const rendelesKuldes = async () => {
+  try {
+    // ---- Automatikus adatok ----
+    
+    const datum = new Date().toISOString().slice(0, 10);
+
+    // ---- Termékek összeállítása ----
+    const rendelesTermekek = adatok.map((termek) => ({
+      rendeles_termek_id: termek.termek_id,
+      rendeles_ar: termek.termek_ar,
+      rendeles_darab: 1
+    }));
+
+    // ---- Küldendő objektum ----
+    const kuldendoAdat = {
+      rendeles_felhasznalo_id: felhasznaloId,
+      rendeles_nev: nev,
+      rendeles_cim: lakcim,
+      rendeles_telefonszam: telefonszam,
+      rendeles_datum: datum,
+      rendeles_teljesitve: 0,
+      rendeles_termekek: rendelesTermekek
+    };
+
+    const response = await fetch(
+      Cim.Cim + "/rendelesHozzaadTermekkel",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(kuldendoAdat)
+      }
+    );
+
+    const data = await response.json();
+
+    if (response.ok) {
+      alert("Sikeres megrendelés!");
+
+      // kosár ürítése
+      localStorage.removeItem("kosar");
+      setAdatok([]);
+      setVegosszeg(0);
+      setMegrendeles(false);
+    } else {
+      alert("Hiba: " + data.error);
+    }
+
+  } catch (error) {
+    console.log(error);
+    alert("Szerver hiba!");
+  }
+};
+
+const termekTorlesKosarbol = (torlendoId) => {
+  // jelenlegi kosár
+  const kosarString = localStorage.getItem("kosar");
+
+  if (!kosarString) return;
+
+  // tömbbé alakítás
+  let kosarTomb = kosarString.split(",");
+
+  // adott ID törlése
+  kosarTomb = kosarTomb.filter(
+    (id) => Number(id) !== Number(torlendoId)
+  );
+
+  // vissza mentés
+  localStorage.setItem("kosar", kosarTomb.join(","));
+
+  // frontend frissítés
+  setKosarSzoveg(kosarTomb.join(","));
+};
+
     return (
         <div>
       <h2>Kosár</h2>
@@ -94,6 +172,18 @@ const User=()=>{
 <div className="containerFlex">
   {adatok.map((elem, index) => (
     <div key={index} className="productCard">
+
+      {/* Törlés gomb */}
+  <button
+    className="torlesGomb"
+    onClick={() => {
+  if (window.confirm("Biztos törlöd a terméket a kosárból?")) {
+    termekTorlesKosarbol(elem.termek_id);
+  }
+}}
+  >
+    ✖
+  </button>
       
       <h2 className="productTitle">{elem.termek_nev}</h2>
 
@@ -197,14 +287,12 @@ const User=()=>{
         />
       </label>
 
-      {/* Vásárlás gomb */}
+      {/* Megrendelés gomb */}
     
   <div className="gombKeret">
   <button
     className="vasarlasGomb"
-    onClick={() => {
-      console.log("Megrendelés leadva");
-    }}
+    onClick={rendelesKuldes}
   >
     Megrendelés
   </button>

@@ -24,7 +24,7 @@ const Login = () => {
       }
 
       const data = await response.json();
-
+      //alert(data.fid);
       localStorage.setItem('token', data.token);
       localStorage.setItem('role', data.role);
       localStorage.setItem('fid', data.fid);

@@ -481,3 +481,33 @@ textarea.form-control {
   transform: scale(0.95);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
+
+.productCard {
+  position: relative;
+}
+
+.torlesGomb {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  background-color: #e53935;
+  color: white;
+
+  border: none;
+  border-radius: 50%;
+
+  width: 32px;
+  height: 32px;
+
+  font-size: 18px;
+  font-weight: bold;
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.torlesGomb:hover {
+  background-color: #b71c1c;
+  transform: scale(1.1);
+}
