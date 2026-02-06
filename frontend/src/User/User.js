@@ -123,24 +123,28 @@ const rendelesKuldes = async () => {
 };
 
 const termekTorlesKosarbol = (torlendoId) => {
-  // jelenlegi kosár
   const kosarString = localStorage.getItem("kosar");
-
   if (!kosarString) return;
-
-  // tömbbé alakítás
   let kosarTomb = kosarString.split(",");
-
-  // adott ID törlése
   kosarTomb = kosarTomb.filter(
     (id) => Number(id) !== Number(torlendoId)
   );
 
-  // vissza mentés
-  localStorage.setItem("kosar", kosarTomb.join(","));
+  // ---- Ha üres lett ----
+  if (kosarTomb.length === 0) {
+    localStorage.removeItem("kosar");
 
-  // frontend frissítés
-  setKosarSzoveg(kosarTomb.join(","));
+    setKosarSzoveg("");
+    setAdatok([]);        // kártyák törlése
+    setVegosszeg(0);     // összeg nullázás
+    return;
+  }
+
+  // ---- Ha maradt termék ----
+  const ujKosar = kosarTomb.join(",");
+
+  localStorage.setItem("kosar", ujKosar);
+  setKosarSzoveg(ujKosar);
 };
 
     return (
