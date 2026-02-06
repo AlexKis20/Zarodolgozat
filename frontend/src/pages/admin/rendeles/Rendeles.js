@@ -17,7 +17,10 @@ const Rendeles = () => {
     const [ures, setUres] = useState(false)
     const [modalOpenModosit, setModalOpenModosit] = useState(false)
     const [modalOpenTermekek, setModalOpenTermekek] = useState(false)
+    const [modalTeljesitOpen, setModalTeljesitOpen] = useState(false);
     const [selectedRendelesId, setSelectedRendelesId] = useState(null)
+    const [teljesitendoRendelesId, setTeljesitendoRendelesId] = useState(null);
+    const [teljesitendoAllapot, setTeljesitendoAllapot] = useState(null);
 
     const leToltes = async () => {
         try {
@@ -93,16 +96,31 @@ const Rendeles = () => {
         }
     }
 
-    const teljesitPipa = async (rendeles_id) => {
-        let adat = adatok.find(elem => elem.rendeles_id === rendeles_id)
-        adat.rendeles_teljesitve = adat.rendeles_teljesitve === 1 ? 0 : 1
-        setAdatok(adatok.map(elem => elem.rendeles_id === rendeles_id ? adat : elem))
+    const teljesitPipa = (rendeles_id) => {
+        const adat = adatok.find(elem => elem.rendeles_id === rendeles_id);
+        setTeljesitendoRendelesId(rendeles_id);
+        setTeljesitendoAllapot(adat.rendeles_teljesitve === 1 ? 0 : 1);
+        setModalTeljesitOpen(true);
+    }
 
-        await fetch(Cim.Cim + "/rendelesModosit/" + rendeles_id, {
+    const handleTeljesitConfirm = async () => {
+        let adat = adatok.find(elem => elem.rendeles_id === teljesitendoRendelesId)
+        adat.rendeles_teljesitve = teljesitendoAllapot;
+        setAdatok(adatok.map(elem => elem.rendeles_id === teljesitendoRendelesId ? adat : elem))
+        await fetch(Cim.Cim + "/rendelesModosit/" + teljesitendoRendelesId, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(adat)
         })
+        setModalTeljesitOpen(false);
+        setTeljesitendoRendelesId(null);
+        setTeljesitendoAllapot(null);
+    }
+
+    const handleTeljesitCancel = () => {
+        setModalTeljesitOpen(false);
+        setTeljesitendoRendelesId(null);
+        setTeljesitendoAllapot(null);
     }
 
     if (tolt)
@@ -187,6 +205,19 @@ const Rendeles = () => {
             </Modal>
             <Modal isOpen={modalOpenTermekek} onClose={() => closeModalTermekek(false)}>
                 <RendelesTermekek rendeles_id={selectedRendelesId} onClose={closeModalTermekek} />
+            </Modal>
+            <Modal isOpen={modalTeljesitOpen} onClose={handleTeljesitCancel}>
+                <div style={{textAlign: 'left;'}}>
+                    <span style={{fontSize: '1.5rem', fontStyle: 'Italic text.'}}>
+                        {teljesitendoAllapot === 1
+                            ? 'Biztos teljesítettnek jelölöd meg?'
+                            : 'Biztos visszajelölöd nem teljesítettnek?'}
+                    </span>
+                    <div style={{marginTop: '20px', textAlign: 'right'}}>
+                        <button className="btn btn-info mx-2" onClick={handleTeljesitConfirm}>OK</button>
+                        <button className=" mx-2" onClick={handleTeljesitCancel}>Mégsem</button>
+                    </div>
+                </div>
             </Modal>
         </div>
     )

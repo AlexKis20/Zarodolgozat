@@ -79,7 +79,7 @@ const AkcioTermekek= ({ akcio_id, akcio_kedvezmeny, akcio_tipus, onClose }) => {
 
             <div className="row mt-3">
                 <div className="col">
-                    <button className="btn ml-2" onClick={() => onClose(false)}>
+                    <button className="text-end" onClick={() => onClose(false)}>
                         <IoCloseSharp />Bezárás
                     </button>
                 </div>
