@@ -8,6 +8,7 @@ const RendelesTermekek= ({ rendeles_id, onClose }) => {
     const [keresettAdatok, setKeresettAdatok] = useState([])
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
+    const [ures, setUres] = useState(false)
 
     const leToltes = async () => {
         try {
@@ -17,7 +18,9 @@ const RendelesTermekek= ({ rendeles_id, onClose }) => {
             if (response.ok) {
                 setAdatok(data)
                 setKeresettAdatok(data)
-                console.log(data)
+                setTolt(false)
+            } else if (response.status === 404) {
+                setUres(true)
                 setTolt(false)
             } else {
                 setHiba(true)
@@ -42,10 +45,11 @@ const RendelesTermekek= ({ rendeles_id, onClose }) => {
     }
 
     if (tolt)
-        return <div style={{ textAlign: "center" }}>Adatok betöltése folyamatban...</div>
-
+        return <div className="text-center">Adatok betöltése folyamatban...</div>
+    if (ures)
+        return <div className="text-center">Ehhez a rendeléshez nem tartozik termék!</div>
     if (hiba)
-        return <div>Hiba történt az adatok betöltése közben.</div>
+        return <div className="text-center">Hiba történt az adatok betöltése közben.</div>
 
     return (
         <div className="container">

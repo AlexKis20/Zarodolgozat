@@ -1,4 +1,7 @@
+import { useState } from "react"
+
 const Rendezes = ({ adatok, setKeresettAdatok, children}) => {
+    const [ertek, setErtek] = useState("")
 
     const rendezes = (targetValue) => {
         let val = targetValue.split("|")
@@ -18,13 +21,15 @@ const Rendezes = ({ adatok, setKeresettAdatok, children}) => {
                 return bString.localeCompare(aString);
             });
         }
+        setErtek(targetValue)
         setKeresettAdatok(rendezettAdatok)
     }
 
     return (
         <>
             <div className="sort">
-                <select className="form-select" style={{margin: "5px"}} onChange={(e) => rendezes(e.target.value)}>
+                <select className="form-select" style={{margin: "5px"}} onChange={(e) => rendezes(e.target.value)} value={ertek}>
+                    <option value="" disabled hidden>Rendezés...</option>
                     {children}
                 </select>
             </div>

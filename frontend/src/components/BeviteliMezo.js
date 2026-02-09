@@ -20,7 +20,7 @@ const BeviteliMezo = ({ elem, adatModFel, kezelesInput}) => {
                 style={{ marginLeft: "5px"}}
             >
                 <option value="" disabled hidden>Válassz...</option>
-                {elem.opciok.lista.map((opcio) => (
+                {elem.opciok.lista && elem.opciok.lista.map((opcio) => (
                     <option key={opcio[elem.opciok.id_mezo]} value={opcio[elem.opciok.id_mezo]}>
                         {opcio[elem.opciok.nev_mezo]}
                     </option>

@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react"
 import { FaRegTrashCan, FaPencil } from "react-icons/fa6";
-import { FaList } from "react-icons/fa";
+import { FaList, FaPlus } from "react-icons/fa";
 import Cim from "../../../components/Cim"
 import Modal from "../../../components/Modal"
 import RendelesModosit from "./RendelesModosit"
 import RendelesTermekek from "./RendelesTermekek";
 import Kereses from "../../../components/Kereses";
 import Rendezes from "../../../components/Rendezes";
+import RendelesFelvitel from "./RendelesFelvitel";
 
 const Rendeles = () => {
     const [adatok, setAdatok] = useState([])
@@ -16,6 +17,7 @@ const Rendeles = () => {
     const [siker, setSiker] = useState(false)
     const [ures, setUres] = useState(false)
     const [modalOpenModosit, setModalOpenModosit] = useState(false)
+    const [modalOpenHozzaad, setModalOpenHozzaad] = useState(false)
     const [modalOpenTermekek, setModalOpenTermekek] = useState(false)
     const [modalTeljesitOpen, setModalTeljesitOpen] = useState(false);
     const [selectedRendelesId, setSelectedRendelesId] = useState(null)
@@ -84,6 +86,18 @@ const Rendeles = () => {
         }
     }
 
+    const openModalHozzaad = (rendeles_id) => {
+        setModalOpenHozzaad(true)
+    }
+
+    const closeModalHozzaad = (frissit) => {
+        setModalOpenHozzaad(false)
+        if (frissit) {
+            leToltes()
+        }
+    }
+
+
     const openModalTermekek = (rendeles_id) => {
         setSelectedRendelesId(rendeles_id)
         setModalOpenTermekek(true)
@@ -124,18 +138,31 @@ const Rendeles = () => {
     }
 
     if (tolt)
-        return <div style={{ textAlign: "center" }}>Adatok betöltése folyamatban...</div>
+        return <div className="text-center">Adatok betöltése folyamatban...</div>
     if (ures)
         return (
             <div className="container">
                 <div className="row justify-content-center mb-3">
-                    <div className="col-12 text-center">Nincs bejövő rendelés.</div>
+                    <div className="col-5"></div>
+                    <div className="col-2 text-center">Nincs adat!</div>
+                    <div className="col-5 text-center">
+                        Felvitel
+                        <div>
+                            <button
+                            className="btn btn-alert  ml-2"
+                                onClick={() => openModalHozzaad()} >      
+                                <FaPlus />
+                        </button>
+                        </div>
+                    </div>
                 </div>
+                <Modal isOpen={modalOpenHozzaad} onClose={closeModalHozzaad} isWide={true}>
+                    <RendelesFelvitel onClose={closeModalHozzaad} />
+                </Modal>
             </div>
         )
-
     if (hiba)
-        return <div>Hiba történt az adatok betöltése közben.</div>
+        return <div className="text-center">Hiba történt az adatok betöltése közben.</div>
 
     return (
         <div className="container">
@@ -161,6 +188,7 @@ const Rendeles = () => {
                 <div className="col-1 text-center fw-bold">Teljesített</div>
                 <div className="col-1 text-center fw-bold">Törlés</div>
                 <div className="col-1 text-center fw-bold">Módosítás</div>
+                <div className="col-1 text-center fw-bold">Hozzáadás</div>
             </div>
             {keresettAdatok.map((elem, index) => (
                 <div className="row justify-content-center mb-3" key={elem.rendeles_id || index}>
@@ -198,10 +226,23 @@ const Rendeles = () => {
                             <FaPencil />
                         </button>
                     </div>
+                    <div className="col-1 text-center">
+                        {index === 0 &&
+                            <button
+                                className="btn btn-alert  ml-2"
+                                onClick={() => openModalHozzaad()}
+                            >
+                                <FaPlus />
+                            </button>
+                        }
+                    </div>
                 </div>
             ))}
             <Modal isOpen={modalOpenModosit} onClose={() => closeModalModosit(false)}>
                 <RendelesModosit rendeles_id={selectedRendelesId} onClose={closeModalModosit} />
+            </Modal>
+            <Modal isOpen={modalOpenHozzaad} onClose={() => closeModalHozzaad(false)} isWide={true}>
+                <RendelesFelvitel onClose={closeModalHozzaad} />
             </Modal>
             <Modal isOpen={modalOpenTermekek} onClose={() => closeModalTermekek(false)}>
                 <RendelesTermekek rendeles_id={selectedRendelesId} onClose={closeModalTermekek} />
@@ -214,8 +255,8 @@ const Rendeles = () => {
                             : 'Biztos visszajelölöd nem teljesítettnek?'}
                     </span>
                     <div style={{marginTop: '20px', textAlign: 'right'}}>
-                        <button className="btn btn-info mx-2" onClick={handleTeljesitConfirm}>OK</button>
-                        <button className=" mx-2" onClick={handleTeljesitCancel}>Mégsem</button>
+                        <button className="btn btn-primary mx-2" onClick={handleTeljesitConfirm}>OK</button>
+                        <button className="btn mx-2" onClick={handleTeljesitCancel}>Mégsem</button>
                     </div>
                 </div>
             </Modal>

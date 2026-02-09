@@ -42,6 +42,16 @@ const Termek= () => {
                 setTolt(false)
             } 
             else if (response.status === 404 || markaResponse.status === 404 || tipusResponse.status === 404) {
+                if (markaResponse.status !== 404) {
+                    setMarkak(markaData)
+                } else {
+                    setMarkak([])
+                }
+                if (tipusResponse.status !== 404) {
+                    setTipusok(tipusData)
+                } else {
+                    setTipusok([])
+                }
                 setUres(true)
                 setTolt(false)
             }
@@ -103,8 +113,32 @@ const Termek= () => {
         }
     }
 
+    if (tolt)
+        return <div className="text-center">Adatok betöltése folyamatban...</div>
+    if (ures)
+        return (
+            <div className="container">
+                <div className="row justify-content-center mb-3">
+                    <div className="col-5"></div>
+                    <div className="col-2 text-center">Nincs adat!</div>
+                    <div className="col-5 text-center">
+                        Felvitel
+                        <div>
+                            <button
+                            className="btn btn-alert  ml-2"
+                                onClick={() => openModalHozzaad()} >      
+                                <FaPlus />
+                        </button>
+                        </div>
+                    </div>
+                </div>
+                <Modal isOpen={modalOpenHozzaad} onClose={closeModalHozzaad}>
+                    <TermekFelvitel onClose={closeModalHozzaad} markak={markak} tipusok={tipusok} />
+                </Modal>
+            </div>
+        )
     if (hiba)
-        return <div>Hiba történt az adatok betöltése közben.</div>
+        return <div className="text-center">Hiba történt az adatok betöltése közben.</div>
 
     return (
         <div className="container">
@@ -114,7 +148,6 @@ const Termek= () => {
                 </div>
                 <div className="col-4 text-center">
                     <Rendezes adatok={keresettAdatok} setKeresettAdatok={setKeresettAdatok}>
-                        <option value="0" disabled hidden>Rendezés</option>
                         <option value="termek_nev|1">Termék neve növekvő</option>
                         <option value="termek_nev|2">Termék neve csökkenő</option>
                     </Rendezes>

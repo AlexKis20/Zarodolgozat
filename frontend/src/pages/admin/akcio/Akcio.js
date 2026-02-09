@@ -113,7 +113,7 @@ const Akcio = () => {
 
 
     if (tolt)
-        return <div style={{ textAlign: "center" }}>Adatok betöltése folyamatban...</div>
+        return <div className="text-center">Adatok betöltése folyamatban...</div>
     if (ures)
         return (
             <div className="container">
@@ -138,7 +138,7 @@ const Akcio = () => {
         )
 
     if (hiba)
-        return <div>Hiba történt az adatok betöltése közben.</div>
+        return <div className="text-center">Hiba történt az adatok betöltése közben.</div>
     
 
     return (
@@ -170,7 +170,7 @@ const Akcio = () => {
                 <div className="col-1 text-center fw-bold">Felvitel</div>
             </div>
             {keresettAdatok.map((elem, index) => (
-                <div className="row justify-content-center mb-3">
+                <div key={elem.akcio_id} className="row justify-content-center mb-3">
                     <div className="col-3 text-center">{elem.akcio_nev}</div>
                     <div className="col-1 text-center">{elem.akcio_kedvezmeny}{elem.akcio_tipus === "szazalek" ? "%" : "Ft"}</div>
                     <div className="col-2 text-center">{datumFuggveny(elem.akcio_kezdete)}</div>

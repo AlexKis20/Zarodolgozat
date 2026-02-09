@@ -64,13 +64,13 @@ const Velemeny = () => {
     }
 
     if (tolt)
-        return <div style={{ textAlign: "center" }}>Adatok betöltése folyamatban...</div>
+        return <div className="text-center">Adatok betöltése folyamatban...</div>
 
     if (ures)
-        return <div style={{ textAlign: "center" }}>Nincs adat!</div>
+        return <div className="text-center">Nincs adat!</div>
 
     if (hiba)
-        return <div style={{ textAlign: "center" }}>Hiba történt az adatok betöltése közben.</div>
+        return <div className="text-center">Hiba történt az adatok betöltése közben.</div>
 
     return (
         <div className="container">
@@ -80,7 +80,6 @@ const Velemeny = () => {
                 </div>
                 <div className="col-4 text-center">
                     <Rendezes adatok={keresettAdatok} setKeresettAdatok={setKeresettAdatok}>
-                        <option value="0" disabled hidden>Rendezés</option>
                         <option value="velemeny_szoveg|1">Vélemény szövege növekvő</option>
                         <option value="velemeny_szoveg|2">Vélemény szövege csökkenő</option>
                         <option value="felhasznalo_nev|1">Felhasználó neve növekvő</option>

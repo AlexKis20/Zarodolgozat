@@ -94,7 +94,7 @@ const Tipus = () => {
     }
 
     if (tolt)
-        return <div style={{ textAlign: "center" }}>Adatok betöltése folyamatban...</div>
+        return <div className="text-center">Adatok betöltése folyamatban...</div>
     if (ures)
         return (
             <div className="container">
@@ -118,7 +118,7 @@ const Tipus = () => {
             </div>
         )
     if (hiba)
-        return <div>Hiba történt az adatok betöltése közben.</div>
+        return <div className="text-center">Hiba történt az adatok betöltése közben.</div>
 
     return (
         <div className="container">
@@ -128,7 +128,6 @@ const Tipus = () => {
                 </div>
                 <div className="col-4 text-center">
                     <Rendezes adatok={keresettAdatok} setKeresettAdatok={setKeresettAdatok}>
-                        <option value="0" disabled hidden>Rendezés</option>
                         <option value="tipus_nev|1">Típus neve növekvő</option>
                         <option value="tipus_nev|2">Típus neve csökkenő</option>
                     </Rendezes>
@@ -141,7 +140,7 @@ const Tipus = () => {
                 <div className="col-1 text-center fw-bold">Felvitel</div>
             </div>
             {keresettAdatok.map((elem, index) => (
-                <div className="row justify-content-center mb-3">
+                <div key={elem.tipus_id} className="row justify-content-center mb-3">
                     <div className="col-6 text-center">{elem.tipus_nev}</div>
                     <div className="col-1 text-center">
                         <button

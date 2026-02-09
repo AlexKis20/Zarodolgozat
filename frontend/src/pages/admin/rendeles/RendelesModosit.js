@@ -71,8 +71,8 @@ const RendelesModosit = ({ rendeles_id, onClose }) => {
         }
     }
 
-    if (tolt) return <div>Betöltés...</div>
-    if (hiba) return <div>Hiba történt az adatok betöltése közben.</div>
+    if (tolt) return <div className="text-center">Betöltés...</div>
+    if (hiba) return <div className="text-center">Hiba történt az adatok betöltése közben.</div>
 
     return (
         <div className="container">

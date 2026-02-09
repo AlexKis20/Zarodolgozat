@@ -290,6 +290,22 @@ app.post('/termekSelectIn', (req, res) => {
 
 //Kornélia végpontjai
 
+// minden felhasználó lekérdezése
+app.get('/felhasznalo', (req, res) => {
+    const sql=`SELECT felhasznalo_id, felhasznalo_nev FROM felhasznalo`
+    pool.query(sql, ( err, result) => {
+        if (err){
+            console.log(err)
+            return res.status(500).json({error:"Hiba!"})
+        }
+        if (result.length===0){
+            return res.status(404).json({error:"Nincs adat!"})
+        }
+        return res.status(200).json(result)
+
+    })
+})
+
 // minden kezdőlap lekérdezése
 app.get('/kezdolap', (req, res) => {
     const sql=`SELECT * FROM  blog `
@@ -351,7 +367,7 @@ app.delete('/kezdolapTorles/:blog_id', (req, res) => {
                 console.log(err)
                 return res.status(500).json({error:"Hiba"})
             }
-            return res.status(200).json({message:"Sikeres törlés"})
+            return res.status(200).json({message:"Sikeres törlés!"})
         })
     })
 })
@@ -380,9 +396,9 @@ app.put('/kezdolapModosit/:blog_id', upload("blogKep/").single('blog_kep'), (req
         pool.query(sql,[blog_cim,blog_szoveg,blog_kep,blog_fajta,blog_id], (err, result) => {
             if (err) {
                 console.log(err)
-                return res.status(500).json({error:"Hiba"})
+                return res.status(500).json({error:"Hiba!"})
             }
-            return res.status(200).json({message:"Sikeres módosítás"})
+            return res.status(200).json({message:"Sikeres módosítás!"})
         })
     } else {
         // Ha nincs új kép, csak a többi mező update-lése
@@ -390,9 +406,9 @@ app.put('/kezdolapModosit/:blog_id', upload("blogKep/").single('blog_kep'), (req
         pool.query(sql,[blog_cim,blog_szoveg,blog_fajta,blog_id], (err, result) => {
             if (err) {
                 console.log(err)
-                return res.status(500).json({error:"Hiba"})
+                return res.status(500).json({error:"Hiba!"})
             }
-            return res.status(200).json({message:"Sikeres módosítás"})
+            return res.status(200).json({message:"Sikeres módosítás!"})
         })
     }
 })
@@ -411,9 +427,9 @@ app.post('/kezdolapHozzaad', upload("blogKep/").single('blog_kep'), (req, res) =
     pool.query(sql,[blog_cim,blog_szoveg,blog_datum,blog_kep,blog_fajta], (err, result) => {
     if (err) {
         console.log(err)
-        return res.status(500).json({error:"Hiba"})
+        return res.status(500).json({error:"Hiba!"})
     }
-    return res.status(200).json({message:"Sikeres hozzáadás"})
+    return res.status(200).json({message:"Sikeres hozzáadás!"})
     })
 })
 
@@ -460,7 +476,7 @@ app.delete('/termekTorles/:termek_id', (req, res) => {
         pool.query(selectSql, [termek_id], (err, result) => {
             if (err) {
                 console.log(err)
-                return res.status(500).json({error:"Hiba"})
+                return res.status(500).json({error:"Hiba!"})
             }
             
             // Kép törlése a termekKep mappából
@@ -478,9 +494,9 @@ app.delete('/termekTorles/:termek_id', (req, res) => {
             pool.query(deleteSql, [termek_id], (err, result) => {
                 if (err) {
                     console.log(err)
-                    return res.status(500).json({error:"Hiba"})
+                    return res.status(500).json({error:"Hiba!"})
                 }
-                return res.status(200).json({message:"Sikeres törlés"})
+                return res.status(200).json({message:"Sikeres törlés!"})
             })
         })
 })
@@ -514,10 +530,10 @@ app.put('/termekModosit/:termek_id', upload("termekKep/").single('termek_kep'), 
             termek_meret, termek_leiras, termek_kep, termek_marka, termek_tipus, termek_id], (err, result) => {
             if (err) {
                 console.log(err)
-                return res.status(500).json({error:"Hiba"})
+                return res.status(500).json({error:"Hiba!"})
             }
 
-            return res.status(200).json({message:"Sikeres módosítás"})
+            return res.status(200).json({message:"Sikeres módosítás!"})
         })
     } else {
         // Ha nincs új kép, csak a többi mező update-lése
@@ -529,10 +545,10 @@ app.put('/termekModosit/:termek_id', upload("termekKep/").single('termek_kep'), 
             termek_meret, termek_leiras, termek_marka, termek_tipus, termek_id], (err, result) => {
             if (err) {
                 console.log(err)
-                return res.status(500).json({error:"Hiba"})
+                return res.status(500).json({error:"Hiba!"})
             }
 
-            return res.status(200).json({message:"Sikeres módosítás"})
+            return res.status(200).json({message:"Sikeres módosítás!"})
         })
     }
 })
@@ -555,9 +571,9 @@ app.post('/termekHozzaad', upload("termekKep/").single('termek_kep'), (req, res)
         termek_meret, termek_leiras, termek_kep, termek_marka, termek_tipus], (err, result) => {
     if (err) {
         console.log(err)
-        return res.status(500).json({error:"Hiba"})
+        return res.status(500).json({error:"Hiba!"})
     }
-    return res.status(200).json({message:"Sikeres hozzáadás"})
+    return res.status(200).json({message:"Sikeres hozzáadás!"})
     })
 })
 
@@ -584,10 +600,10 @@ app.delete('/markaTorles/:marka_id', (req, res) => {
         pool.query(sql,[marka_id], (err, result) => {
         if (err) {
             console.log(err)
-            return res.status(500).json({error:"Hiba"})
+            return res.status(500).json({error:"Hiba!"})
         }
 
-        return res.status(200).json({message:"Sikeres törlés"})
+        return res.status(200).json({message:"Sikeres törlés!"})
         })
 })
 
@@ -599,10 +615,10 @@ app.put('/markaModosit/:marka_id', (req, res) => {
     pool.query(sql,[marka_nev, marka_id], (err, result) => {
     if (err) {
         console.log(err)
-        return res.status(500).json({error:"Hiba"})
+        return res.status(500).json({error:"Hiba!"})
     }
 
-    return res.status(200).json({message:"Sikeres módosítás"})
+    return res.status(200).json({message:"Sikeres módosítás!"})
     })
 })
 
@@ -613,9 +629,9 @@ app.post('/markaHozzaad', (req, res) => {
     pool.query(sql,[marka_nev], (err, result) => {
     if (err) {
         console.log(err)
-        return res.status(500).json({error:"Hiba"})
+        return res.status(500).json({error:"Hiba!"})
     }
-    return res.status(200).json({message:"Sikeres hozzáadás"})
+    return res.status(200).json({message:"Sikeres hozzáadás!"})
     })
 })
 
@@ -643,10 +659,10 @@ app.delete('/tipusTorles/:tipus_id', (req, res) => {
     pool.query(sql, [tipus_id], (err, result) => {
         if (err) {
             console.log(err);
-            return res.status(500).json({ error: "Hiba" });
+            return res.status(500).json({ error: "Hiba!" });
         }
 
-        return res.status(200).json({ message: "Sikeres törlés" });
+        return res.status(200).json({ message: "Sikeres törlés!" });
     });
 });
 
@@ -658,10 +674,10 @@ app.put('/tipusModosit/:tipus_id', (req, res) => {
     pool.query(sql,[tipus_nev, tipus_id], (err, result) => {
     if (err) {
         console.log(err)
-        return res.status(500).json({error:"Hiba"})
+        return res.status(500).json({error:"Hiba!"})
     }
 
-    return res.status(200).json({message:"Sikeres módosítás"})
+    return res.status(200).json({message:"Sikeres módosítás!"})
     })
 })
 
@@ -673,9 +689,9 @@ app.post('/tipusHozzaad', (req, res) => {
     pool.query(sql,[tipus_nev], (err, result) => {
     if (err) {
         console.log(err)
-        return res.status(500).json({error:"Hiba"})
+        return res.status(500).json({error:"Hiba!"})
     }
-    return res.status(200).json({message:"Sikeres hozzáadás"})
+    return res.status(200).json({message:"Sikeres hozzáadás!"})
     })
 })
 
@@ -737,7 +753,7 @@ app.delete('/rendelesTorles/:rendeles_id', (req, res) => {
     pool.getConnection((err, connection) => {
         if (err) {
             console.log(err);
-            return res.status(500).json({ error: "Hiba a kapcsolat létrehozásakor" });
+            return res.status(500).json({ error: "Hiba a kapcsolat létrehozásakor!" });
         }
         connection.beginTransaction((err) => {
             if (err) { throw err; }
@@ -747,7 +763,7 @@ app.delete('/rendelesTorles/:rendeles_id', (req, res) => {
                 if (err) {
                     return connection.rollback(() => {
                         console.log(err);
-                        res.status(500).json({ error: "Hiba a rendelés termékei törlésekor" });
+                        res.status(500).json({ error: "Hiba a rendelés termékei törlésekor!" });
                     })
                 }
                 const deleteRendelesSql = `DELETE FROM rendeles WHERE rendeles_id = ?`;
@@ -755,7 +771,7 @@ app.delete('/rendelesTorles/:rendeles_id', (req, res) => {
                     if (err) {
                         return connection.rollback(() => {
                             console.log(err);
-                            res.status(500).json({ error: "Hiba a rendelés törlésekor" });
+                            res.status(500).json({ error: "Hiba a rendelés törlésekor!" });
                         })
                     }
                     
@@ -763,10 +779,10 @@ app.delete('/rendelesTorles/:rendeles_id', (req, res) => {
                         if (err) {
                             return connection.rollback(() => {
                                 console.log(err);
-                                res.status(500).json({ error: "Hiba a tranzakció véglegesítésekor" });
+                                res.status(500).json({ error: "Hiba a tranzakció véglegesítésekor!" });
                             })
                         }
-                        return res.status(200).json({ message: "Sikeres törlés" });
+                        return res.status(200).json({ message: "Sikeres törlés!" });
                     });
                 });
             });
@@ -783,9 +799,9 @@ app.put('/rendelesModosit/:rendeles_id', (req, res) => {
     pool.query(sql, [rendeles_nev, rendeles_cim, rendeles_telefonszam, rendeles_teljesitve, rendeles_id], (err, result) => {
         if (err) {
             console.log(err)
-            return res.status(500).json({ error: "Hiba a rendelés módosítása során" })
+            return res.status(500).json({ error: "Hiba a rendelés módosítása során!" })
         }
-        return res.status(200).json({ message: "Sikeres módosítás" })
+        return res.status(200).json({ message: "Sikeres módosítás!" })
     })
 })
 
@@ -797,7 +813,7 @@ app.post('/rendelesHozzaadTermekkel', (req, res) => {
     pool.getConnection((err, connection) => {
         if (err) {
             console.log(err);
-            return res.status(500).json({ error: "Hiba a kapcsolat létrehozásakor" });
+            return res.status(500).json({ error: "Hiba a kapcsolat létrehozásakor!" });
         }
         connection.beginTransaction((err) => {
             if (err) { throw err; }
@@ -805,7 +821,7 @@ app.post('/rendelesHozzaadTermekkel', (req, res) => {
                 if (err) {
                     return connection.rollback(() => {
                         console.log(err);
-                        res.status(500).json({ error: "Hiba a rendelés hozzáadásakor" });
+                        res.status(500).json({ error: "Hiba a rendelés hozzáadásakor!" });
                     })}
                 const rendeles_id = result.insertId;
 
@@ -820,15 +836,15 @@ app.post('/rendelesHozzaadTermekkel', (req, res) => {
                     if (err) {
                         return connection.rollback(() => {
                             console.log(err);
-                            res.status(500).json({ error: "Hiba a rendelés termék hozzáadásakor" });
+                            res.status(500).json({ error: "Hiba a rendelés termék hozzáadásakor!" });
                         })}
                     connection.commit((err) => {
                         if (err) {
                             return connection.rollback(() => {
                                 console.log(err);
-                                res.status(500).json({ error: "Hiba a tranzakció véglegesítésekor" });
+                                res.status(500).json({ error: "Hiba a tranzakció véglegesítésekor!" });
                             })}
-                        return res.status(200).json({ message: "Sikeres hozzáadás" });
+                        return res.status(200).json({ message: "Sikeres hozzáadás!" });
                     }); 
                 });
             });
@@ -845,9 +861,9 @@ app.post('/rendelesHozzaad', (req, res) => {
     pool.query(sql,[rendeles_felhasznalo_id, rendeles_nev, rendeles_cim, rendeles_telefonszam, rendeles_datum, rendeles_teljesitve], (err, result) => {
     if (err) {
         console.log(err)
-        return res.status(500).json({error:"Hiba"})
+        return res.status(500).json({error:"Hiba!"})
     }
-    return res.status(200).json({message:"Sikeres hozzáadás"})
+    return res.status(200).json({message:"Sikeres hozzáadás!"})
     })
 })
 
@@ -864,9 +880,9 @@ app.post('/rendelesTermekHozzaad', (req, res) => {
     pool.query(rendelesTermekHozzadasSql,rendelesTermekParameterek, (err, result) => {
     if (err) {
         console.log(err)
-        return res.status(500).json({error:"Hiba"})
+        return res.status(500).json({error:"Hiba!"})
     }
-    return res.status(200).json({message:"Sikeres hozzáadás"})
+    return res.status(200).json({message:"Sikeres hozzáadás!"})
     })
 })
 
@@ -934,10 +950,10 @@ app.delete('/akcioTorles/:akcio_id', (req, res) => {
     pool.query(akcio_sql,[akcio_id], (err, result) => {
         if (err) {
             console.log(err)
-            return res.status(500).json({error:"Hiba"})
+            return res.status(500).json({error:"Hiba!"})
         }
 
-    return res.status(200).json({message:"Sikeres törlés"})
+    return res.status(200).json({message:"Sikeres törlés!"})
     })
 })
 
@@ -950,7 +966,7 @@ app.put('/akcioModosit/:akcio_id', (req, res) => {
     pool.getConnection((err, connection) => {
         if (err) {
             console.log(err);
-            return res.status(500).json({ error: "Hiba a kapcsolat létrehozásakor" });
+            return res.status(500).json({ error: "Hiba a kapcsolat létrehozásakor!" });
         }
 
         connection.beginTransaction((err) => {
@@ -962,7 +978,7 @@ app.put('/akcioModosit/:akcio_id', (req, res) => {
                 if (err) {
                     return connection.rollback(() => {
                         console.log(err);
-                        res.status(500).json({ error: "Hiba az akció frissítésekor" });
+                        res.status(500).json({ error: "Hiba az akció frissítésekor!" });
                     }
                 )}
                 const termekAkcioTorlesSql = 
@@ -971,7 +987,7 @@ app.put('/akcioModosit/:akcio_id', (req, res) => {
                     if (err) {
                         return connection.rollback(() => {
                             console.log(err);
-                            res.status(500).json({ error: "Hiba a termék akció törlésekor" });
+                            res.status(500).json({ error: "Hiba a termék akció törlésekor!" });
                         }
                     )}
                     const termekAkcioFrissitesSql = 
@@ -980,17 +996,17 @@ app.put('/akcioModosit/:akcio_id', (req, res) => {
                         if (err) {
                             return connection.rollback(() => {
                                 console.log(err);
-                                res.status(500).json({ error: "Hiba a termék akció frissítésekor" });
+                                res.status(500).json({ error: "Hiba a termék akció frissítésekor!" });
                             }
                         )}
                         connection.commit((err) => {
                             if (err) {
                                 return connection.rollback(() => {
                                     console.log(err);
-                                    res.status(500).json({ error: "Hiba a tranzakció véglegesítésekor" });
+                                    res.status(500).json({ error: "Hiba a tranzakció véglegesítésekor!" });
                                 }
                             )}
-                            return res.status(200).json({ message: "Sikeres módosítás" });
+                            return res.status(200).json({ message: "Sikeres módosítás!" });
                         });
                     });
                 });
@@ -1007,7 +1023,7 @@ app.post('/akcioHozzaad', (req, res) => {
     pool.getConnection((err, connection) => {
         if (err) {
             console.log(err);
-            return res.status(500).json({ error: "Hiba a kapcsolat létrehozásakor" });
+            return res.status(500).json({ error: "Hiba a kapcsolat létrehozásakor!" });
         }
         connection.beginTransaction((err) => {
             if (err) { throw err; }
@@ -1015,7 +1031,7 @@ app.post('/akcioHozzaad', (req, res) => {
                 if (err) {
                     return connection.rollback(() => {
                         console.log(err);
-                        res.status(500).json({ error: "Hiba az akció hozzáadásakor" });
+                        res.status(500).json({ error: "Hiba az akció hozzáadásakor!" });
                     })}
                 const akcio_id = result.insertId;
                 const termekAkcioFrissitesSql = 
@@ -1024,15 +1040,15 @@ app.post('/akcioHozzaad', (req, res) => {
                     if (err) {
                         return connection.rollback(() => {
                             console.log(err);
-                            res.status(500).json({ error: "Hiba a termék akció frissítésekor" });
+                            res.status(500).json({ error: "Hiba a termék akció frissítésekor!" });
                         })}
                     connection.commit((err) => {
                         if (err) {
                             return connection.rollback(() => {
                                 console.log(err);
-                                res.status(500).json({ error: "Hiba a tranzakció véglegesítésekor" });
+                                res.status(500).json({ error: "Hiba a tranzakció véglegesítésekor!" });
                             })}
-                        return res.status(200).json({ message: "Sikeres hozzáadás" });
+                        return res.status(200).json({ message: "Sikeres hozzáadás!" });
                     }); 
                 });
             });
@@ -1103,7 +1119,7 @@ app.delete('/velemenyTorles/:velemeny_id', (req, res) => {
             return res.status(500).json({error:"Hiba"})
         }
 
-    return res.status(200).json({message:"Sikeres törlés"})
+    return res.status(200).json({message:"Sikeres törlés!"})
     })
 })
 

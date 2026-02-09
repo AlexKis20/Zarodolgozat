@@ -112,10 +112,10 @@ const AkcioModosit= ({ akcio_id, onClose }) => {
     }
 
     if (tolt)
-        return <div style={{ textAlign: "center" }}>Adatok betöltése folyamatban...</div>
+        return <div className="text-center">Adatok betöltése folyamatban...</div>
 
     if (hiba)
-        return <div>Hiba történt az adatok betöltése közben.</div>
+        return <div className="text-center">Hiba történt az adatok betöltése közben.</div>
 
     return (
         <div className="container">

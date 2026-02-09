@@ -94,7 +94,7 @@ const Marka = () => {
 
 
     if (tolt)
-        return <div style={{ textAlign: "center" }}>Adatok betöltése folyamatban...</div>
+        return <div className="text-center">Adatok betöltése folyamatban...</div>
     if (ures)
         return (
             <div className="container">
@@ -119,7 +119,7 @@ const Marka = () => {
         )
 
     if (hiba)
-        return <div>Hiba történt az adatok betöltése közben.</div>
+        return <div className="text-center">Hiba történt az adatok betöltése közben.</div>
     
 
     return (
@@ -130,7 +130,6 @@ const Marka = () => {
                 </div>
                 <div className="col-4 text-center">
                     <Rendezes adatok={keresettAdatok} setKeresettAdatok={setKeresettAdatok}>
-                        <option value="0" disabled hidden>Rendezés</option>
                         <option value="marka_nev|1">Márka neve növekvő</option>
                         <option value="marka_nev|2">Márka neve csökkenő</option>
                     </Rendezes>
@@ -143,7 +142,7 @@ const Marka = () => {
                 <div className="col-1 text-center fw-bold">Felvitel</div>
             </div>
             {keresettAdatok.map((elem, index) => (
-                <div className="row justify-content-center mb-3">
+                <div key={elem.marka_id} className="row justify-content-center mb-3">
                     <div className="col-6 text-center">{elem.marka_nev}</div>
                     <div className="col-1 text-center">
                         <button

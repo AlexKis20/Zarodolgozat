@@ -35,6 +35,11 @@ const Kezdolap= () => {
                 setTolt(false)
             }
             else if (response.status === 404 || fajtaResponse.status === 404) {
+                if (fajtaResponse.status !== 404) {
+                    setFajtak(fajtaData)
+                } else {
+                    setFajtak([])
+                }
                 setUres(true)
                 setTolt(false)
             }
@@ -99,7 +104,7 @@ const Kezdolap= () => {
 
 
     if (tolt)
-        return <div style={{ textAlign: "center" }}>Adatok betöltése folyamatban...</div>
+        return <div className="text-center">Adatok betöltése folyamatban...</div>
     
     if (ures)
         return (
@@ -125,7 +130,7 @@ const Kezdolap= () => {
         )
     
     if (hiba)
-        return <div>Hiba történt az adatok betöltése közben.</div>
+        return <div className="text-center">Hiba történt az adatok betöltése közben.</div>
 
     return (
         <div className="container">
@@ -135,7 +140,6 @@ const Kezdolap= () => {
                 </div>
                 <div className="col-4 text-center">
                     <Rendezes adatok={keresettAdatok} setKeresettAdatok={setKeresettAdatok}>
-                        <option value="0" disabled hidden>Rendezés</option>
                         <option value="blog_cim|1">Kezdőlap címe növekvő</option>
                         <option value="blog_cim|2">Kezdőlap címe csökkenő</option>
                     </Rendezes>
@@ -148,7 +152,7 @@ const Kezdolap= () => {
                 <div className="col-1 text-center fw-bold">Felvitel</div>
             </div>
             {keresettAdatok.map((elem, index) => (
-                <div className="row justify-content-center mb-3">
+                <div key={elem.blog_id} className="row justify-content-center mb-3">
                     <div className="col-6 text-center">{elem.blog_cim}</div>
                     <div className="col-1 text-center">
                         <button

@@ -106,13 +106,13 @@ const Vezerlopult = () => {
     };
 
     if (tolt)
-        return <div style={{ textAlign: "center" }}>Adatok betöltése folyamatban...</div>
+        return <div className="text-center">Adatok betöltése folyamatban...</div>
 
     if (ures)
-        return <div style={{ textAlign: "center" }}>Nincs adat!</div>
+        return <div className="text-center">Nincs adat!</div>
 
     if (hiba)
-        return <div style={{ textAlign: "center" }}>Hiba történt az adatok betöltése közben.</div>
+        return <div className="text-center">Hiba történt az adatok betöltése közben.</div>
 
     return (
         <div className="vezerlopult">

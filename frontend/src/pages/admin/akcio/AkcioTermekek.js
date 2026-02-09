@@ -8,6 +8,7 @@ const AkcioTermekek= ({ akcio_id, akcio_kedvezmeny, akcio_tipus, onClose }) => {
     const [keresettAdatok, setKeresettAdatok] = useState([])
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
+    const [ures, setUres] = useState(false)
 
     const leToltes = async () => {
         try {
@@ -18,6 +19,9 @@ const AkcioTermekek= ({ akcio_id, akcio_kedvezmeny, akcio_tipus, onClose }) => {
                 setAdatok(data)
                 setKeresettAdatok(data)
                 console.log(data)
+                setTolt(false)
+            } else if (response.status === 404) {
+                setUres(true)
                 setTolt(false)
             } else {
                 setHiba(true)
@@ -42,10 +46,11 @@ const AkcioTermekek= ({ akcio_id, akcio_kedvezmeny, akcio_tipus, onClose }) => {
     }
 
     if (tolt)
-        return <div style={{ textAlign: "center" }}>Adatok betöltése folyamatban...</div>
-
+        return <div className="text-center">Adatok betöltése folyamatban...</div>
+    if (ures)
+        return <div className="text-center">Ehhez az akcióhoz nem tartozik termék!</div>
     if (hiba)
-        return <div>Hiba történt az adatok betöltése közben.</div>
+        return <div className="text-center">Hiba történt az adatok betöltése közben.</div>
 
     return (
         <div className="container">
