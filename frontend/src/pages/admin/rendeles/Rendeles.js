@@ -188,7 +188,7 @@ const Rendeles = () => {
                 <div className="col-1 text-center fw-bold">Teljesített</div>
                 <div className="col-1 text-center fw-bold">Törlés</div>
                 <div className="col-1 text-center fw-bold">Módosítás</div>
-                <div className="col-1 text-center fw-bold">Hozzáadás</div>
+                <div className="col-1 text-center fw-bold">Felvitel</div>
             </div>
             {keresettAdatok.map((elem, index) => (
                 <div className="row justify-content-center mb-3" key={elem.rendeles_id || index}>
