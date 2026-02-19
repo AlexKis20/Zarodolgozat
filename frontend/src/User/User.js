@@ -17,6 +17,8 @@ const User=()=>{
     const [telefonszam, setTelefonszam] = useState("");
   const felhasznaloId = localStorage.getItem("fid"); 
 
+
+
     useEffect(() => {
         // const storedKosar = localStorage.getItem("kosar");
         // if (storedKosar) {

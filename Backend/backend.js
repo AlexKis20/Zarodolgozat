@@ -284,8 +284,90 @@ app.post('/termekSelectIn', (req, res) => {
     });
 });
 
+// vélemény hozzáadása
+app.post('/ujVelemeny', (req, res) => {
+    const {
+        velemeny_felhasz_id,
+        velemeny_termek_id,
+        velemeny_ertekeles,
+        velemeny_szoveg
+    } = req.body;
 
+    const sql = `
+        INSERT INTO velemeny
+        (
+          velemeny_felhasz_id,
+          velemeny_termek_id,
+          velemeny_ertekeles,
+          velemeny_szoveg,
+          velemeny_datum
+        )
+        VALUES (?, ?, ?, ?, NOW())
+    `;
 
+    pool.query(
+        sql,
+        [
+            velemeny_felhasz_id,
+            velemeny_termek_id,
+            velemeny_ertekeles,
+            velemeny_szoveg
+        ],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).json({
+                  error: "Adatbázis hiba"
+                });
+            }
+
+            return res.status(201).json({
+                message: "Vélemény sikeresen felvéve",
+                insertId: result.insertId
+            });
+        }
+    );
+});
+
+// vélemény átlagának lekérdezése termék ID alapján
+app.get('/velemenyAtlag/:termekId', (req,res)=>{
+  const sql = `
+    SELECT 
+      AVG(velemeny_ertekeles) AS atlag,
+      COUNT(*) AS db
+    FROM velemeny
+    WHERE velemeny_termek_id = ?
+  `;
+
+  pool.query(sql,[req.params.termekId],(err,result)=>{
+    res.json(result[0]);
+  });
+});
+
+// vélemények lekérdezése termék ID alapján
+app.get('/velemenyek/:termekId', (req, res) => {
+    const sql = `
+        SELECT 
+            velemeny_id,
+            velemeny_felhasz_id,
+            velemeny_ertekeles,
+            velemeny_szoveg,
+            velemeny_datum
+        FROM velemeny
+        WHERE velemeny_termek_id = ?
+    `;
+
+    pool.query(sql, [req.params.termekId], (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: "Hiba!" });
+        }
+        if (result.length === 0) {
+            return res.status(404).json({ error: "Nincs adat!" });
+        }
+        return res.status(200).json(result);
+    });
+});
 
 
 //Kornélia végpontjai
