@@ -4,7 +4,7 @@ import { IoCloseSharp } from "react-icons/io5";
 import "./Tipus.css"
 import BeviteliMezo from "../../../components/BeviteliMezo"
 import { mezoValidalas } from "../../../components/BeviteliMezo"
-import Cim from "../../../components/Cim"
+import Cim from "../../../Cim"
 
 const TipusModosit= ({ tipus_id, onClose }) => {
     const [modositottAdat, setModositottAdat] = useState({})

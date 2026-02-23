@@ -372,6 +372,21 @@ app.get('/velemenyek/:termekId', (req, res) => {
 
 //Kornélia végpontjai
 
+const datumFormatum = (isoDateTime) => {
+    if (!isoDateTime) return null;
+    
+    // Kezelni kell a '2026-04-24T18:52' és '2026-04-24T18:52:00.000Z' formátumokat
+    const date = new Date(isoDateTime);
+    const year = date.getUTCFullYear();
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const hours = String(date.getUTCHours()).padStart(2, '0');
+    const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+    const seconds = String(date.getUTCSeconds()).padStart(2, '0');
+    
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};
+
 // minden felhasználó lekérdezése
 app.get('/felhasznalo', (req, res) => {
     const sql=`SELECT felhasznalo_id, felhasznalo_nev FROM felhasznalo`
@@ -1056,7 +1071,7 @@ app.put('/akcioModosit/:akcio_id', (req, res) => {
 
             const akcioSql = 
                 `UPDATE akcio SET akcio_nev=?, akcio_kedvezmeny=?, akcio_tipus=?, akcio_kezdete=?, akcio_vege=? WHERE akcio_id=?`
-            connection.query(akcioSql, [akcio_nev, akcio_kedvezmeny, akcio_tipus, akcio_kezdete, akcio_vege, akcio_id], (err, result) => {
+            connection.query(akcioSql, [akcio_nev, akcio_kedvezmeny, akcio_tipus, datumFormatum(akcio_kezdete), datumFormatum(akcio_vege), akcio_id], (err, result) => {
                 if (err) {
                     return connection.rollback(() => {
                         console.log(err);
@@ -1109,7 +1124,7 @@ app.post('/akcioHozzaad', (req, res) => {
         }
         connection.beginTransaction((err) => {
             if (err) { throw err; }
-            connection.query(sql, [akcio_nev, akcio_kedvezmeny, akcio_tipus, akcio_kezdete, akcio_vege], (err, result) => {
+            connection.query(sql, [akcio_nev, akcio_kedvezmeny, akcio_tipus, datumFormatum(akcio_kezdete), datumFormatum(akcio_vege)], (err, result) => {
                 if (err) {
                     return connection.rollback(() => {
                         console.log(err);

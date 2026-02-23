@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { IoCloseSharp } from "react-icons/io5";
-import Cim from "../../../components/Cim"
+import Cim from "../../../Cim"
 import Kereses from "../../../components/Kereses";
 
 const RendelesTermekek= ({ rendeles_id, onClose }) => {

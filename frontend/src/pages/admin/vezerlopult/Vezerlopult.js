@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Cim from "../../../components/Cim"
+import Cim from "../../../Cim"
 import { FaList } from "react-icons/fa";
 import "./Vezerlopult.css";
 import { datumFuggveny } from "../../../utils/datum";

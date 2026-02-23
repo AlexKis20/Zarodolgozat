@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { FaRegTrashCan, FaPencil } from "react-icons/fa6";
 import { FaPlus } from "react-icons/fa";
 import "./Termek.css"
-import Cim from "../../../components/Cim"
+import Cim from "../../../Cim"
 import Modal from "../../../components/Modal"
 import TermekModosit from "./TermekModosit"
 import TermekFelvitel from "./TermekFelvitel";

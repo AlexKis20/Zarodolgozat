@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2026. Feb 20. 08:42
--- Kiszolgáló verziója: 10.4.28-MariaDB
--- PHP verzió: 8.2.4
+-- Létrehozás ideje: 2026. Feb 23. 21:08
+-- Kiszolgáló verziója: 10.4.32-MariaDB
+-- PHP verzió: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -41,7 +41,8 @@ CREATE TABLE `akcio` (
 --
 
 INSERT INTO `akcio` (`akcio_id`, `akcio_nev`, `akcio_kedvezmeny`, `akcio_tipus`, `akcio_kezdete`, `akcio_vege`) VALUES
-(4, 'Huawei akció', 400, 'ft', '2026-04-24 20:52:00', '2026-04-30 20:52:00');
+(4, 'Tavaszváró akció Samsung okostelefonra!', 20, 'szazalek', '2026-02-02 23:00:00', '2026-02-28 22:59:59'),
+(6, 'Lenovo tablet akció', 30, 'szazalek', '2026-05-15 21:59:59', '2026-05-23 21:59:59');
 
 -- --------------------------------------------------------
 
@@ -63,14 +64,13 @@ CREATE TABLE `blog` (
 --
 
 INSERT INTO `blog` (`blog_id`, `blog_cim`, `blog_szoveg`, `blog_datum`, `blog_kep`, `blog_fajta`) VALUES
-(1, 'Iphone új', 'Megjelent az Iphone 17', '2025-12-10', 'iphone17.jpg', 2),
-(2, 'megnyílt új üzlet', 'Megnyílt Debrecen belvárosában az új épületünk.', '2025-12-16', '18.jpg', 3),
-(3, 'samsung akció', '20% kedvezmény minden samsung okostelefonhoz.', '2025-12-18', '19.jpg', 1),
-(4, 'Tablet akció', '30% kedvezmény tavaszig minden Lenovo Tabletra', '2026-01-06', '20.png', 1),
-(5, 'új tablet', 'Megjelent az új Lenovo 12,7\" Idea Tab Pro Tablet', '2026-01-06', '21.webp', 2),
-(6, 'Megnyílt újabb üzletünk', 'Megnyílt Budapest belvárosában az új épületünk.', '2026-01-05', '22.png', 3),
-(7, 'USB c', '2024-től szinte minden elektronikai eszköz — okostelefonok, tabletek, kamerák és fülhallgatók — már USB-C töltőcsatlakozóval érkezik! Szerezd be nálunk az új készülékeket!', '2025-12-18', 'usbc.jpg', 3),
-(8, 'Tudtad?', '2026 tavaszától hatályba lép, hogy a lap topoknak is USB-C töltő kábel kell. Szerezd be nálunk!', '2025-12-18', 'usbc2.jpg', 3);
+(1, 'Megnyílt az új üzletünk!', 'Megnyílt Debrecen belvárosában az új épületünk.', '2026-01-21', '18.jpg', 2),
+(2, 'Nálunk is elérhető az Iphone 17!', 'Szerezd be nálunk az okostelefonodat jó áron!', '2026-02-02', 'iphone17.jpg', 3),
+(3, 'Tavaszváró akció Samsung okostelefonra!', '20% kedvezmény minden Samsung okostelefonra! Más kedvezménnyel nem összevonható. A készlet erejéig érvényes.', '2026-02-03', '19.jpg', 1),
+(4, 'USB-C', '2024-től szinte minden elektronikai eszköz — okostelefonok, tabletek, kamerák és fülhallgatók — már USB-C töltőcsatlakozóval érkezik! Szerezd be nálunk az új készülékeket!', '2026-03-11', 'usbc.jpg', 3),
+(5, 'Tudtad?', '2026 tavaszától hatályba lép, hogy a laptopoknak is USB-C töltő kábel kell. Szerezd be nálunk!', '2026-04-08', 'usbc2.jpg', 3),
+(7, 'Új tablet a kínálatunkban!', 'A Lenovo 12,7\" Idea Tab Pro Tablet USB-C töltéssel!', '2026-05-01', '21.webp', 2),
+(8, 'Lenovo tablet akció!', '30% kedvezmény minden Lenovo tabletre. Más kedvezménnyel nem összevonható. A készlet erejéig érvényes.', '2026-05-15', '20.png', 1);
 
 -- --------------------------------------------------------
 
@@ -114,7 +114,7 @@ INSERT INTO `felhasznalo` (`felhasznalo_id`, `felhasznalo_nev`, `felhasznalo_jel
 (6, 'Admin', '$2a$10$FNoGv4HB.4kVETfdb2QvbegXOqNv2BNpXWCDwFKla.www/Qz0wMB.', 2),
 (8, 'User', '$2b$10$6/h08PIcMvWwlzV66dNsaeMD5Vc/jq0q2N4p1IsvO5YrvZdP9VyxK', 1),
 (9, 'Proba', '$2b$10$eAcFZ8OKIz8KgAzEGhsJxeZyLcNb4Lfe2bfgfTmygINASTzN9jCxq', 1),
-(10, 'gg', '$2b$10$.AmZdgjyIr7QbCVvfLkTwO/Kd.FQ7DP4AZAjb4wgpt/8lorEXEd4.', 0),
+(10, 'NagyKatalin', '$2b$10$.AmZdgjyIr7QbCVvfLkTwO/Kd.FQ7DP4AZAjb4wgpt/8lorEXEd4.', 0),
 (11, 'Alex', '$2b$10$4mkbT7f7tv7OSWJz5G3UduumDBDHsKp88J3nPcRf.G5.d1WhcJCWW', 1);
 
 -- --------------------------------------------------------
@@ -182,17 +182,11 @@ CREATE TABLE `rendeles` (
 --
 
 INSERT INTO `rendeles` (`rendeles_id`, `rendeles_felhasznalo_id`, `rendeles_nev`, `rendeles_cim`, `rendeles_telefonszam`, `rendeles_datum`, `rendeles_teljesitve`) VALUES
-(13, 0, 'Teszt Elek', 'Debrecen', '01100110', '2026-02-06 00:00:00', 0),
-(14, 0, 'Tttt', 'tttt', '12221111111', '2026-02-06 00:00:00', 0),
-(15, 0, 'aaaaa', 'aaaaa', '11111111111', '2026-02-06 00:00:00', 0),
-(16, 8, 'dddddddd', 'dddd', '3333333333', '2026-02-06 00:00:00', 0),
-(17, 8, 'jjjjjjjjjj', 'jjjjjjjjjj', '8888888888888', '2026-02-06 00:00:00', 0),
-(18, 8, 'hhhhhhhh', 'hhhh', '5555555555', '2026-02-06 00:00:00', 0),
-(19, 8, 'Mia', 'Debrecen', '06301273723', '2026-02-06 00:00:00', 0),
-(20, 8, 'Gergő', 'Püspökladány', '06202384774', '2026-02-06 00:00:00', 0),
-(21, 11, 'alex', 'hajdúsámson', '06302212356', '2026-02-06 00:00:00', 0),
-(22, 11, 'Dani', 'Baross', '063019561023', '2026-02-06 00:00:00', 0),
-(23, 11, 'Hüje Béla', 'Baross Gabi középsuli, Debrecen', 'faszomtudja', '2026-02-17 00:00:00', 0);
+(19, 10, 'Nagy Katalin', '4025 Debrecen, Széchenyi u. 6', '06301273723', '2026-04-15 00:00:00', 1),
+(20, 8, 'Gergő', '4150 Püspökladány Damjanich utca 1', '06202384774', '2026-05-20 12:12:13', 0),
+(21, 11, 'Alex', '4251 Hajdúsámson, Hadházi út 8', '06302212356', '2026-02-06 05:00:00', 1),
+(22, 11, 'Dani', '4030 Debrecen, Budai Ézsaiás u. 8/A', '063019561023', '2026-01-28 00:00:00', 1),
+(23, 11, 'Kiss Béla', '4030 Debrecen, Budai Ézsaiás u. 8/A', 'Nincs', '2026-03-18 11:26:00', 1);
 
 -- --------------------------------------------------------
 
@@ -212,19 +206,6 @@ CREATE TABLE `rendeles_termek` (
 --
 
 INSERT INTO `rendeles_termek` (`rendeles_id`, `rendeles_termek_id`, `rendeles_ar`, `rendeles_darab`) VALUES
-(13, 3, 6999, 1),
-(13, 8, 2980, 1),
-(13, 15, 7990, 1),
-(13, 34, 329990, 1),
-(13, 35, 9990, 1),
-(13, 44, 399990, 1),
-(13, 50, 5990, 1),
-(14, 1, 199990, 1),
-(15, 4, 3700, 1),
-(16, 5, 17900, 1),
-(17, 1, 199990, 1),
-(18, 20, 8990, 1),
-(18, 27, 5990, 1),
 (19, 2, 389900, 1),
 (20, 5, 17900, 1),
 (20, 44, 399990, 1),
@@ -252,7 +233,7 @@ CREATE TABLE `termek` (
   `termek_kep` varchar(100) NOT NULL,
   `termek_marka` int(11) NOT NULL,
   `termek_tipus` int(11) NOT NULL,
-  `termek_akcio_id` int(11) NOT NULL
+  `termek_akcio_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 --
@@ -260,7 +241,7 @@ CREATE TABLE `termek` (
 --
 
 INSERT INTO `termek` (`termek_id`, `termek_nev`, `termek_ar`, `termek_szin`, `termek_kijelzo`, `termek_processzor`, `termek_kapacitas`, `termek_oprendszer`, `termek_meret`, `termek_leiras`, `termek_kep`, `termek_marka`, `termek_tipus`, `termek_akcio_id`) VALUES
-(1, 'Samsung Galaxy S25 FE 5G 256GB 8GB RAM Dual (SM-S731B) Mobiltelefon', 199990, 'fekete', 'legfeljebb 120 Hz-es\r\n2340 x 1080 pixel', 'SoC/CPU: Samsung Exynos 2400\r\nGPU: Xclipse 940', 'Tárhely mérete: 256 GB\r\nRAM mérete: 8 GB', 'Android', 'Hosszúság: 161.3 mm\r\nSzélesség: 76.6 mm\r\nVastagság: 7.4 mm\r\nTömeg: 190 g', 'Vékonyabb kivitel, nagyobb élvezet! 7,4 mm vastagságával és 190 g tömegével az eddigi legvékonyabb és legkönnyebb FE telefon. Az eddigi legvékonyabb kerettel is rendelkezik, ami a letisztult kamera dizájnnal párosulva elegáns megjelenést és még magával ragadóbb élményt nyújt.', '1.png', 1, 1, 0),
+(1, 'Samsung Galaxy S25 FE 5G 256GB 8GB RAM Dual (SM-S731B) Mobiltelefon', 199990, 'fekete', 'legfeljebb 120 Hz-es\r\n2340 x 1080 pixel', 'SoC/CPU: Samsung Exynos 2400\r\nGPU: Xclipse 940', 'Tárhely mérete: 256 GB\r\nRAM mérete: 8 GB', 'Android', 'Hosszúság: 161.3 mm\r\nSzélesség: 76.6 mm\r\nVastagság: 7.4 mm\r\nTömeg: 190 g', 'Vékonyabb kivitel, nagyobb élvezet! 7,4 mm vastagságával és 190 g tömegével az eddigi legvékonyabb és legkönnyebb FE telefon. Az eddigi legvékonyabb kerettel is rendelkezik, ami a letisztult kamera dizájnnal párosulva elegáns megjelenést és még magával ragadóbb élményt nyújt.', '1.png', 1, 1, 7),
 (2, 'Apple iPhone 17 256GB Mobiltelefon', 389900, 'zöld', 'legfeljebb 120 Hz-es\r\n2622 x 1206 pixel', 'SoC/CPU: Apple A19', 'Tárhely mérete: 256 GB\r\nRAM mérete: 8 GB', 'iOS', 'Hosszúság: 149.6 mm\r\nSzélesség: 71.5 mm\r\nVastagság: 8 mm\r\nTömeg: 177 g', 'Megérkezett az új iPhone 17. Ívelt élekkel, keskenyebb peremekkel és olyan ellenálló anyagokkal alkottuk meg, mint az előlapon használt Ceramic Shield 2 – így hosszú időn át megőrzi szépségét. A 6,3 hüvelykes Super Retina XDR-kijelzőn4 többet láthatsz, és többet foglalkozhatsz azzal, amit szeretsz.', '2.png', 2, 1, 0),
 (3, 'Samsung Gyári USB-C 25W Telefon és Tablet Adapter Töltő + 1m USB-C töltőkábel (EP-TA800EWE + EP-DG977BWE)', 6999, 'fehér', '', '', '', '', 'USB-C kábel 1m', '-Samsung Galaxy telefonok és tabletek (Tab) töltéséhez\r\n-Samsung USB-C telefon vagy tablet töltő\r\n- Teljesítmény: 25W', '3.png', 1, 6, 0),
 (4, 'Samsung EHS64AVFWE Vezetékes Fülhallgató Mini Jack 3.5mm Sztereó Hi-Fi (Bulk - Cserélhető Csomagolás) - Fehér ', 3700, 'fehér', '', '', '', '', '1,2 m', 'Samsung EHS64AVFWE Vezetékes Fülhallgató Mini Jack 3.5mm Sztereó Hi-Fi (Bulk - Cserélhető Csomagolás) - Fehér Fedezd fel a különleges Samsung EHS64AVFWE fülhallgatókat, amelyek ötvözik a stílust a funkcionalitással. A hangerőszabályzóval és a beépített mikrofonnal tökéletesek mind telefonhívások lebonyolítására, mind kedvenc zenéid hallgatására. A 3.5 mm-es csatlakozó maximális kompatibilitást biztosít sokféle eszközzel, így rendkívül sokoldalúak. Ezek az elegáns, fehér fülhallgatók garantálják a legmagasabb hangminőséget, ami kiemeli Hi-Fi osztályukat. A termék cserélhető csomagolásban kerül forgalomba - egy húzós gyöngyvászon táska. ', '4.png', 1, 4, 0),
@@ -272,8 +253,8 @@ INSERT INTO `termek` (`termek_id`, `termek_nev`, `termek_ar`, `termek_szin`, `te
 (10, 'SONY XPERIA 10 V 128GB 5G XQ-DC54 DS OLED SD kártya slot Green', 104010, 'zöld', '2520 x 1080 px', 'Qualcomm Snapdragon 695', 'Beépített memória: 128 GB\r\nRAM memória: 6 GB', 'Android', 'Szélesség: 68 mm\r\nMagasság: 155 mm\r\nMélység: 8.3 mm\r\nSúly: 159 g', 'SONY XPERIA 10 V XQ-DC54 DS NANO SIM/eSIM 128GB Green\r\nAz Xperia 10 V Qualcomm Snapdragon 695 5G processzorral és 6 GB RAM-mal rendelkezik. Ezzel a kombinációval sokféleképpen használhatja - anélkül, hogy aggódnia kellene az elakadás miatt. Játssz, használj alkalmazásokat, nézz videókat vagy streamelj videókat. A gyorsan letöltött anyagokat egy 128 GB-os beépített memóriában is tárolhatja.\r\n\r\nKönnyű ház, nagy teljesítményű akkumulátor\r\nAz Xperia 10 V egy rendkívül könnyű és funkcionális okostelefon - súlya mindössze 159 g. Ráadásul 5000 mAh kapacitású akkumulátorral rendelkezik, így a mindennapi használat zenehallgatás, játék vagy fényképezőgép használata közben nem okoz energiahiányt. A videókhoz akár 34 órán keresztül is hozzáférhetsz!', '10.png', 5, 1, 0),
 (11, 'Xiaomi Redmi 15 8/256GB Okostelefon, lila', 69990, 'lila', '2340x1080', 'Qualcomm® Snapdragon™ 685', 'Memóriaméret RAM: 8GB\r\nHáttértár: 256 GB', 'HyperOS', '', 'A készülék nagy kapacitású, 7000 mAh-s akkumulátorával hosszú üzemidőt biztosít, így egész napos használatra is alkalmas. A 6,9”-es FHD+ kijelző éles és élénk képmegjelenítést nyújt, a Snapdragon® 685 processzor pedig gördülékeny, gyors működést garantál. A 50 MP-es AI dupla kamera kiváló fotókat készít különböző körülmények között, a 33W-os gyorstöltés pedig gyorsan feltölti az eszközt. A készülék stílusos megjelenésű, és IP64 védelemnek köszönhetően víz- és porálló, így tartós és megbízható mindennapi használatra.', '11.png', 6, 1, 0),
 (12, 'HUAWEI nova 12i 8GB/128GB Black', 104990, 'fekete', ' 2388 × 1080', 'Qualcomm Snapdragon 680', 'Rendszermemória: (RAM) 8 GB\r\nBelső memória: 128 GB', ' Android', 'Magasság: 16,33 cm\r\nSzélesség: 7,47 cm\r\nMélység: 0,84 cm\r\nSúly: 199 g', 'Mobiltelefon - 6,7\"-es IPS kijelző 2388 × 1080 felbontással (90Hz), 8 GB RAM, 128 GB belső tárhely, dual SIM, Qualcomm Snapdragon 680 processzor, kameramodul: 108Mpx (f/1,9) fő kamera, 8Mpx felbontású előlapi kamera, ujjlenyomat-olvasó, GPS, NFC, LTE, USB-C csatlakozó, gyorstöltés 40W, 5000 mAh kapacitású akkumulátor, megjelenés éve 2024', '12.png', 7, 1, 0),
-(13, 'Lenovo Idea Tab TB336FU 8GB+256GB Luna Grey + Pencil + Case', 101790, 'szürke', 'QHD 2560 × 1600', 'Mediatek Dimensity 6300', 'RAM mérete: 8 GB (8 192 MB)\r\nTárhely kapacitás: 256 GB', ' Google Android', 'Magasság: 254,59 mm (25,46 cm)\r\nSzélesség: 166,15 mm (16,62 cm)\r\nMélység: 6,99 mm (0,7 cm)\r\nTömeg: 480 g (0,48 kg)', 'Tablet - 11\" QHD 2560 × 1600 IPS kijelző, Mediatek Dimensity 6300 2 GHz, 8 GB RAM, 256 GB tárhely, memóriakártya max. mérete 256 GB, WiFi, Bluetooth, GPS, 8 Mpx fő (hátsó) kamera, 5 Mpx szelfi kamera, USB-C, 20W gyors töltés, 7040 mAh akkumulátor kapacitás, Android 15', '13.png', 8, 3, 0),
-(14, 'Samsung Galaxy A55 5G 256GB', 169990, 'kék', '120 Hz 2400x1080', 'Exynos 1480', '256 GB / 8 GB RAM', 'Android', '161.1 x 77.4 x 8.2 mm', 'Samsung középkategóriás okostelefon prémium kijelzővel.', '14.png', 1, 1, 0),
+(13, 'Lenovo Idea Tab TB336FU 8GB+256GB Luna Grey + Pencil + Case', 101790, 'szürke', 'QHD 2560 × 1600', 'Mediatek Dimensity 6300', 'RAM mérete: 8 GB (8 192 MB)\r\nTárhely kapacitás: 256 GB', ' Google Android', 'Magasság: 254,59 mm (25,46 cm)\r\nSzélesség: 166,15 mm (16,62 cm)\r\nMélység: 6,99 mm (0,7 cm)\r\nTömeg: 480 g (0,48 kg)', 'Tablet - 11\" QHD 2560 × 1600 IPS kijelző, Mediatek Dimensity 6300 2 GHz, 8 GB RAM, 256 GB tárhely, memóriakártya max. mérete 256 GB, WiFi, Bluetooth, GPS, 8 Mpx fő (hátsó) kamera, 5 Mpx szelfi kamera, USB-C, 20W gyors töltés, 7040 mAh akkumulátor kapacitás, Android 15', '13.png', 8, 3, 6),
+(14, 'Samsung Galaxy A55 5G 256GB', 169990, 'kék', '120 Hz 2400x1080', 'Exynos 1480', '256 GB / 8 GB RAM', 'Android', '161.1 x 77.4 x 8.2 mm', 'Samsung középkategóriás okostelefon prémium kijelzővel.', '14.png', 1, 1, 4),
 (15, 'Samsung Galaxy S24 Ultra Tok', 7990, 'fekete', '', '', '', '', '', 'Eredeti Samsung bőrtok Galaxy S24 Ultra modellhez.', '15.png', 1, 5, 0),
 (16, 'Samsung Galaxy Buds FE', 29990, 'fehér', '', '', '', '', '', 'Samsung vezeték nélküli fülhallgató aktív zajszűréssel.', '16.png', 1, 4, 0),
 (17, 'Samsung 45W USB-C Töltő', 12990, 'fehér', '', '', '', '', '', 'Gyors töltő adapter USB-C csatlakozóval.', '17.png', 1, 6, 0),
@@ -308,8 +289,8 @@ INSERT INTO `termek` (`termek_id`, `termek_nev`, `termek_ar`, `termek_szin`, `te
 (46, 'Huawei FreeBuds 5', 59990, 'fehér', '', '', '', '', '', 'Huawei prémium vezeték nélküli fülhallgató.', '46.png', 7, 4, 0),
 (47, 'Huawei SuperCharge 66W', 15990, 'fehér', '', '', '', '', '', 'Huawei szupergyors töltő adapter.', '47.png', 7, 6, 0),
 (48, 'Huawei 12000 mAh Powerbank', 17990, 'szürke', '', '', '', '', '', 'Huawei kompakt powerbank.', '48.png', 7, 7, 0),
-(49, 'Lenovo Tab P12 256GB', 149990, 'szürke', '120 Hz 2944x1840', 'MediaTek Dimensity 7050', '256 GB / 8 GB RAM', 'Android', '293 x 190 x 6.9 mm', 'Nagy kijelzős Lenovo tablet.', '49.png', 8, 3, 0),
-(50, 'Lenovo Tab M10 Tok', 5990, 'kék', '', '', '', '', '', 'Védőtok Lenovo Tab M10 készülékhez.', '50.png', 8, 5, 0),
+(49, 'Lenovo Tab P12 256GB', 149990, 'szürke', '120 Hz 2944x1840', 'MediaTek Dimensity 7050', '256 GB / 8 GB RAM', 'Android', '293 x 190 x 6.9 mm', 'Nagy kijelzős Lenovo tablet.', '49.png', 8, 3, 6),
+(50, 'Lenovo Tab M10 Tok', 5990, 'kék', '', '', '', '', '', 'Védőtok Lenovo Tab M10 készülékhez.', '50.png', 8, 5, 6),
 (51, 'Lenovo USB-C 65W Töltő', 19990, 'fekete', '', '', '', '', '', 'Lenovo nagy teljesítményű USB-C töltő.', '51.png', 8, 6, 0),
 (52, 'Lenovo Bluetooth Fülhallgató', 14990, 'fekete', '', '', '', '', '', 'Lenovo vezeték nélküli fülhallgató.', '52.png', 8, 4, 0),
 (53, 'Lenovo 20000 mAh Powerbank', 22990, 'fekete', '', '', '', '', '', 'Lenovo nagy kapacitású powerbank.', '53.png', 8, 7, 0);
@@ -360,10 +341,8 @@ CREATE TABLE `velemeny` (
 INSERT INTO `velemeny` (`velemeny_id`, `velemeny_felhasz_id`, `velemeny_termek_id`, `velemeny_ertekeles`, `velemeny_szoveg`, `velemeny_datum`) VALUES
 (3, 8, 2, 4, 'Jó a termék!', '2025-12-16 11:47:23'),
 (4, 8, 2, 5, 'Nagyon jó termék!', '2026-02-12 10:26:53'),
-(14, 8, 2, 5, 'jó termék!', '2026-02-19 08:31:04'),
-(15, 8, 2, 3, 'annyira nem jó!', '2026-02-19 08:38:55'),
-(16, 11, 1, 3, 'teszt', '2026-02-19 08:41:49'),
-(17, 11, 19, 5, 'béla nem szeret engem\n', '2026-02-19 08:58:50');
+(14, 8, 2, 5, 'Jó termék!', '2026-02-19 08:31:04'),
+(15, 8, 2, 3, 'Annyira nem jó!', '2026-02-19 08:38:55');
 
 --
 -- Indexek a kiírt táblákhoz
@@ -449,7 +428,7 @@ ALTER TABLE `velemeny`
 -- AUTO_INCREMENT a táblához `akcio`
 --
 ALTER TABLE `akcio`
-  MODIFY `akcio_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `akcio_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT a táblához `blog`
@@ -485,7 +464,7 @@ ALTER TABLE `rang`
 -- AUTO_INCREMENT a táblához `rendeles`
 --
 ALTER TABLE `rendeles`
-  MODIFY `rendeles_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `rendeles_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT a táblához `termek`
