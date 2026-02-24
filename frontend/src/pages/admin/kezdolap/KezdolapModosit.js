@@ -3,7 +3,7 @@ import { FaSave } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
 import { mezoValidalas } from "../../../components/BeviteliMezo"
 import BeviteliMezo from "../../../components/BeviteliMezo"
-import Cim from "../../../components/Cim"
+import Cim from "../../../Cim"
 
 const  KezdolapModosit= ({ blog_id, fajtak, onClose }) => {
     const mezok = [

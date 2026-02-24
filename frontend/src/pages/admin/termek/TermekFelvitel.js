@@ -4,7 +4,7 @@ import { IoCloseSharp } from "react-icons/io5";
 import "./Termek.css"
 import BeviteliMezo from "../../../components/BeviteliMezo"
 import { mezoValidalas } from "../../../components/BeviteliMezo"
-import Cim from "../../../components/Cim"
+import Cim from "../../../Cim"
 
 const TermekFelvitel = ({ onClose, markak, tipusok }) => {
     const mezok = [

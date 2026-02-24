@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { FaSave } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
-import { FaPlus } from "react-icons/fa";
 import BeviteliMezo from "../../../components/BeviteliMezo"
 import { mezoValidalas } from "../../../components/BeviteliMezo"
 import "./Marka.css"
-import Cim from "../../../components/Cim"
+import Cim from "../../../Cim"
 
 const MarkaFelvitel= ({  onClose }) => {
     const mezok = [{nev: "marka_nev", tipus: "input", megjelenit: "Márka név:"}]

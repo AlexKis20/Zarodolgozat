@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { FaRegTrashCan, FaPencil } from "react-icons/fa6";
 import { FaList, FaPlus } from "react-icons/fa";
-import Cim from "../../../components/Cim"
+import Cim from "../../../Cim"
 import Modal from "../../../components/Modal"
 import RendelesModosit from "./RendelesModosit"
 import RendelesTermekek from "./RendelesTermekek";

@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { FaSave } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
-import { FaPlus } from "react-icons/fa";
 import "./Tipus.css"
 import BeviteliMezo from "../../../components/BeviteliMezo"
 import { mezoValidalas } from "../../../components/BeviteliMezo"
-import Cim from "../../../components/Cim"
+import Cim from "../../../Cim"
 
 const TipusFelvitel= ({  onClose }) => {
     const mezok= [{nev: "tipus_nev", tipus: "input", megjelenit: "Típus név:"}]

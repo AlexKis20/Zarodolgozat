@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { FaSave } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
-import Cim from "../../../components/Cim"
+import Cim from "../../../Cim"
 import { keresAkcio } from "./keresAkcio";
 import BeviteliMezo from "../../../components/BeviteliMezo";
 import { mezoValidalas } from "../../../components/BeviteliMezo";
