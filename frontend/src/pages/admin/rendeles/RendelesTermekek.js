@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { IoCloseSharp } from "react-icons/io5";
 import Cim from "../../../Cim"
 import Kereses from "../../../components/Kereses";
+import { arFuggveny } from "../../../utils/formazas";
 
 const RendelesTermekek= ({ rendeles_id, onClose }) => {
     const [adatok, setAdatok] = useState({})
@@ -75,16 +76,16 @@ const RendelesTermekek= ({ rendeles_id, onClose }) => {
                 <div className="row justify-content-center mb-3" key={index}>
                     <div className="col-8 text-start">{elem.termek_nev}</div>
                     <div className="col-2 text-center">{elem.rendeles_darab}</div>
-                    <div className="col-2 text-center">{elem.rendeles_ar} Ft</div>
+                    <div className="col-2 text-center">{arFuggveny(elem.rendeles_ar)} Ft</div>
                 </div>
             ))}
 
             <div className="row mt-3">
                 <div className="col-6 text-start">
-                    <h4>Teljes ár:</h4>
+                    <h4>Bruttó ár:</h4>
                 </div>
                 <div className="col-6 text-end">
-                    <h4>{osszArSzamitas()} Ft</h4>
+                    <h4>{arFuggveny(osszArSzamitas())} Ft</h4>
                 </div>
             </div>
 

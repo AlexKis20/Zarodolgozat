@@ -8,6 +8,7 @@ import RendelesTermekek from "./RendelesTermekek";
 import Kereses from "../../../components/Kereses";
 import Rendezes from "../../../components/Rendezes";
 import RendelesFelvitel from "./RendelesFelvitel";
+import { telefonszamFuggveny } from "../../../utils/formazas";
 
 const Rendeles = () => {
     const [adatok, setAdatok] = useState([])
@@ -165,7 +166,7 @@ const Rendeles = () => {
         return <div className="text-center">Hiba történt az adatok betöltése közben.</div>
 
     return (
-        <div className="container">
+        <div className="container-fluid">
             <div className="row justify-content-center mb-3">
                 <div className="col-6 text-center">
                     <Kereses adatok={adatok} keresettMezok={["rendeles_nev"]} setKeresettAdatok={setKeresettAdatok} />
@@ -181,7 +182,8 @@ const Rendeles = () => {
                 </div>
             </div>
             <div className="row justify-content-center mb-3">
-                <div className="col-2 text-center fw-bold">Név</div>
+                <div className="col-1 text-center fw-bold">Név</div>
+                <div className="col-2 text-center fw-bold">Telefonszám</div>
                 <div className="col-2 text-center fw-bold">Cím</div>
                 <div className="col-2 text-center fw-bold">Dátum</div>
                 <div className="col-1 text-center fw-bold">Termékek</div>
@@ -192,7 +194,8 @@ const Rendeles = () => {
             </div>
             {keresettAdatok.map((elem, index) => (
                 <div className="row justify-content-center mb-3" key={elem.rendeles_id || index}>
-                    <div className="col-2 text-center">{elem.rendeles_nev}</div>
+                    <div className="col-1 text-center">{elem.rendeles_nev}</div>
+                    <div className="col-2 text-center">{telefonszamFuggveny(elem.rendeles_telefonszam)}</div>
                     <div className="col-2 text-center">{elem.rendeles_cim}</div>
                     <div className="col-2 text-center">{new Date(elem.rendeles_datum).toLocaleString('hu-HU')}</div>
                     <div className="col-1 text-center">

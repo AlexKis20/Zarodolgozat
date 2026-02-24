@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { IoCloseSharp } from "react-icons/io5";
 import Cim from "../../../Cim"
 import Kereses from "../../../components/Kereses";
+import { arFuggveny } from "../../../utils/formazas";
 
 const AkcioTermekek= ({ akcio_id, akcio_kedvezmeny, akcio_tipus, onClose }) => {
     const [adatok, setAdatok] = useState({})
@@ -76,15 +77,15 @@ const AkcioTermekek= ({ akcio_id, akcio_kedvezmeny, akcio_tipus, onClose }) => {
             {keresettAdatok.map((elem, index) => (
                 <div className="row justify-content-center mb-3" key={index}>
                     <div className="col-sm-3 text-center">{elem.termek_nev}</div>
-                    <div className="col-sm-3 text-center">{elem.termek_ar} Ft</div>
-                    <div className="col-sm-3 text-center">{kedvezmenyesArSzamitas(elem.termek_ar)} Ft</div>
+                    <div className="col-sm-3 text-center">{arFuggveny(elem.termek_ar)} Ft</div>
+                    <div className="col-sm-3 text-center">{arFuggveny(kedvezmenyesArSzamitas(elem.termek_ar))} Ft</div>
                     <div className="col-sm-3 text-center">{akcio_tipus === "szazalek" ? akcio_kedvezmeny + "%" : akcio_kedvezmeny + " Ft"} </div>
                 </div>
             ))}
 
             <div className="row mt-3">
                 <div className="col text-end">
-                    <button className="text-end" onClick={() => onClose(false)}>
+                    <button className="btn ml-2" onClick={() => onClose(false)}>
                         <IoCloseSharp />Bezárás
                     </button>
                 </div>

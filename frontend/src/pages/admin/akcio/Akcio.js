@@ -8,7 +8,7 @@ import AkcioModosit from "./AkcioModosit"
 import AkcioFelvitel from "./AkcioFelvitel"
 import Kereses from "../../../components/Kereses";
 import Rendezes from "../../../components/Rendezes";
-import { datumFuggveny } from "../../../utils/datum";
+import { datumFuggveny } from "../../../utils/formazas";
 
 const Akcio = () => {
     const [adatok, setAdatok] = useState([])
