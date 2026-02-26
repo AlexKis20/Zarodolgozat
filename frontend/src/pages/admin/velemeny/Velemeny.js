@@ -3,7 +3,7 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import Cim from "../../../Cim"
 import Kereses from "../../../components/Kereses";
 import Rendezes from "../../../components/Rendezes";
-import { datumFuggveny } from "../../../utils/datum";
+import { datumFuggveny } from "../../../utils/formazas";
 
 
 const Velemeny = () => {

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2026. Feb 23. 21:08
+-- Létrehozás ideje: 2026. Feb 24. 20:08
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -185,9 +185,9 @@ CREATE TABLE `rendeles` (
 
 INSERT INTO `rendeles` (`rendeles_id`, `rendeles_felhasznalo_id`, `rendeles_nev`, `rendeles_cim`, `rendeles_telefonszam`, `rendeles_datum`, `rendeles_teljesitve`) VALUES
 (19, 10, 'Nagy Katalin', '4025 Debrecen, Széchenyi u. 6', '06301273723', '2026-04-15 00:00:00', 1),
-(20, 8, 'Gergő', '4150 Püspökladány Damjanich utca 1', '06202384774', '2026-05-20 12:12:13', 0),
+(20, 8, 'Gergő', '4150 Püspökladány Damjanich utca 1', '06202384774', '2026-05-10 12:12:13', 0),
 (21, 11, 'Alex', '4251 Hajdúsámson, Hadházi út 8', '06302212356', '2026-02-06 05:00:00', 1),
-(22, 11, 'Dani', '4030 Debrecen, Budai Ézsaiás u. 8/A', '063019561023', '2026-01-28 00:00:00', 1),
+(22, 11, 'Dani', '4030 Debrecen, Budai Ézsaiás u. 8/A', '06309561023', '2026-01-28 00:00:00', 1),
 (23, 11, 'Kiss Béla', '4030 Debrecen, Budai Ézsaiás u. 8/A', 'Nincs', '2026-03-18 11:26:00', 1);
 
 -- --------------------------------------------------------
@@ -341,10 +341,10 @@ CREATE TABLE `velemeny` (
 --
 
 INSERT INTO `velemeny` (`velemeny_id`, `velemeny_felhasz_id`, `velemeny_termek_id`, `velemeny_ertekeles`, `velemeny_szoveg`, `velemeny_datum`) VALUES
-(3, 8, 2, 4, 'Jó a termék!', '2025-12-16 11:47:23'),
-(4, 8, 2, 5, 'Nagyon jó termék!', '2026-02-12 10:26:53'),
-(14, 8, 2, 5, 'Jó termék!', '2026-02-19 08:31:04'),
-(15, 8, 2, 3, 'Annyira nem jó!', '2026-02-19 08:38:55');
+(3, 11, 44, 4, 'Jó a termék!', '2026-01-30 11:47:23'),
+(4, 11, 1, 5, 'Nagyon jó termék!', '2026-02-12 10:26:53'),
+(14, 11, 1, 5, 'Jó termék!', '2026-03-23 08:31:04'),
+(15, 10, 2, 3, 'Annyira nem jó!', '2026-04-19 05:13:11');
 
 --
 -- Indexek a kiírt táblákhoz
