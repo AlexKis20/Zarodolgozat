@@ -1,7 +1,7 @@
 const Kereses = ({ adatok, keresettMezok, setKeresettAdatok}) => {
 
     const kereses= (keresett) => {
-        if (keresett.length === 0 || keresett == undefined) {
+        if (keresett.length === 0 || keresett === undefined) {
             setKeresettAdatok(adatok);
             return;
         } else {

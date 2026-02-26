@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Cim from "../../../Cim"
 import { FaList } from "react-icons/fa";
 import "./Vezerlopult.css";
@@ -11,7 +11,6 @@ const Vezerlopult = () => {
     const [rendelesek, setRendelesek] = useState([])
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
-    const [siker, setSiker] = useState(false)
     const [ures, setUres] = useState(false)
     const [velemenyIndex, setVelemenyIndex] = useState(0);
     const [rendelesIndex, setRendelesIndex] = useState(0);
@@ -51,9 +50,9 @@ const Vezerlopult = () => {
     
     useEffect(() => {
         leToltes()
-    }, [siker])
+    }, [])
 
-    const startRendelesInterval= () => {
+    const startRendelesInterval= useCallback(() => {
         if (!rendelesIntervalRef.current) {
             rendelesIntervalRef.current = setInterval(() => {
                 if (rendelesek && rendelesek.length > 0) {
@@ -61,9 +60,9 @@ const Vezerlopult = () => {
                 }
             }, 10000);
         }
-    };
+    }, [rendelesek]);
 
-    const startVelemenyekInterval = () => {
+    const startVelemenyekInterval = useCallback(() => {
         if (!velemenyekIntervalRef.current) {
             velemenyekIntervalRef.current = setInterval(() => {
                 if (velemenyek && velemenyek.length > 0) {
@@ -71,36 +70,36 @@ const Vezerlopult = () => {
                 }
             }, 10000);
         }
-    };
-
-    const startIntervals = () => {
-        startRendelesInterval();
-        startVelemenyekInterval();
-    };
-
-    const stopRendelesIntervals = () => {
+    }, [velemenyek]);
+        
+    const stopRendelesInterval = useCallback(() => {
         if (rendelesIntervalRef.current) {
             clearInterval(rendelesIntervalRef.current);
             rendelesIntervalRef.current = null;
         }
-    };
+    }, []);
 
-    const stopVelemenyekIntervals = () => {
+    const stopVelemenyekInterval = useCallback(() => {
         if (velemenyekIntervalRef.current) {
             clearInterval(velemenyekIntervalRef.current);
             velemenyekIntervalRef.current = null;
         }
-    };
+    }, []);
 
-    const stopIntervals = () => {
-        stopRendelesIntervals();
-        stopVelemenyekIntervals();
-    };
+    const startIntervals = useCallback(() => {
+        startRendelesInterval();
+        startVelemenyekInterval();
+    }, [startRendelesInterval, startVelemenyekInterval]);
+
+    const stopIntervals = useCallback(() => {
+        stopRendelesInterval();
+        stopVelemenyekInterval();
+    }, [stopRendelesInterval, stopVelemenyekInterval]);
 
     useEffect(() => {
         startIntervals();
         return () => stopIntervals();
-    }, [rendelesek, velemenyek]);
+    }, [rendelesek, velemenyek, startIntervals, stopIntervals]);
 
     const openModalTermekek = (rendeles_id) => {
         setSelectedRendelesId(rendeles_id)
@@ -151,7 +150,7 @@ const Vezerlopult = () => {
                 <h3>Rendelések</h3>
                 <div className="carousel">
                     <button className="btn btn-secondary" onClick={() => lapoz(-1, "rendelesek")}>&lt;</button>
-                    <div className="kartyak" onMouseEnter={() => stopRendelesIntervals()} onMouseLeave={() => {stopIntervals(); startIntervals();}}>
+                    <div className="kartyak" onMouseEnter={() => stopRendelesInterval()} onMouseLeave={() => {stopIntervals(); startIntervals();}}>
                         {megjelenitendoAdat(rendelesek, rendelesIndex).map((adat, index) => (
                             <div key={index} className="container-fluid kartya">
                                 <div className="row mb-2">
@@ -184,7 +183,7 @@ const Vezerlopult = () => {
                 <h3>Vélemények</h3>
                 <div className="carousel">
                     <button className="btn btn-secondary" onClick={() => lapoz(-1, "velemenyek")}>&lt;</button>
-                    <div className="kartyak" onMouseEnter={() => stopVelemenyekIntervals()} onMouseLeave={() => {stopIntervals(); startIntervals();}}>
+                    <div className="kartyak" onMouseEnter={() => stopVelemenyekInterval()} onMouseLeave={() => {stopIntervals(); startIntervals();}}>
                         {megjelenitendoAdat(velemenyek, velemenyIndex).map((adat, index) => (
                             <div key={index} className="container-fluid kartya">
                                 <div className="row mb-2">

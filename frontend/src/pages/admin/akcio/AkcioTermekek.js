@@ -11,30 +11,29 @@ const AkcioTermekek= ({ akcio_id, akcio_kedvezmeny, akcio_tipus, onClose }) => {
     const [hiba, setHiba] = useState(false)
     const [ures, setUres] = useState(false)
 
-    const leToltes = async () => {
-        try {
-            const response = await fetch(Cim.Cim + "/akcioTermekek/" + akcio_id)
-            const data = await response.json()
-
-            if (response.ok) {
-                setAdatok(data)
-                setKeresettAdatok(data)
-                console.log(data)
-                setTolt(false)
-            } else if (response.status === 404) {
-                setUres(true)
-                setTolt(false)
-            } else {
-                setHiba(true)
-                setTolt(false)
-            }
-        } catch (error) {
-            console.log(error)
-            setHiba(true)
-        }
-    }
-
     useEffect(() => {
+        const leToltes = async () => {
+            try {
+                const response = await fetch(Cim.Cim + "/akcioTermekek/" + akcio_id)
+                const data = await response.json()
+
+                if (response.ok) {
+                    setAdatok(data)
+                    setKeresettAdatok(data)
+                    console.log(data)
+                    setTolt(false)
+                } else if (response.status === 404) {
+                    setUres(true)
+                    setTolt(false)
+                } else {
+                    setHiba(true)
+                    setTolt(false)
+                }
+            } catch (error) {
+                console.log(error)
+                setHiba(true)
+            }
+        }
         leToltes()
     }, [akcio_id])
 

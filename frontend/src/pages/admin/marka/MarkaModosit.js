@@ -12,26 +12,25 @@ const MarkaModosit= ({ marka_id, onClose }) => {
     const [hiba, setHiba] = useState(false)
     const mezok = [{nev: "marka_nev", tipus: "input", megjelenit: "Márka név:"}]
 
-    const leToltes = async () => {
-        try {
-            const response = await fetch(Cim.Cim + "/marka/" + marka_id)
-            const data = await response.json()
-
-            if (response.ok) {
-                setModositottAdat(data)
-                console.log(data)
-                setTolt(false)
-            } else {
-                setHiba(true)
-                setTolt(false)
-            }
-        } catch (error) {
-            console.log(error)
-            setHiba(true)
-        }
-    }
-
     useEffect(() => {
+        const leToltes = async () => {
+            try {
+                const response = await fetch(Cim.Cim + "/marka/" + marka_id)
+                const data = await response.json()
+
+                if (response.ok) {
+                    setModositottAdat(data)
+                    console.log(data)
+                    setTolt(false)
+                } else {
+                    setHiba(true)
+                    setTolt(false)
+                }
+            } catch (error) {
+                console.log(error)
+                setHiba(true)
+            }
+        }
         leToltes()
     }, [marka_id])
 

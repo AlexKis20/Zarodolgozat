@@ -15,26 +15,25 @@ const RendelesModosit = ({ rendeles_id, onClose }) => {
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
 
-    const leToltes = async () => {
-        try {
-            const response = await fetch(Cim.Cim + "/rendeles/" + rendeles_id)
-            const data = await response.json()
+    useEffect(() => {
+        const leToltes = async () => {
+            try {
+                const response = await fetch(Cim.Cim + "/rendeles/" + rendeles_id)
+                const data = await response.json()
 
-            if (response.ok) {
-                setModositottAdat(data)
-                setTolt(false)
-            } else {
+                if (response.ok) {
+                    setModositottAdat(data)
+                    setTolt(false)
+                } else {
+                    setHiba(true)
+                    setTolt(false)
+                }
+            } catch (error) {
+                console.log(error)
                 setHiba(true)
                 setTolt(false)
             }
-        } catch (error) {
-            console.log(error)
-            setHiba(true)
-            setTolt(false)
         }
-    }
-
-    useEffect(() => {
         leToltes()
     }, [rendeles_id])
 

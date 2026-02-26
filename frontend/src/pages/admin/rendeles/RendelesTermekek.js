@@ -11,29 +11,28 @@ const RendelesTermekek= ({ rendeles_id, onClose }) => {
     const [hiba, setHiba] = useState(false)
     const [ures, setUres] = useState(false)
 
-    const leToltes = async () => {
-        try {
-            const response = await fetch(Cim.Cim + "/rendelesTermekek/" + rendeles_id)
-            const data = await response.json()
-
-            if (response.ok) {
-                setAdatok(data)
-                setKeresettAdatok(data)
-                setTolt(false)
-            } else if (response.status === 404) {
-                setUres(true)
-                setTolt(false)
-            } else {
-                setHiba(true)
-                setTolt(false)
-            }
-        } catch (error) {
-            console.log(error)
-            setHiba(true)
-        }
-    }
-
     useEffect(() => {
+        const leToltes = async () => {
+            try {
+                const response = await fetch(Cim.Cim + "/rendelesTermekek/" + rendeles_id)
+                const data = await response.json()
+
+                if (response.ok) {
+                    setAdatok(data)
+                    setKeresettAdatok(data)
+                    setTolt(false)
+                } else if (response.status === 404) {
+                    setUres(true)
+                    setTolt(false)
+                } else {
+                    setHiba(true)
+                    setTolt(false)
+                }
+            } catch (error) {
+                console.log(error)
+                setHiba(true)
+            }
+        }
         leToltes()
     }, [rendeles_id])
 

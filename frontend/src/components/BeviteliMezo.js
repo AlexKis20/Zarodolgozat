@@ -28,15 +28,40 @@ const BeviteliMezo = ({ elem, adatModFel, kezelesInput}) => {
             </select>
         )
     } else if (elem.tipus === "file") {
+        let displayName = "";
+        if (adatModFel[elem.nev]) {
+            if (adatModFel[elem.nev] instanceof File) {
+                displayName = adatModFel[elem.nev].name;
+            } else if (typeof adatModFel[elem.nev] === "string") {
+                displayName = adatModFel[elem.nev].split("/").pop();
+            }
+        }
+        
         return (
-            <input
-                id={elem.nev}
-                type="file"
-                className="form-control"
-                accept="image/*"
-                onChange={(e) => kezelesInput(elem.nev, e.target.files[0])}
-                style={{ marginLeft: "5px"}}
-            />
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <label
+                    htmlFor={elem.nev}
+                    className="btn btn-outline-secondary"
+                    style={{ cursor: "pointer", margin: 0, whiteSpace: "nowrap", minWidth: "130px" }}
+                >
+                    Fájl kiválasztása
+                </label>
+                <input
+                    id={elem.nev}
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => kezelesInput(elem.nev, e.target.files[0])}
+                    style={{ display: "none" }}
+                />
+                <input
+                    type="text"
+                    className="form-control"
+                    value={displayName}
+                    readOnly
+                    style={{ marginLeft: "0px" }}
+                    placeholder="Nincs kiválasztva fájl..."
+                />
+            </div>
         )
     } else if (elem.tipus === "datetime-local") {
         return (

@@ -16,26 +16,25 @@ const  KezdolapModosit= ({ blog_id, fajtak, onClose }) => {
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
 
-    const leToltes = async () => {
-        try {
-            const response = await fetch(Cim.Cim + "/kezdolap/" + blog_id)
-            const data = await response.json()
-
-            if (response.ok) {
-                setModositottAdat(data)
-                console.log(data)
-                setTolt(false)
-            } else {
-                setHiba(true)
-                setTolt(false)
-            }
-        } catch (error) {
-            console.log(error)
-            setHiba(true)
-        }
-    }
-
     useEffect(() => {
+        const leToltes = async () => {
+            try {
+                const response = await fetch(Cim.Cim + "/kezdolap/" + blog_id)
+                const data = await response.json()
+
+                if (response.ok) {
+                    setModositottAdat(data)
+                    console.log(data)
+                    setTolt(false)
+                } else {
+                    setHiba(true)
+                    setTolt(false)
+                }
+            } catch (error) {
+                console.log(error)
+                setHiba(true)
+            }
+        }
         leToltes()
     }, [blog_id])
 

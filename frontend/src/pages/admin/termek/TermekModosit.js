@@ -25,26 +25,25 @@ const TermekModosit= ({ termek_id, onClose, markak, tipusok }) => {
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
 
-    const leToltes = async () => {
-        try {
-            const response = await fetch(Cim.Cim + "/termek/" + termek_id)
-            const data = await response.json()
-
-            if (response.ok) {
-                setModositottAdat(data)
-                console.log(data)
-                setTolt(false)
-            } else {
-                setHiba(true)
-                setTolt(false)
-            }
-        } catch (error) {
-            console.log(error)
-            setHiba(true)
-        }
-    }
-
     useEffect(() => {
+        const leToltes = async () => {
+            try {
+                const response = await fetch(Cim.Cim + "/termek/" + termek_id)
+                const data = await response.json()
+
+                if (response.ok) {
+                    setModositottAdat(data)
+                    console.log(data)
+                    setTolt(false)
+                } else {
+                    setHiba(true)
+                    setTolt(false)
+                }
+            } catch (error) {
+                console.log(error)
+                setHiba(true)
+            }
+        }
         leToltes()
     }, [termek_id])
 
@@ -135,6 +134,7 @@ const TermekModosit= ({ termek_id, onClose, markak, tipusok }) => {
                 </div>
             </div>
         </div>
+        
     )
 }
 

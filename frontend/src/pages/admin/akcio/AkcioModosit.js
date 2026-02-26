@@ -21,33 +21,33 @@ const AkcioModosit= ({ akcio_id, onClose }) => {
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
 
-    const leToltes = async () => {
-        try {
-            const response = await fetch(Cim.Cim + "/akcio/" + akcio_id)
-            const data = await response.json()
-
-            const termekResponse = await fetch(Cim.Cim + "/termek")
-            const termekData = await termekResponse.json()
-
-            if (response.ok && termekResponse.ok) {
-                setModositottAdat(data)
-                setTermekek(termekData.map(termek => ({...termek, kivalaszott: termek.termek_akcio_id === akcio_id, keresett: undefined})))
-                setKeresettTermekek(termekData.map(termek => ({...termek, kivalaszott: termek.termek_akcio_id === akcio_id, keresett: undefined})))
-                setKeresettAkciosTermekek(termekData.map(termek => ({...termek, kivalaszott: termek.termek_akcio_id === akcio_id, keresett: undefined})))
-                setTolt(false)
-            } else {
-                setHiba(true)
-                setTolt(false)
-            }
-        } catch (error) {
-            console.log(error)
-            setHiba(true)
-        }
-    }
-
     useEffect(() => {
+        const leToltes = async () => {
+            try {
+                const response = await fetch(Cim.Cim + "/akcio/" + akcio_id)
+                const data = await response.json()
+
+                const termekResponse = await fetch(Cim.Cim + "/termek")
+                const termekData = await termekResponse.json()
+
+                if (response.ok && termekResponse.ok) {
+                    setModositottAdat(data)
+                    setTermekek(termekData.map(termek => ({...termek, kivalaszott: termek.termek_akcio_id === akcio_id, keresett: undefined})))
+                    setKeresettTermekek(termekData.map(termek => ({...termek, kivalaszott: termek.termek_akcio_id === akcio_id, keresett: undefined})))
+                    setKeresettAkciosTermekek(termekData.map(termek => ({...termek, kivalaszott: termek.termek_akcio_id === akcio_id, keresett: undefined})))
+                    setTolt(false)
+                } else {
+                    setHiba(true)
+                    setTolt(false)
+                }
+            } catch (error) {
+                console.log(error)
+                setHiba(true)
+            }
+        }
         leToltes()
     }, [akcio_id])
+
 
     const kezelesInput = (kulcs, ertek) => {
         setModositottAdat(prev => ({
