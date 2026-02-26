@@ -18,6 +18,9 @@ const TermekTipusSzerint = ({ kivalasztott }) => {
   const [modalNyitva, setModalNyitva] = useState(false);
   const userId = localStorage.getItem("fid");
 
+  const [velemenyek, setVelemenyek] = useState({});
+  const [nyitottTermek, setNyitottTermek] = useState(null);
+
   // ---------------- TERMÉKEK BETÖLTÉSE ----------------
   useEffect(() => {
     const leToltes = async () => {
@@ -47,6 +50,27 @@ const TermekTipusSzerint = ({ kivalasztott }) => {
 
     leToltes();
   }, [kivalasztott]);
+
+  const velemenyekBetoltese = async (termekId) => {
+  try {
+    const res = await fetch(
+      Cim.Cim + `/velemenyek/${termekId}`
+    );
+
+    if (!res.ok) return;
+
+    const data = await res.json();
+
+    setVelemenyek((prev) => ({
+      ...prev,
+      [termekId]: data,
+    }));
+
+    setNyitottTermek(termekId);
+  } catch (err) {
+    console.log(err);
+  }
+};
 
   // ---------------- VÉLEMÉNY ÁTLAG BETÖLTÉS ----------------
   useEffect(() => {
@@ -216,7 +240,36 @@ const TermekTipusSzerint = ({ kivalasztott }) => {
                 </div>
               </div>
             </div>
+<button
+  onClick={() =>
+    velemenyekBetoltese(elem.termek_id)
+  }
+>
+  Vélemények megtekintése
+</button>
+{nyitottTermek === elem.termek_id &&
+  velemenyek[elem.termek_id] && (
+    <div className="velemenyLista">
+      {velemenyek[elem.termek_id].map((v) => (
+        <div
+          key={v.velemeny_id}
+          className="velemenyDoboz"
+        >
+          <div>
+            {"⭐".repeat(v.velemeny_ertekeles)}
+          </div>
 
+          <div>{v.velemeny_szoveg}</div>
+
+          <small>
+            {new Date(
+              v.velemeny_datum
+            ).toLocaleDateString()}
+          </small>
+        </div>
+      ))}
+    </div>
+  )}
             {loggedIn && (
               <button
                 onClick={() =>

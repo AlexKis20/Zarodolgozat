@@ -72,7 +72,10 @@ const User=()=>{
 const rendelesKuldes = async () => {
   try {
     // ---- Automatikus adatok ----
-    
+    if (vegosszeg === 0) { alert("A kosár üres! Rendelés nem indítható"); return; }
+     if (nev === "") { alert("A név megadása kötelező!"); return; }
+      if (lakcim === "") { alert("A lakcím megadása kötelező!"); return; }
+       if (telefonszam === "") { alert("A telefonszám megadása kötelező!"); return; }
     const datum = new Date().toISOString().slice(0, 10);
 
     // ---- Termékek összeállítása ----
