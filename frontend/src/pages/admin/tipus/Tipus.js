@@ -133,16 +133,16 @@ const Tipus = () => {
                     </Rendezes>
                 </div>
             </div>
-            <div className="row justify-content-center mb-3">
-                <div className="col-6 text-center fw-bold">Típus neve</div>
-                <div className="col-1 text-center fw-bold">Törlés</div>
-                <div className="col-1 text-center fw-bold">Módosítás</div>
-                <div className="col-1 text-center fw-bold">Felvitel</div>
+            <div className="row mb-3">
+                <div className="col-6 col-lg-8 text-center fw-bold">Típus neve</div>
+                <div className="col-2 col-lg-1 text-center fw-bold">Törlés</div>
+                <div className="col-2 col-lg-1 text-center fw-bold">Módosítás</div>
+                <div className="col-2 col-lg-1 text-center fw-bold">Felvitel</div>
             </div>
             {keresettAdatok.map((elem, index) => (
-                <div key={elem.tipus_id} className="row justify-content-center mb-3">
-                    <div className="col-6 text-center">{elem.tipus_nev}</div>
-                    <div className="col-1 text-center">
+                <div key={elem.tipus_id} className="row mb-3">
+                    <div className="col-6 col-lg-8 text-center">{elem.tipus_nev}</div>
+                    <div className="col-2 col-lg-1 text-center">
                         <button
                             className="btn btn-danger  ml-2"
                             onClick={() => torlesFuggveny(elem.tipus_id, elem.tipus_nev)}
@@ -150,7 +150,7 @@ const Tipus = () => {
                             <FaRegTrashCan />
                         </button>
                     </div>
-                    <div className="col-1 text-center">
+                    <div className="col-2 col-lg-1 text-center">
                         <button
                             className="btn btn-alert  ml-2"
                             onClick={() => openModalModosit(elem.tipus_id)}
@@ -158,7 +158,7 @@ const Tipus = () => {
                             <FaPencil />
                         </button>
                     </div>
-                    <div className="col-1 text-center">
+                    <div className="col-2 col-lg-1 text-center">
                         {index === 0 &&
                             <button
                                 className="btn btn-alert  ml-2"

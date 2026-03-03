@@ -25,11 +25,12 @@ const SidebarLabel = styled.span`
     margin-left: 16px;
 `;
 
-const SubMenu = ({ item }) => {
+const SubMenu = ({ item, onClick }) => {
     return (
         <>
             <SidebarLink
                 to={item.path}
+                onClick={onClick}
             >
                 <div>
                     {item.icon}

@@ -108,7 +108,7 @@ const Kezdolap= () => {
     
     if (ures)
         return (
-            <div className="container">
+            <div className="container-fluid">
                 <div className="row mb-3">
                     <div className="col-5"></div>
                     <div className="col-2 text-center">Nincs adat!</div>
@@ -133,7 +133,7 @@ const Kezdolap= () => {
         return <div className="text-center">Hiba történt az adatok betöltése közben.</div>
 
     return (
-        <div className="container">
+        <div className="container-fluid">
             <div className="row justify-content-center mb-3">
                 <div className="col-6 text-center">
                     <Kereses adatok={adatok} keresettMezok={["blog_cim"]} setKeresettAdatok={setKeresettAdatok} />
@@ -145,16 +145,16 @@ const Kezdolap= () => {
                     </Rendezes>
                 </div>
             </div>
-            <div className="row justify-content-center mb-3">
+            <div className="row mb-3">
                 <div className="col-6 text-center fw-bold">Kezdőlap címe</div>
-                <div className="col-1 text-center fw-bold">Törlés</div>
-                <div className="col-1 text-center fw-bold">Módosítás</div>
-                <div className="col-1 text-center fw-bold">Felvitel</div>
+                <div className="col-2 offset-xl-2 col-xl-1 text-center fw-bold">Törlés</div>
+                <div className="col-2 col-xl-1 text-center fw-bold">Módosítás</div>
+                <div className="col-2 col-xl-1 text-center fw-bold">Felvitel</div>
             </div>
             {keresettAdatok.map((elem, index) => (
-                <div key={elem.blog_id} className="row justify-content-center mb-3">
+                <div key={elem.blog_id} className="row mb-3">
                     <div className="col-6 text-center">{elem.blog_cim}</div>
-                    <div className="col-1 text-center">
+                    <div className="col-2 offset-xl-2 col-xl-1 text-center">
                         <button
                             className="btn btn-danger  ml-2"
                             onClick={() => torlesFuggveny(elem.blog_id, elem.blog_cim)}
@@ -162,7 +162,7 @@ const Kezdolap= () => {
                             <FaRegTrashCan />
                         </button>
                     </div>
-                    <div className="col-1 text-center">
+                    <div className="col-2 col-xl-1 text-center">
                         <button
                             className="btn btn-alert  ml-2"
                             onClick={() => openModalModosit(elem.blog_id)}
@@ -170,7 +170,7 @@ const Kezdolap= () => {
                             <FaPencil />
                         </button>
                     </div>
-                    <div className="col-1 text-center">
+                    <div className="col-2 col-xl-1 text-center">
                         {index === 0 &&
                             <button
                                 className="btn btn-alert  ml-2"

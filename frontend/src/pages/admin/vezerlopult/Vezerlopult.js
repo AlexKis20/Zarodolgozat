@@ -18,8 +18,24 @@ const Vezerlopult = () => {
     const velemenyekIntervalRef = useRef(null);
     const [selectedRendelesId, setSelectedRendelesId] = useState(null)
     const [modalOpenTermekek, setModalOpenTermekek] = useState(false)
+    const [kartyakSzama, setKartyakSzama] = useState(1); // Egyszerre megjelenő kártyák száma
 
-    const kartyakSzama = 3; // Egyszerre megjelenő kártyák száma
+    useEffect(() => {
+        const handleResize = () => {
+            const szelesseg = window.innerWidth;
+            if (szelesseg >= 1600) {
+                setKartyakSzama(3);
+            } else if (szelesseg >= 1200) {
+                setKartyakSzama(2);
+            } else {
+                setKartyakSzama(1);
+            }
+        };
+
+        handleResize(); // Azonnali inicializálás
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     const leToltes = async () => {
         try {
@@ -124,15 +140,11 @@ const Vezerlopult = () => {
     };
 
     const megjelenitendoAdat = (adatok, kezdoIndex) => {
-        const kartyak = Math.min(kartyakSzama, adatok.length);
-        const megjelenitendo = [];
-
-        for (let i = 0; i < kartyak; i++) {
-            const index = (kezdoIndex + i) % adatok.length;
-            megjelenitendo.push(adatok[index]);
+        const megjelenitendo = adatok.slice(kezdoIndex, kezdoIndex + kartyakSzama);
+        if (megjelenitendo.length < kartyakSzama) {
+            megjelenitendo.push(...adatok.slice(0, kartyakSzama - megjelenitendo.length));
         }
-
-        return megjelenitendo
+        return megjelenitendo;
     };
 
     if (tolt)

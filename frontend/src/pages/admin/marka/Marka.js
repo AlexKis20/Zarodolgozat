@@ -97,7 +97,7 @@ const Marka = () => {
         return <div className="text-center">Adatok betöltése folyamatban...</div>
     if (ures)
         return (
-            <div className="container">
+            <div className="container-fluid">
                 <div className="row justify-content-center mb-3">
                     <div className="col-5"></div>
                     <div className="col-2 text-center">Nincs adat!</div>
@@ -123,7 +123,7 @@ const Marka = () => {
     
 
     return (
-        <div className="container">
+        <div className="container-fluid">
             <div className="row justify-content-center mb-3">
                 <div className="col-6 text-center">
                     <Kereses adatok={adatok} keresettMezok={["marka_nev"]} setKeresettAdatok={setKeresettAdatok} />
@@ -135,16 +135,16 @@ const Marka = () => {
                     </Rendezes>
                 </div>
             </div>
-            <div className="row justify-content-center mb-3">
-                <div className="col-6 text-center fw-bold">Márka neve</div>
-                <div className="col-1 text-center fw-bold">Törlés</div>
-                <div className="col-1 text-center fw-bold">Módosítás</div>
-                <div className="col-1 text-center fw-bold">Felvitel</div>
+            <div className="row mb-3">
+                <div className="col-6 col-lg-8 text-center fw-bold">Márka neve</div>
+                <div className="col-2 col-lg-1 text-center fw-bold">Törlés</div>
+                <div className="col-2 col-lg-1 text-center fw-bold">Módosítás</div>
+                <div className="col-2 col-lg-1 text-center fw-bold">Felvitel</div>
             </div>
             {keresettAdatok.map((elem, index) => (
-                <div key={elem.marka_id} className="row justify-content-center mb-3">
-                    <div className="col-6 text-center">{elem.marka_nev}</div>
-                    <div className="col-1 text-center">
+                <div key={elem.marka_id} className="row mb-3">
+                    <div className="col-6 col-lg-8 text-center">{elem.marka_nev}</div>
+                    <div className="col-2 col-lg-1 text-center">
                         <button
                             className="btn btn-danger  ml-2"
                             onClick={() => torlesFuggveny(elem.marka_id, elem.marka_nev)}
@@ -152,7 +152,7 @@ const Marka = () => {
                             <FaRegTrashCan />
                         </button>
                     </div>
-                    <div className="col-1 text-center">
+                    <div className="col-2 col-lg-1 text-center">
                         <button
                             className="btn btn-alert  ml-2"
                             onClick={() => openModalModosit(elem.marka_id)}
@@ -160,7 +160,7 @@ const Marka = () => {
                             <FaPencil />
                         </button>
                     </div>
-                    <div className="col-1 text-center">
+                    <div className="col-2 col-lg-1 text-center">
                         {index === 0 &&
                             <button
                                 className="btn btn-alert  ml-2"

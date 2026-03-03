@@ -35,23 +35,47 @@ const SidebarNav = styled.nav`
     left: ${({ sidebar }) => (sidebar ? "0" : "-100%")};
     transition: 350ms;
     z-index: 10;
+
+    @media screen and (max-width: 768px) {
+        width: 40%;
+        max-width: 250px
+    }
 `;
 
 const SidebarWrap = styled.div`
     width: 100%;
 `;
 
+const Overlay = styled.div`
+    display: ${({ sidebar }) => (sidebar && window.innerWidth <= 768 ? "block" : "none")};
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9;
+`;
+
+const ContentWrapper = styled.div`
+    position: relative;
+    z-index: 1; /* Ensure content stays below the sidebar */
+`;
+
 const Sidebar = ({ sidebar, setSidebar }) => {
     const showSidebar = () => setSidebar(!sidebar);
+    const smallClick = () => {
+        if (window.innerWidth <= 768) {
+            setSidebar(false);
+        }
+    };
 
     return (
         <>
             <IconContext.Provider value={{ color: "#fff" }}>
                 <Nav>
                     <NavIcon to="#">
-                        <FaIcons.FaBars
-                            onClick={showSidebar}
-                        />
+                        <FaIcons.FaBars onClick={showSidebar} />
                     </NavIcon>
                     <h1
                         style={{
@@ -62,25 +86,33 @@ const Sidebar = ({ sidebar, setSidebar }) => {
                     >
                         Nextify Admin
                     </h1>
-                    <Link style={{marginLeft: "auto",fontSize:"50px"}} to="/"><HiArrowCircleLeft /></Link>"
+                    <Link
+                        style={{ marginLeft: "auto", fontSize: "50px" }}
+                        to="/"
+                    >
+                        <HiArrowCircleLeft />
+                    </Link>
                 </Nav>
+                <Overlay sidebar={sidebar} onClick={showSidebar} />
                 <SidebarNav sidebar={sidebar}>
                     <SidebarWrap>
                         <NavIcon to="#">
-                            <AiIcons.AiOutlineClose
-                                onClick={showSidebar}
-                            />
+                            <AiIcons.AiOutlineClose onClick={showSidebar} />
                         </NavIcon>
                         {SidebarData.map((item, index) => {
                             return (
-                                <SubMenu
-                                    item={item}
-                                    key={index}
+                                <SubMenu 
+                                    item={item} 
+                                    key={index} 
+                                    onClick={smallClick}
                                 />
                             );
                         })}
-                    </SidebarWrap>
+                  </SidebarWrap>
                 </SidebarNav>
+                <ContentWrapper>
+                    {/* Existing content of the page */}
+                </ContentWrapper>
             </IconContext.Provider>
         </>
     );

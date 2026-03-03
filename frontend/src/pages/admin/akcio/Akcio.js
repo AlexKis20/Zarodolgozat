@@ -142,7 +142,7 @@ const Akcio = () => {
     
 
     return (
-        <div className="container">
+        <div className="container-fluid">
             <div className="row justify-content-center mb-3">
                 <div className="col-6 text-center">
                     <Kereses adatok={adatok} keresettMezok={["akcio_nev"]} setKeresettAdatok={setKeresettAdatok} />

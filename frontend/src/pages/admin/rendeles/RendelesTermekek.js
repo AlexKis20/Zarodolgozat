@@ -52,7 +52,7 @@ const RendelesTermekek= ({ rendeles_id, onClose }) => {
         return <div className="text-center">Hiba történt az adatok betöltése közben.</div>
 
     return (
-        <div className="container">
+        <div className="container-fluid">
             <div className="row mb-3">
                 <div className="col-12 text-center">
                     <h4>Rendelt termékek</h4>
@@ -66,24 +66,24 @@ const RendelesTermekek= ({ rendeles_id, onClose }) => {
             </div>
 
             <div className="row justify-content-center mb-3">
-                <div className="col-8 text-center fw-bold">Termék név</div>
-                <div className="col-2 text-center fw-bold">Darabszám</div>
-                <div className="col-2 text-center fw-bold">Rendelési ár</div>
+                <div className="col-4 text-center fw-bold">Termék név</div>
+                <div className="col-4 text-center fw-bold">Darabszám</div>
+                <div className="col-4 text-center fw-bold">Rendelési ár</div>
             </div>
 
             {keresettAdatok.map((elem, index) => (
                 <div className="row justify-content-center mb-3" key={index}>
-                    <div className="col-8 text-start">{elem.termek_nev}</div>
-                    <div className="col-2 text-center">{elem.rendeles_darab}</div>
-                    <div className="col-2 text-center">{arFuggveny(elem.rendeles_ar)} Ft</div>
+                    <div className="col-4 text-center">{elem.termek_nev}</div>
+                    <div className="col-4 text-center">{elem.rendeles_darab}</div>
+                    <div className="col-4 text-center">{arFuggveny(elem.rendeles_ar)} Ft</div>
                 </div>
             ))}
 
             <div className="row mt-3">
-                <div className="col-6 text-start">
+                <div className="col-8 text-start">
                     <h4>Bruttó ár:</h4>
                 </div>
-                <div className="col-6 text-end">
+                <div className="col-4 text-center">
                     <h4>{arFuggveny(osszArSzamitas())} Ft</h4>
                 </div>
             </div>

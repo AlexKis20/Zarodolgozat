@@ -914,7 +914,7 @@ app.post('/rendelesHozzaadTermekkel', (req, res) => {
         }
         connection.beginTransaction((err) => {
             if (err) { throw err; }
-                connection.query(sql,[rendeles_felhasznalo_id, rendeles_nev, rendeles_cim, rendeles_telefonszam, rendeles_datum, rendeles_teljesitve], (err, result) => {
+                connection.query(sql,[rendeles_felhasznalo_id, rendeles_nev, rendeles_cim, rendeles_telefonszam, datumFormatum(rendeles_datum), rendeles_teljesitve], (err, result) => {
                 if (err) {
                     return connection.rollback(() => {
                         console.log(err);
@@ -955,7 +955,7 @@ app.post('/rendelesHozzaad', (req, res) => {
     
     const sql=`INSERT INTO rendeles (rendeles_id, rendeles_felhasznalo_id, rendeles_nev, rendeles_cim, rendeles_telefonszam, rendeles_datum, rendeles_teljesitve)
                VALUES (NULL,?,?,?,?,?,?)`
-    pool.query(sql,[rendeles_felhasznalo_id, rendeles_nev, rendeles_cim, rendeles_telefonszam, rendeles_datum, rendeles_teljesitve], (err, result) => {
+    pool.query(sql,[rendeles_felhasznalo_id, rendeles_nev, rendeles_cim, rendeles_telefonszam, datumFormatum(rendeles_datum), rendeles_teljesitve], (err, result) => {
     if (err) {
         console.log(err)
         return res.status(500).json({error:"Hiba!"})

@@ -26,7 +26,6 @@ import Velemeny from './pages/admin/velemeny';
 import Sidebar from './components/Sidebar';
 //User menük
 import User from './User/User';
-import { Import } from 'lucide-react';
 
 
 const ProtectedRoute = ({ children, role }) => {
@@ -152,11 +151,15 @@ function AppLayout() {
       {adminOldal ? (
         <>
           <Sidebar sidebar={sidebar} setSidebar={setSidebar} />
-          <div style={{
+          <div style={(window.innerWidth <= 768 ? {
+                position: "relative",
+                zIndex: 1,
+                paddingTop: "15px"}
+                : {
                 marginLeft: sidebar ? "250px" : "0",
                 transition: "margin-left 350ms",
                 paddingTop: "15px"
-            }}>
+                })}>
               <AdminRoutes />
           </div>
         </>
