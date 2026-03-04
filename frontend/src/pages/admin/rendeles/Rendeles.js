@@ -1,8 +1,7 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import { FaRegTrashCan, FaPencil } from "react-icons/fa6";
 import { FaList, FaPlus } from "react-icons/fa";
 import { MdMoreVert } from "react-icons/md";
-import "./Rendeles.css"
 import Cim from "../../../Cim"
 import Modal from "../../../components/Modal"
 import RendelesModosit from "./RendelesModosit"
@@ -11,6 +10,7 @@ import Kereses from "../../../components/Kereses";
 import Rendezes from "../../../components/Rendezes";
 import RendelesFelvitel from "./RendelesFelvitel";
 import { telefonszamFuggveny } from "../../../utils/formazas";
+import "../../../utils/Responsive.css";
 
 const Rendeles = () => {
     const [adatok, setAdatok] = useState([])
@@ -28,7 +28,6 @@ const Rendeles = () => {
     const [teljesitendoAllapot, setTeljesitendoAllapot] = useState(null);
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 1200);
     const [openMenuId, setOpenMenuId] = useState(null);
-    const menuRef = useRef(null);
 
     const leToltes = async () => {
         try {
@@ -79,7 +78,8 @@ const Rendeles = () => {
         }
     }, [openMenuId]);
 
-    const torlesFuggveny = async (rendeles_id) => {
+    const torlesFuggveny = async (e, rendeles_id) => {
+        e.stopPropagation();
         const biztos = window.confirm(`Biztosan törölni szeretnéd ezt a rendelést?`)
 
         if (biztos) {
@@ -97,11 +97,14 @@ const Rendeles = () => {
                 alert(data["error"])
             }
         }
+        setOpenMenuId(null);
     }
 
-    const openModalModosit = (rendeles_id) => {
+    const openModalModosit = (e, rendeles_id) => {
+        e.stopPropagation();
         setSelectedRendelesId(rendeles_id)
         setModalOpenModosit(true)
+        setOpenMenuId(null);
     }
 
     const closeModalModosit = (frissit) => {
@@ -112,8 +115,10 @@ const Rendeles = () => {
         }
     }
 
-    const openModalHozzaad = () => {
+    const openModalHozzaad = (e) => {
+        e.stopPropagation();
         setModalOpenHozzaad(true)
+        setOpenMenuId(null);
     }
 
     const closeModalHozzaad = (frissit) => {
@@ -123,9 +128,11 @@ const Rendeles = () => {
         }
     }
 
-    const openModalTermekek = (rendeles_id) => {
+    const openModalTermekek = (e,rendeles_id) => {
+        e.stopPropagation();
         setSelectedRendelesId(rendeles_id)
         setModalOpenTermekek(true)
+        setOpenMenuId(null);
     }
 
     const closeModalTermekek = (frissit) => {
@@ -135,11 +142,13 @@ const Rendeles = () => {
         }
     }
 
-    const teljesitPipa = (rendeles_id) => {
+    const teljesitPipa = (e,rendeles_id) => {
+        e.stopPropagation();
         const adat = adatok.find(elem => elem.rendeles_id === rendeles_id);
         setTeljesitendoRendelesId(rendeles_id);
         setTeljesitendoAllapot(adat.rendeles_teljesitve === 1 ? 0 : 1);
         setModalTeljesitOpen(true);
+        setOpenMenuId(null);
     }
 
     const handleTeljesitConfirm = async () => {
@@ -161,23 +170,6 @@ const Rendeles = () => {
         setTeljesitendoRendelesId(null);
         setTeljesitendoAllapot(null);
     }
-
-    const handleMobileAction = (e, action, rendeles_id, index) => {
-        e.stopPropagation();
-        
-        if (action === "termekek") {
-            openModalTermekek(rendeles_id);
-        } else if (action === "teljesitet") {
-            teljesitPipa(rendeles_id);
-        } else if (action === "torles") {
-            torlesFuggveny(rendeles_id);
-        } else if (action === "modosit") {
-            openModalModosit(rendeles_id);
-        } else if (action === "hozzaad") {
-            openModalHozzaad();
-        }
-        setOpenMenuId(null);
-    };
 
     if (tolt)
         return <div className="text-center">Adatok betöltése folyamatban...</div>
@@ -228,7 +220,7 @@ const Rendeles = () => {
                     <div className="col-3 text-center fw-bold">Telefonszám</div>
                     <div className="col-3 text-center fw-bold">Cím</div>
                     <div className="col-2 text-center fw-bold">Dátum</div>
-                    <div className="col-3 text-center fw-bold">Műveletek</div>
+                    <div className="col-3 text-center fw-bold">Továbbiak</div>
                 </div>
             ) : (
                 <div className="row mb-3">
@@ -253,34 +245,34 @@ const Rendeles = () => {
                             <div className="col-3 text-center">{elem.rendeles_cim}</div>
                             <div className="col-2 text-center">{new Date(elem.rendeles_datum).toLocaleString('hu-HU')}</div>
                             <div className="col-3 text-center">
-                                <div className="muvelet-dropdown-container" onClick={(e) => e.stopPropagation()}>
+                                <div className="tovabbiak-dropdown-container" onClick={(e) => e.stopPropagation()}>
                                     <button 
-                                        className="muvelet-btn"
+                                        className="tovabbiak-btn"
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             setOpenMenuId(openMenuId === elem.rendeles_id ? null : elem.rendeles_id);
                                         }}
-                                        title="Műveletek"
+                                        title="Továbbiak"
                                     >
                                         <MdMoreVert />
                                     </button>
                                     {openMenuId === elem.rendeles_id && (
-                                        <div className="muvelet-menu">
-                                            <div className="muvelet-item" onClick={(e) => handleMobileAction(e, "termekek", elem.rendeles_id, index)}>
+                                        <div className="tovabbiak-menu">
+                                            <div className="tovabbiak-item" onClick={(e) => openModalTermekek(e, elem.rendeles_id)}>
                                                 <FaList /> Termékek megtekintése
                                             </div>
-                                            <div className="muvelet-item" onClick={(e) => handleMobileAction(e, "teljesitet", elem.rendeles_id, index)}>
+                                            <div className="tovabbiak-item" onClick={(e) => teljesitPipa(e, elem.rendeles_id)}>
                                                 ✓ Teljesítettként jelöl
                                             </div>
-                                            <div className="muvelet-item" onClick={(e) => handleMobileAction(e, "modosit", elem.rendeles_id, index)}>
+                                            <div className="tovabbiak-item" onClick={(e) => openModalModosit(e, elem.rendeles_id)}>
                                                 <FaPencil /> Módosítás
                                             </div>
-                                            <div className="muvelet-item muvelet-item-danger" onClick={(e) => handleMobileAction(e, "torles", elem.rendeles_id, index)}>
+                                            <div className="tovabbiak-item tovabbiak-item-danger" onClick={(e) => torlesFuggveny(e, elem.rendeles_id)}>
                                                 <FaRegTrashCan /> Törlés
                                             </div>
                                             {index === 0 && (
-                                                <div className="muvelet-item" onClick={(e) => handleMobileAction(e, "hozzaad", elem.rendeles_id, index)}>
-                                                    <FaPlus /> Új rendelés felvitele
+                                                <div className="tovabbiak-item" onClick={(e) => openModalHozzaad(e)}>
+                                                    <FaPlus /> Rendelés felvitele
                                                 </div>
                                             )}
                                         </div>

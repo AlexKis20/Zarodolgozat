@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react"
+import { FaPlus } from "react-icons/fa";
 import { FaRegTrashCan, FaPencil } from "react-icons/fa6";
+import { MdMoreVert } from "react-icons/md";
 import Cim from "../../../Cim"
 import Modal from "../../../components/Modal"
 import MarkaModosit from "./MarkaModosit"
 import MarkaFelvitel from "./MarkaFelvitel";
-import { FaPlus } from "react-icons/fa";
 import Kereses from "../../../components/Kereses";
 import Rendezes from "../../../components/Rendezes";
+import "../../../utils/Responsive.css";
 
 const Marka = () => {
     const [adatok, setAdatok] = useState([])
@@ -18,6 +20,8 @@ const Marka = () => {
     const [modalOpenModosit, setModalOpenModosit] = useState(false)
     const [modalOpenHozzaad, setModalOpenHozzaad] = useState(false)
     const [selectedMarkaId, setSelectedMarkaId] = useState(null)
+    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 1200);
+    const [openMenuId, setOpenMenuId] = useState(null);
 
     const leToltes = async () => {
         try {
@@ -47,8 +51,28 @@ const Marka = () => {
         leToltes()
     }, [siker])
 
+    useEffect(() => {
+        const handleResize = () => {
+            setIsSmallScreen(window.innerWidth < 1200);
+        };
 
-    const torlesFuggveny = async (marka_id, marka_nev) => {
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    useEffect(() => {
+        const handleClickOutside = () => {
+            setOpenMenuId(null);
+        };
+
+        if (openMenuId) {
+            document.addEventListener("click", handleClickOutside);
+            return () => document.removeEventListener("click", handleClickOutside);
+        }
+    }, [openMenuId]);
+
+    const torlesFuggveny = async (e, marka_id, marka_nev) => {
+        e.stopPropagation();
         const biztos = window.confirm(`Biztosan törölni szeretnéd a(z) ${marka_nev} márkát?`)
 
         if (biztos) {
@@ -66,11 +90,14 @@ const Marka = () => {
                 alert(data["error"])
             }
         }
+        setOpenMenuId(null);
     }
-    
-    const openModalModosit = (marka_id) => {
+
+    const openModalModosit = (e, marka_id) => {
+        e.stopPropagation();
         setSelectedMarkaId(marka_id)
         setModalOpenModosit(true)
+        setOpenMenuId(null);
     }
 
     const closeModalModosit = (frissit) => {
@@ -81,8 +108,10 @@ const Marka = () => {
         }
     }
 
-    const openModalHozzaad = () => {
+    const openModalHozzaad = (e) => {
+        e.stopPropagation();
         setModalOpenHozzaad(true)
+        setOpenMenuId(null);
     }
 
     const closeModalHozzaad = (frissit) => {
@@ -135,41 +164,85 @@ const Marka = () => {
                     </Rendezes>
                 </div>
             </div>
-            <div className="row mb-3">
-                <div className="col-6 col-lg-8 text-center fw-bold">Márka neve</div>
-                <div className="col-2 col-lg-1 text-center fw-bold">Törlés</div>
-                <div className="col-2 col-lg-1 text-center fw-bold">Módosítás</div>
-                <div className="col-2 col-lg-1 text-center fw-bold">Felvitel</div>
-            </div>
+            { isSmallScreen ? (
+                <div className="row mb-3">
+                    <div className="col-8 text-center fw-bold">Márka neve</div>
+                    <div className="col-3 text-center fw-bold">Továbbiak</div>
+                </div>
+            ) : (
+                <div className="row mb-3">
+                    <div className="col-8 text-center fw-bold">Márka neve</div>
+                    <div className="col-1 text-center fw-bold">Törlés</div>
+                    <div className="col-1 text-center fw-bold">Módosítás</div>
+                    <div className="col-1 text-center fw-bold">Felvitel</div>
+                </div>
+            )}
             {keresettAdatok.map((elem, index) => (
                 <div key={elem.marka_id} className="row mb-3">
-                    <div className="col-6 col-lg-8 text-center">{elem.marka_nev}</div>
-                    <div className="col-2 col-lg-1 text-center">
-                        <button
-                            className="btn btn-danger  ml-2"
-                            onClick={() => torlesFuggveny(elem.marka_id, elem.marka_nev)}
-                        >
-                            <FaRegTrashCan />
-                        </button>
-                    </div>
-                    <div className="col-2 col-lg-1 text-center">
-                        <button
-                            className="btn btn-alert  ml-2"
-                            onClick={() => openModalModosit(elem.marka_id)}
-                        >
-                            <FaPencil />
-                        </button>
-                    </div>
-                    <div className="col-2 col-lg-1 text-center">
-                        {index === 0 &&
-                            <button
-                                className="btn btn-alert  ml-2"
-                                onClick={() => openModalHozzaad()}
-                            >
-                                <FaPlus />
-                            </button>
-                        }
-                    </div>
+                    { isSmallScreen ? (
+                        <>
+                            <div className="col-8 text-center">{elem.marka_nev}</div>
+                            <div className="col-3 text-center">
+                                <div className="tovabbiak-dropdown-container" onClick={(e) => e.stopPropagation()}>
+                                    <button 
+                                        className="tovabbiak-btn"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setOpenMenuId(openMenuId === elem.marka_id ? null : elem.marka_id);
+                                        }}
+                                        title="Továbbiak"
+                                    >
+                                        <MdMoreVert />
+                                    </button>
+                                    {openMenuId === elem.marka_id && (
+                                        <div className="tovabbiak-menu">
+                                            <div className="tovabbiak-item" onClick={(e) => openModalModosit(e, elem.marka_id)}>
+                                                <FaPencil /> Módosítás
+                                            </div>
+                                            <div className="tovabbiak-item tovabbiak-item-danger" onClick={(e) => torlesFuggveny(e, elem.marka_id, elem.marka_nev)}>
+                                                <FaRegTrashCan /> Törlés
+                                            </div>
+                                            {index === 0 && (
+                                                <div className="tovabbiak-item" onClick={(e) => openModalHozzaad(e)}>
+                                                    <FaPlus /> Márka felvitele
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <div className="col-8 text-center">{elem.marka_nev}</div>
+                            <div className="col-1 text-center">
+                                <button
+                                    className="btn btn-danger  ml-2"
+                                    onClick={() => torlesFuggveny(elem.marka_id, elem.marka_nev)}
+                                >
+                                    <FaRegTrashCan />
+                                </button>
+                            </div>
+                            <div className="col-1 text-center">
+                                <button
+                                    className="btn btn-alert  ml-2"
+                                    onClick={() => openModalModosit(elem.marka_id)}
+                                >
+                                    <FaPencil />
+                                </button>
+                            </div>
+                            <div className="col-1 text-center">
+                                {index === 0 &&
+                                    <button
+                                        className="btn btn-alert  ml-2"
+                                        onClick={() => openModalHozzaad()}
+                                    >
+                                        <FaPlus />
+                                    </button>
+                                }
+                            </div>
+                        </>
+                    )}
                 </div>
             ))}
             <Modal isOpen={modalOpenModosit} onClose={() => closeModalModosit(false)}>
