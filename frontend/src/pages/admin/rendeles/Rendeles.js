@@ -289,7 +289,7 @@ const Rendeles = () => {
                             <div className="col-1 text-center">
                                 <button
                                     className="btn btn-primary ml-2"
-                                    onClick={() => openModalTermekek(elem.rendeles_id)}
+                                    onClick={(e) => openModalTermekek(e, elem.rendeles_id)}
                                 >
                                     <FaList />
                                 </button>
@@ -298,13 +298,13 @@ const Rendeles = () => {
                                 <input 
                                     type="checkbox" 
                                     checked={elem.rendeles_teljesitve === 1}
-                                    onChange={() => teljesitPipa(elem.rendeles_id)}
+                                    onChange={(e) => teljesitPipa(e, elem.rendeles_id)}
                                 />
                             </div>
                             <div className="col-1 text-center">
                                 <button
                                     className="btn btn-danger ml-2"
-                                    onClick={() => torlesFuggveny(elem.rendeles_id)}
+                                    onClick={(e) => torlesFuggveny(e, elem.rendeles_id)}
                                 >
                                     <FaRegTrashCan />
                                 </button>
@@ -312,7 +312,7 @@ const Rendeles = () => {
                             <div className="col-1 text-center">
                                 <button
                                     className="btn btn-alert ml-2"
-                                    onClick={() => openModalModosit(elem.rendeles_id)}
+                                    onClick={(e) => openModalModosit(e, elem.rendeles_id)}
                                 >
                                     <FaPencil />
                                 </button>
@@ -321,7 +321,7 @@ const Rendeles = () => {
                                 {index === 0 &&
                                     <button
                                         className="btn btn-alert  ml-2"
-                                        onClick={() => openModalHozzaad()}
+                                        onClick={(e) => openModalHozzaad(e)}
                                     >
                                         <FaPlus />
                                     </button>

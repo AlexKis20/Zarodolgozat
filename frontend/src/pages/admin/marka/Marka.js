@@ -218,7 +218,7 @@ const Marka = () => {
                             <div className="col-1 text-center">
                                 <button
                                     className="btn btn-danger  ml-2"
-                                    onClick={() => torlesFuggveny(elem.marka_id, elem.marka_nev)}
+                                    onClick={(e) => torlesFuggveny(e,elem.marka_id, elem.marka_nev)}
                                 >
                                     <FaRegTrashCan />
                                 </button>
@@ -226,7 +226,7 @@ const Marka = () => {
                             <div className="col-1 text-center">
                                 <button
                                     className="btn btn-alert  ml-2"
-                                    onClick={() => openModalModosit(elem.marka_id)}
+                                    onClick={(e) => openModalModosit(e,elem.marka_id)}
                                 >
                                     <FaPencil />
                                 </button>
@@ -235,7 +235,7 @@ const Marka = () => {
                                 {index === 0 &&
                                     <button
                                         className="btn btn-alert  ml-2"
-                                        onClick={() => openModalHozzaad()}
+                                        onClick={(e) => openModalHozzaad(e)}
                                     >
                                         <FaPlus />
                                     </button>

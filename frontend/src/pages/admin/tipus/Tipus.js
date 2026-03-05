@@ -217,7 +217,7 @@ const Tipus = () => {
                             <div className="col-1 text-center">
                                 <button
                                     className="btn btn-danger  ml-2"
-                                    onClick={() => torlesFuggveny(elem.tipus_id, elem.tipus_nev)}
+                                    onClick={(e) => torlesFuggveny(e,elem.tipus_id, elem.tipus_nev)}
                                 >
                                     <FaRegTrashCan />
                                 </button>
@@ -225,7 +225,7 @@ const Tipus = () => {
                             <div className="col-1 text-center">
                                 <button
                                     className="btn btn-alert  ml-2"
-                                    onClick={() => openModalModosit(elem.tipus_id)}
+                                    onClick={(e) => openModalModosit(e,elem.tipus_id)}
                                 >
                                     <FaPencil />
                                 </button>
@@ -234,7 +234,7 @@ const Tipus = () => {
                                 {index === 0 &&
                                     <button
                                         className="btn btn-alert  ml-2"
-                                        onClick={() => openModalHozzaad()}
+                                        onClick={(e) => openModalHozzaad(e)}
                                     >
                                         <FaPlus />
                                     </button>

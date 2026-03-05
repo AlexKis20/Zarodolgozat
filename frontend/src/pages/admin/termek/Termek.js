@@ -237,7 +237,7 @@ const Termek= () => {
                             <div className="col-1 text-center">
                                 <button
                                     className="btn btn-danger ml-2"
-                                    onClick={() => torlesFuggveny(elem.termek_id, elem.termek_nev)}
+                                    onClick={(e) => torlesFuggveny(e, elem.termek_id, elem.termek_nev)}
                                 >
                                     <FaRegTrashCan />
                                 </button>
@@ -245,7 +245,7 @@ const Termek= () => {
                             <div className="col-1 text-center">
                                 <button
                                     className="btn btn-alert ml-2"
-                                    onClick={() => openModalModosit(elem.termek_id)}
+                                    onClick={(e) => openModalModosit(e, elem.termek_id)}
                                 >
                                     <FaPencil />
                                 </button>
@@ -254,7 +254,7 @@ const Termek= () => {
                                 {index === 0 &&
                                     <button
                                         className="btn btn-alert  ml-2"
-                                        onClick={() => openModalHozzaad()}
+                                        onClick={(e) => openModalHozzaad(e)}
                                     >
                                         <FaPlus />
                                     </button>
