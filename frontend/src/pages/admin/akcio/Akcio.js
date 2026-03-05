@@ -1,16 +1,14 @@
 import { useState, useEffect } from "react"
-import { FaRegTrashCan, FaPencil } from "react-icons/fa6";
-import { FaPlus, FaList } from "react-icons/fa";
-import { MdMoreVert } from "react-icons/md";
 import Cim from "../../../Cim"
 import Modal from "../../../components/Modal"
+import DataTable from "../../../components/DataTable"
 import AkcioTermekek from "./AkcioTermekek"
 import AkcioModosit from "./AkcioModosit"
 import AkcioFelvitel from "./AkcioFelvitel"
 import Kereses from "../../../components/Kereses";
 import Rendezes from "../../../components/Rendezes";
 import { datumFuggveny } from "../../../utils/formazas";
-import "../../../utils/Responsive.css";
+import "../../../components/DataTable.css"
 
 const Akcio = () => {
     const [adatok, setAdatok] = useState([])
@@ -25,8 +23,6 @@ const Akcio = () => {
     const [selectedAkcioId, setSelectedAkcioId] = useState(null)
     const [selectedAkcioKedvezmeny, setSelectedAkcioKedvezmeny] = useState(null)
     const [selectedAkcioTipus, setSelectedAkcioTipus] = useState(null)
-    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 1200);
-    const [openMenuId, setOpenMenuId] = useState(null);
 
     const leToltes = async () => {
         try {
@@ -56,33 +52,11 @@ const Akcio = () => {
         leToltes()
     }, [siker])
 
-    useEffect(() => {
-        const handleResize = () => {
-            setIsSmallScreen(window.innerWidth < 1200);
-        };
-
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
-    useEffect(() => {
-        const handleClickOutside = () => {
-            setOpenMenuId(null);
-        };
-
-        if (openMenuId) {
-            document.addEventListener("click", handleClickOutside);
-            return () => document.removeEventListener("click", handleClickOutside);
-        }
-    }, [openMenuId]);
-
-
-    const torlesFuggveny = async (e, akcio_id, akcio_nev) => {
-        e.stopPropagation();
-        const biztos = window.confirm(`Biztosan törölni szeretnéd a(z) ${akcio_nev} akciót?`)
+    const torlesFuggveny = async (rowData) => {
+        const biztos = window.confirm(`Biztosan törölni szeretnéd a(z) ${rowData.akcio_nev} akciót?`)
 
         if (biztos) {
-            const response = await fetch(Cim.Cim + "/akcioTorles/" + akcio_id, {
+            const response = await fetch(Cim.Cim + "/akcioTorles/" + rowData.akcio_id, {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" }
             })
@@ -96,16 +70,13 @@ const Akcio = () => {
                 alert(data["error"])
             }
         }
-        setOpenMenuId(null);
     }
 
-    const openModalTermekek = (e, akcio_id, akcio_kedvezmeny, akcio_tipus) => {
-        e.stopPropagation();
-        setSelectedAkcioId(akcio_id)
-        setSelectedAkcioKedvezmeny(akcio_kedvezmeny)
-        setSelectedAkcioTipus(akcio_tipus)
+    const handleViewTermekek = (rowData) => {
+        setSelectedAkcioId(rowData.akcio_id)
+        setSelectedAkcioKedvezmeny(rowData.akcio_kedvezmeny)
+        setSelectedAkcioTipus(rowData.akcio_tipus)
         setModalOpenTermekek(true)
-        setOpenMenuId(null);
     }
 
     const closeModalTermekek = (frissit) => {
@@ -115,11 +86,9 @@ const Akcio = () => {
         }
     }
     
-    const openModalModosit = (e, akcio_id) => {
-        e.stopPropagation();
-        setSelectedAkcioId(akcio_id)
+    const handleEdit = (rowData) => {
+        setSelectedAkcioId(rowData.akcio_id)
         setModalOpenModosit(true)
-        setOpenMenuId(null);
     }
 
     const closeModalModosit = (frissit) => {
@@ -130,10 +99,8 @@ const Akcio = () => {
         }
     }
 
-    const openModalHozzaad = (e) => {
-        e.stopPropagation();
+    const handleAdd = () => {
         setModalOpenHozzaad(true)
-        setOpenMenuId(null);
     }
 
     const closeModalHozzaad = (frissit) => {
@@ -145,6 +112,10 @@ const Akcio = () => {
 
     if (tolt)
         return <div className="text-center">Adatok betöltése folyamatban...</div>
+    
+    if (hiba)
+        return <div className="text-center">Hiba történt az adatok betöltése közben.</div>
+    
     if (ures)
         return (
             <div className="container">
@@ -152,14 +123,11 @@ const Akcio = () => {
                     <div className="col-5"></div>
                     <div className="col-2 text-center">Nincs adat!</div>
                     <div className="col-5 text-center">
-                        Felvitel
-                        <div>
-                            <button
-                                className="btn btn-alert  ml-2"
-                                onClick={() => openModalHozzaad()} >
-                                <FaPlus />
+                        <button
+                            className="btn btn-alert ml-2"
+                            onClick={() => handleAdd()}>
+                            Új akció felvitele
                         </button>
-                        </div>
                     </div>
                 </div>
                 <Modal isOpen={modalOpenHozzaad} onClose={() => closeModalHozzaad(false)} isWide={true}>
@@ -168,12 +136,52 @@ const Akcio = () => {
             </div>
         )
 
-    if (hiba)
-        return <div className="text-center">Hiba történt az adatok betöltése közben.</div>
-    
+    // DataTable oszlopok konfigurálása
+    const columns = [
+        {
+            key: 'akcio_nev',
+            label: 'Akció neve',
+        },
+        {
+            key: 'akcio_kedvezmeny',
+            label: 'Akció',
+            render: (rowData) => (
+                <div className="d-inline">{rowData.akcio_kedvezmeny}{rowData.akcio_tipus === "szazalek" ? "%" : "Ft"}</div>
+            ),
+        },
+        {
+            key: 'akcio_kezdete',
+            label: 'Kezdete',
+            formatter: (value) => datumFuggveny(value),
+        },
+        {
+            key: 'akcio_vege',
+            label: 'Vége',
+            formatter: (value) => datumFuggveny(value),
+        }
+    ]
+
+    // DataTable konfiguráció
+    const tableConfig = {
+        data: keresettAdatok,
+        columns: columns,
+        visibleColumnsSmall: ['akcio_nev'],  // Kis képernyőn csak az akció neve legyen látható
+        hiddenColumns: [],  // Nagy képernyőn az összes oszlop látható legyen
+        actions: {
+            view: true,  // Termékek megtekintése
+            edit: true,
+            delete: true,
+            add: true,
+        },
+        onView: handleViewTermekek,
+        onEdit: handleEdit,
+        onDelete: torlesFuggveny,
+        onAdd: handleAdd,
+        primaryKey: 'akcio_id',
+    }
 
     return (
-        <div className="container-fluid">
+        <div className="container">
             <div className="row justify-content-center mb-3">
                 <div className="col-6 text-center">
                     <Kereses adatok={adatok} keresettMezok={["akcio_nev"]} setKeresettAdatok={setKeresettAdatok} />
@@ -190,113 +198,9 @@ const Akcio = () => {
                     </Rendezes>
                 </div>
             </div>
-            { isSmallScreen ? (
-                <div className="row mb-3">
-                    <div className="col-2 text-center fw-bold">Akció neve</div>
-                    <div className="col-2 text-center fw-bold">Akció</div>
-                    <div className="col-2 text-center fw-bold">Kezdete</div>
-                    <div className="col-2 text-center fw-bold">Vége</div>
-                    <div className="col-4 text-center fw-bold">Továbbiak</div>
-                </div>
-            ) : (
-                <div className="row mb-3">
-                    <div className="col-2 text-center fw-bold">Akció neve</div>
-                    <div className="col-2 text-center fw-bold">Akció</div>
-                    <div className="col-2 text-center fw-bold">Kezdete</div>
-                    <div className="col-2 text-center fw-bold">Vége</div>
-                    <div className="col-1 text-center fw-bold">Termékek</div>
-                    <div className="col-1 text-center fw-bold">Törlés</div>
-                    <div className="col-1 text-center fw-bold">Módosítás</div>
-                    <div className="col-1 text-center fw-bold">Felvitel</div>
-                </div>
-            )}
-            {keresettAdatok.map((elem, index) => (
-                <div key={elem.akcio_id} className="row mb-3">
-                    {isSmallScreen ? (
-                        <>
-                            <div className="col-2 text-center">{elem.akcio_nev}</div>
-                            <div className="col-2 text-center">{elem.akcio_kedvezmeny}{elem.akcio_tipus === "szazalek" ? "%" : "Ft"}</div>
-                            <div className="col-2 text-center">{datumFuggveny(elem.akcio_kezdete)}</div>
-                            <div className="col-2 text-center">{datumFuggveny(elem.akcio_vege)}</div>
-                            <div className="col-4 text-center">
-                                <div className="tovabbiak-dropdown-container" onClick={(e) => e.stopPropagation()}>
-                                    <button 
-                                        className="tovabbiak-btn"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            setOpenMenuId(openMenuId === elem.akcio_id ? null : elem.akcio_id);
-                                        }}
-                                        title="Továbbiak"
-                                    >
-                                        <MdMoreVert />
-                                    </button>
-                                    {openMenuId === elem.akcio_id && (
-                                        <div className="tovabbiak-menu">
-                                            <div className="tovabbiak-item" onClick={(e) => openModalTermekek(e, elem.akcio_id, elem.akcio_kedvezmeny, elem.akcio_tipus)}>
-                                                <FaList /> Termékek megtekintése
-                                            </div>
-                                            <div className="tovabbiak-item" onClick={(e) => openModalModosit(e, elem.akcio_id)}>
-                                                <FaPencil /> Módosítás
-                                            </div>
-                                            <div className="tovabbiak-item tovabbiak-item-danger" onClick={(e) => torlesFuggveny(e, elem.akcio_id, elem.akcio_nev)}>
-                                                <FaRegTrashCan /> Törlés
-                                            </div>
-                                            {index === 0 && (
-                                                <div className="tovabbiak-item" onClick={(e) => openModalHozzaad(e)}>
-                                                    <FaPlus /> Akció felvitele
-                                                </div>
-                                            )}
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        </>
-                    ) : (
-                        <>
-                            <div className="col-2 text-center">{elem.akcio_nev}</div>
-                            <div className="col-2 text-center">{elem.akcio_kedvezmeny}{elem.akcio_tipus === "szazalek" ? "%" : "Ft"}</div>
-                            <div className="col-2 text-center">{datumFuggveny(elem.akcio_kezdete)}</div>
-                            <div className="col-2 text-center">{datumFuggveny(elem.akcio_vege)}</div>
-                            <div className="col-1 text-center">
-                                <button
-                                    className="btn btn-primary  ml-2"
-                                    onClick={(e) => openModalTermekek(e, elem.akcio_id, elem.akcio_kedvezmeny, elem.akcio_tipus)}
-                                >
-                                    <FaList />
-                                </button>
-                            </div>
-                            
 
-                            <div className="col-1 text-center">
-                                <button
-                                    className="btn btn-danger  ml-2"
-                                    onClick={(e) => torlesFuggveny(e, elem.akcio_id, elem.akcio_nev)}
-                                >
-                                    <FaRegTrashCan />
-                                </button>
-                            </div>
-                            <div className="col-1 text-center">
-                                <button
-                                    className="btn btn-alert  ml-2"
-                                    onClick={(e) => openModalModosit(e, elem.akcio_id)}
-                                >
-                                    <FaPencil />
-                                </button>
-                            </div>
-                            <div className="col-1 text-center">
-                                {index === 0 &&
-                                    <button
-                                        className="btn btn-alert  ml-2"
-                                        onClick={(e) => openModalHozzaad(e)}
-                                    >
-                                        <FaPlus />
-                                    </button>
-                                }
-                            </div>
-                        </>
-                    )}
-                </div>
-            ))}
+            <DataTable config={tableConfig} />
+
             <Modal isOpen={modalOpenTermekek} onClose={() => closeModalTermekek(false)}>
                 <AkcioTermekek akcio_id={selectedAkcioId} akcio_kedvezmeny={selectedAkcioKedvezmeny} akcio_tipus={selectedAkcioTipus} onClose={closeModalTermekek} />
             </Modal>

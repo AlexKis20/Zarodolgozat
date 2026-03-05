@@ -1,16 +1,14 @@
 import { useState, useEffect } from "react"
-import { FaRegTrashCan, FaPencil } from "react-icons/fa6";
-import { FaList, FaPlus } from "react-icons/fa";
-import { MdMoreVert } from "react-icons/md";
 import Cim from "../../../Cim"
 import Modal from "../../../components/Modal"
+import DataTable from "../../../components/DataTable"
 import RendelesModosit from "./RendelesModosit"
 import RendelesTermekek from "./RendelesTermekek";
 import Kereses from "../../../components/Kereses";
 import Rendezes from "../../../components/Rendezes";
 import RendelesFelvitel from "./RendelesFelvitel";
 import { telefonszamFuggveny } from "../../../utils/formazas";
-import "../../../utils/Responsive.css";
+import "../../../components/DataTable.css"
 
 const Rendeles = () => {
     const [adatok, setAdatok] = useState([])
@@ -26,8 +24,6 @@ const Rendeles = () => {
     const [selectedRendelesId, setSelectedRendelesId] = useState(null)
     const [teljesitendoRendelesId, setTeljesitendoRendelesId] = useState(null);
     const [teljesitendoAllapot, setTeljesitendoAllapot] = useState(null);
-    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 1200);
-    const [openMenuId, setOpenMenuId] = useState(null);
 
     const leToltes = async () => {
         try {
@@ -58,32 +54,11 @@ const Rendeles = () => {
         leToltes()
     }, [siker])
 
-    useEffect(() => {
-        const handleResize = () => {
-            setIsSmallScreen(window.innerWidth < 1200);
-        };
-
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
-    useEffect(() => {
-        const handleClickOutside = () => {
-            setOpenMenuId(null);
-        };
-
-        if (openMenuId) {
-            document.addEventListener("click", handleClickOutside);
-            return () => document.removeEventListener("click", handleClickOutside);
-        }
-    }, [openMenuId]);
-
-    const torlesFuggveny = async (e, rendeles_id) => {
-        e.stopPropagation();
+    const torlesFuggveny = async (rowData) => {
         const biztos = window.confirm(`Biztosan törölni szeretnéd ezt a rendelést?`)
 
         if (biztos) {
-            const response = await fetch(Cim.Cim + "/rendelesTorles/" + rendeles_id, {
+            const response = await fetch(Cim.Cim + "/rendelesTorles/" + rowData.rendeles_id, {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" }
             })
@@ -97,14 +72,11 @@ const Rendeles = () => {
                 alert(data["error"])
             }
         }
-        setOpenMenuId(null);
     }
 
-    const openModalModosit = (e, rendeles_id) => {
-        e.stopPropagation();
-        setSelectedRendelesId(rendeles_id)
+    const handleEdit = (rowData) => {
+        setSelectedRendelesId(rowData.rendeles_id)
         setModalOpenModosit(true)
-        setOpenMenuId(null);
     }
 
     const closeModalModosit = (frissit) => {
@@ -115,10 +87,8 @@ const Rendeles = () => {
         }
     }
 
-    const openModalHozzaad = (e) => {
-        e.stopPropagation();
+    const handleAdd = () => {
         setModalOpenHozzaad(true)
-        setOpenMenuId(null);
     }
 
     const closeModalHozzaad = (frissit) => {
@@ -128,11 +98,9 @@ const Rendeles = () => {
         }
     }
 
-    const openModalTermekek = (e,rendeles_id) => {
-        e.stopPropagation();
-        setSelectedRendelesId(rendeles_id)
+    const handleViewTermekek = (rowData) => {
+        setSelectedRendelesId(rowData.rendeles_id)
         setModalOpenTermekek(true)
-        setOpenMenuId(null);
     }
 
     const closeModalTermekek = (frissit) => {
@@ -142,13 +110,11 @@ const Rendeles = () => {
         }
     }
 
-    const teljesitPipa = (e,rendeles_id) => {
-        e.stopPropagation();
-        const adat = adatok.find(elem => elem.rendeles_id === rendeles_id);
-        setTeljesitendoRendelesId(rendeles_id);
+    const teljesitPipa = (rowData) => {
+        const adat = adatok.find(elem => elem.rendeles_id === rowData.rendeles_id);
+        setTeljesitendoRendelesId(rowData.rendeles_id);
         setTeljesitendoAllapot(adat.rendeles_teljesitve === 1 ? 0 : 1);
         setModalTeljesitOpen(true);
-        setOpenMenuId(null);
     }
 
     const handleTeljesitConfirm = async () => {
@@ -173,6 +139,10 @@ const Rendeles = () => {
 
     if (tolt)
         return <div className="text-center">Adatok betöltése folyamatban...</div>
+    
+    if (hiba)
+        return <div className="text-center">Hiba történt az adatok betöltése közben.</div>
+    
     if (ures)
         return (
             <div className="container">
@@ -180,26 +150,73 @@ const Rendeles = () => {
                     <div className="col-5"></div>
                     <div className="col-2 text-center">Nincs adat!</div>
                     <div className="col-5 text-center">
-                        Felvitel
-                        <div>
-                            <button
-                            className="btn btn-alert  ml-2"
-                                onClick={() => openModalHozzaad()} >      
-                                <FaPlus />
+                        <button
+                            className="btn btn-alert ml-2"
+                            onClick={() => handleAdd()}>      
+                            Új rendelés felvitele
                         </button>
-                        </div>
                     </div>
                 </div>
-                <Modal isOpen={modalOpenHozzaad} onClose={closeModalHozzaad} isWide={true}>
+                <Modal isOpen={modalOpenHozzaad} onClose={() => closeModalHozzaad(false)} isWide={true}>
                     <RendelesFelvitel onClose={closeModalHozzaad} />
                 </Modal>
             </div>
         )
-    if (hiba)
-        return <div className="text-center">Hiba történt az adatok betöltése közben.</div>
+
+    // DataTable oszlopok konfigurálása
+    const columns = [
+        {
+            key: 'rendeles_nev',
+            label: 'Név',
+        },
+        {
+            key: 'rendeles_telefonszam',
+            label: 'Telefonszám',
+            formatter: (value) => telefonszamFuggveny(value),
+        },
+        {
+            key: 'rendeles_cim',
+            label: 'Cím',
+        },
+        {
+            key: 'rendeles_datum',
+            label: 'Dátum',
+            formatter: (value) => new Date(value).toLocaleString('hu-HU'),
+        },
+        {
+            key: 'rendeles_teljesitve',
+            label: 'Státusz',
+            render: (rowData) => (
+                <input 
+                    type="checkbox" 
+                    checked={rowData.rendeles_teljesitve === 1}
+                    onChange={() => teljesitPipa(rowData)}
+                />
+            )
+        }
+    ]
+
+    // DataTable konfiguráció
+    const tableConfig = {
+        data: keresettAdatok,
+        columns: columns,
+        visibleColumnsSmall: ['rendeles_nev', 'rendeles_teljesitve'],  // Kis képernyőn csak a név és státusz legyen látható
+        hiddenColumns: [],  // Nagy képernyőn az összes oszlop látható legyen
+        actions: {
+            view: true,  // Termékek megtekintése
+            edit: true,
+            delete: true,
+            add: true,
+        },
+        onView: handleViewTermekek,
+        onEdit: handleEdit,
+        onDelete: torlesFuggveny,
+        onAdd: handleAdd,
+        primaryKey: 'rendeles_id',
+    }
 
     return (
-        <div className="container-fluid">
+        <div className="container">
             <div className="row justify-content-center mb-3">
                 <div className="col-6 text-center">
                     <Kereses adatok={adatok} keresettMezok={["rendeles_nev"]} setKeresettAdatok={setKeresettAdatok} />
@@ -214,123 +231,9 @@ const Rendeles = () => {
                     </Rendezes>
                 </div>
             </div>
-            { isSmallScreen ? (
-                <div className="row mb-3">
-                    <div className="col-1 text-center fw-bold">Név</div>
-                    <div className="col-3 text-center fw-bold">Telefonszám</div>
-                    <div className="col-3 text-center fw-bold">Cím</div>
-                    <div className="col-2 text-center fw-bold">Dátum</div>
-                    <div className="col-3 text-center fw-bold">Továbbiak</div>
-                </div>
-            ) : (
-                <div className="row mb-3">
-                    <div className="col-1 text-center fw-bold">Név</div>
-                    <div className="col-2 text-center fw-bold">Telefonszám</div>
-                    <div className="col-2 text-center fw-bold">Cím</div>
-                    <div className="col-2 text-center fw-bold">Dátum</div>
-                    <div className="col-1 text-center fw-bold">Termékek</div>
-                    <div className="col-1 text-center fw-bold">Teljesített</div>
-                    <div className="col-1 text-center fw-bold">Törlés</div>
-                    <div className="col-1 text-center fw-bold">Módosítás</div>
-                    <div className="col-1 text-center fw-bold">Felvitel</div>
-                </div>
-                )}
-            {keresettAdatok.map((elem, index) => (
-                <div className="row mb-3" key={elem.rendeles_id || index}>
-                    
-                    {isSmallScreen ? (
-                        <>
-                            <div className="col-1 text-center">{elem.rendeles_nev}</div>
-                            <div className="col-3 text-center">{telefonszamFuggveny(elem.rendeles_telefonszam)}</div>
-                            <div className="col-3 text-center">{elem.rendeles_cim}</div>
-                            <div className="col-2 text-center">{new Date(elem.rendeles_datum).toLocaleString('hu-HU')}</div>
-                            <div className="col-3 text-center">
-                                <div className="tovabbiak-dropdown-container" onClick={(e) => e.stopPropagation()}>
-                                    <button 
-                                        className="tovabbiak-btn"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            setOpenMenuId(openMenuId === elem.rendeles_id ? null : elem.rendeles_id);
-                                        }}
-                                        title="Továbbiak"
-                                    >
-                                        <MdMoreVert />
-                                    </button>
-                                    {openMenuId === elem.rendeles_id && (
-                                        <div className="tovabbiak-menu">
-                                            <div className="tovabbiak-item" onClick={(e) => openModalTermekek(e, elem.rendeles_id)}>
-                                                <FaList /> Termékek megtekintése
-                                            </div>
-                                            <div className="tovabbiak-item" onClick={(e) => teljesitPipa(e, elem.rendeles_id)}>
-                                                ✓ Teljesítettként jelöl
-                                            </div>
-                                            <div className="tovabbiak-item" onClick={(e) => openModalModosit(e, elem.rendeles_id)}>
-                                                <FaPencil /> Módosítás
-                                            </div>
-                                            <div className="tovabbiak-item tovabbiak-item-danger" onClick={(e) => torlesFuggveny(e, elem.rendeles_id)}>
-                                                <FaRegTrashCan /> Törlés
-                                            </div>
-                                            {index === 0 && (
-                                                <div className="tovabbiak-item" onClick={(e) => openModalHozzaad(e)}>
-                                                    <FaPlus /> Rendelés felvitele
-                                                </div>
-                                            )}
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        </>
-                    ) : (
-                        <>
-                            <div className="col-1 text-center">{elem.rendeles_nev}</div>
-                            <div className="col-2 text-center">{telefonszamFuggveny(elem.rendeles_telefonszam)}</div>
-                            <div className="col-2 text-center">{elem.rendeles_cim}</div>
-                            <div className="col-2 text-center">{new Date(elem.rendeles_datum).toLocaleString('hu-HU')}</div>
-                            <div className="col-1 text-center">
-                                <button
-                                    className="btn btn-primary ml-2"
-                                    onClick={(e) => openModalTermekek(e, elem.rendeles_id)}
-                                >
-                                    <FaList />
-                                </button>
-                            </div>
-                            <div className="col-1 text-center">
-                                <input 
-                                    type="checkbox" 
-                                    checked={elem.rendeles_teljesitve === 1}
-                                    onChange={(e) => teljesitPipa(e, elem.rendeles_id)}
-                                />
-                            </div>
-                            <div className="col-1 text-center">
-                                <button
-                                    className="btn btn-danger ml-2"
-                                    onClick={(e) => torlesFuggveny(e, elem.rendeles_id)}
-                                >
-                                    <FaRegTrashCan />
-                                </button>
-                            </div>
-                            <div className="col-1 text-center">
-                                <button
-                                    className="btn btn-alert ml-2"
-                                    onClick={(e) => openModalModosit(e, elem.rendeles_id)}
-                                >
-                                    <FaPencil />
-                                </button>
-                            </div>
-                            <div className="col-1 text-center">
-                                {index === 0 &&
-                                    <button
-                                        className="btn btn-alert  ml-2"
-                                        onClick={(e) => openModalHozzaad(e)}
-                                    >
-                                        <FaPlus />
-                                    </button>
-                                }
-                            </div>
-                        </>
-                    )}
-                </div>
-            ))}
+
+            <DataTable config={tableConfig} />
+            
             <Modal isOpen={modalOpenModosit} onClose={() => closeModalModosit(false)}>
                 <RendelesModosit rendeles_id={selectedRendelesId} onClose={closeModalModosit} />
             </Modal>

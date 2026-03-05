@@ -1,14 +1,12 @@
 import { useState, useEffect } from "react"
-import { FaPlus } from "react-icons/fa";
-import { FaRegTrashCan, FaPencil } from "react-icons/fa6";
-import { MdMoreVert } from "react-icons/md";
 import Cim from "../../../Cim"
 import Modal from "../../../components/Modal"
+import DataTable from "../../../components/DataTable"
 import MarkaModosit from "./MarkaModosit"
-import MarkaFelvitel from "./MarkaFelvitel";
-import Kereses from "../../../components/Kereses";
-import Rendezes from "../../../components/Rendezes";
-import "../../../utils/Responsive.css";
+import MarkaFelvitel from "./MarkaFelvitel"
+import Kereses from "../../../components/Kereses"
+import Rendezes from "../../../components/Rendezes"
+import "../../../components/DataTable.css"
 
 const Marka = () => {
     const [adatok, setAdatok] = useState([])
@@ -20,8 +18,6 @@ const Marka = () => {
     const [modalOpenModosit, setModalOpenModosit] = useState(false)
     const [modalOpenHozzaad, setModalOpenHozzaad] = useState(false)
     const [selectedMarkaId, setSelectedMarkaId] = useState(null)
-    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 1200);
-    const [openMenuId, setOpenMenuId] = useState(null);
 
     const leToltes = async () => {
         try {
@@ -51,32 +47,11 @@ const Marka = () => {
         leToltes()
     }, [siker])
 
-    useEffect(() => {
-        const handleResize = () => {
-            setIsSmallScreen(window.innerWidth < 1200);
-        };
-
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
-    useEffect(() => {
-        const handleClickOutside = () => {
-            setOpenMenuId(null);
-        };
-
-        if (openMenuId) {
-            document.addEventListener("click", handleClickOutside);
-            return () => document.removeEventListener("click", handleClickOutside);
-        }
-    }, [openMenuId]);
-
-    const torlesFuggveny = async (e, marka_id, marka_nev) => {
-        e.stopPropagation();
-        const biztos = window.confirm(`Biztosan törölni szeretnéd a(z) ${marka_nev} márkát?`)
+    const torlesFuggveny = async (rowData) => {
+        const biztos = window.confirm(`Biztosan törölni szeretnéd a(z) ${rowData.marka_nev} márkát?`)
 
         if (biztos) {
-            const response = await fetch(Cim.Cim + "/markaTorles/" + marka_id, {
+            const response = await fetch(Cim.Cim + "/markaTorles/" + rowData.marka_id, {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" }
             })
@@ -90,14 +65,11 @@ const Marka = () => {
                 alert(data["error"])
             }
         }
-        setOpenMenuId(null);
     }
 
-    const openModalModosit = (e, marka_id) => {
-        e.stopPropagation();
-        setSelectedMarkaId(marka_id)
+    const handleEdit = (rowData) => {
+        setSelectedMarkaId(rowData.marka_id)
         setModalOpenModosit(true)
-        setOpenMenuId(null);
     }
 
     const closeModalModosit = (frissit) => {
@@ -108,10 +80,8 @@ const Marka = () => {
         }
     }
 
-    const openModalHozzaad = (e) => {
-        e.stopPropagation();
+    const handleAdd = () => {
         setModalOpenHozzaad(true)
-        setOpenMenuId(null);
     }
 
     const closeModalHozzaad = (frissit) => {
@@ -121,9 +91,12 @@ const Marka = () => {
         }
     }
 
-
     if (tolt)
         return <div className="text-center">Adatok betöltése folyamatban...</div>
+    
+    if (hiba)
+        return <div className="text-center">Hiba történt az adatok betöltése közben.</div>
+    
     if (ures)
         return (
             <div className="container-fluid">
@@ -131,28 +104,46 @@ const Marka = () => {
                     <div className="col-5"></div>
                     <div className="col-2 text-center">Nincs adat!</div>
                     <div className="col-5 text-center">
-                        Felvitel
-                        <div>
-                            <button
-                            className="btn btn-alert  ml-2"
-                                onClick={() => openModalHozzaad()} >      
-                                <FaPlus />
+                        <button
+                            className="btn btn-alert ml-2"
+                            onClick={() => handleAdd()}>      
+                            Új márka felvitele
                         </button>
-                        </div>
                     </div>
                 </div>
-                <Modal isOpen={modalOpenHozzaad} onClose={closeModalHozzaad}>
+                <Modal isOpen={modalOpenHozzaad} onClose={() => closeModalHozzaad(false)}>
                     <MarkaFelvitel onClose={closeModalHozzaad} />
                 </Modal>
             </div>
         )
 
-    if (hiba)
-        return <div className="text-center">Hiba történt az adatok betöltése közben.</div>
-    
+    // DataTable oszlopok konfigurálása
+    const columns = [
+        {
+            key: 'marka_nev',
+            label: 'Márka neve',
+        }
+    ]
+
+    // DataTable konfiguráció
+    const tableConfig = {
+        data: keresettAdatok,
+        columns: columns,
+        hiddenColumns: [],
+        actions: {
+            view: false,
+            edit: true,
+            delete: true,
+            add: true,
+        },
+        onEdit: handleEdit,
+        onDelete: torlesFuggveny,
+        onAdd: handleAdd,
+        primaryKey: 'marka_id',
+    }
 
     return (
-        <div className="container-fluid">
+        <div className="container">
             <div className="row justify-content-center mb-3">
                 <div className="col-6 text-center">
                     <Kereses adatok={adatok} keresettMezok={["marka_nev"]} setKeresettAdatok={setKeresettAdatok} />
@@ -164,87 +155,9 @@ const Marka = () => {
                     </Rendezes>
                 </div>
             </div>
-            { isSmallScreen ? (
-                <div className="row mb-3">
-                    <div className="col-8 text-center fw-bold">Márka neve</div>
-                    <div className="col-3 text-center fw-bold">Továbbiak</div>
-                </div>
-            ) : (
-                <div className="row mb-3">
-                    <div className="col-8 text-center fw-bold">Márka neve</div>
-                    <div className="col-1 text-center fw-bold">Törlés</div>
-                    <div className="col-1 text-center fw-bold">Módosítás</div>
-                    <div className="col-1 text-center fw-bold">Felvitel</div>
-                </div>
-            )}
-            {keresettAdatok.map((elem, index) => (
-                <div key={elem.marka_id} className="row mb-3">
-                    { isSmallScreen ? (
-                        <>
-                            <div className="col-8 text-center">{elem.marka_nev}</div>
-                            <div className="col-3 text-center">
-                                <div className="tovabbiak-dropdown-container" onClick={(e) => e.stopPropagation()}>
-                                    <button 
-                                        className="tovabbiak-btn"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            setOpenMenuId(openMenuId === elem.marka_id ? null : elem.marka_id);
-                                        }}
-                                        title="Továbbiak"
-                                    >
-                                        <MdMoreVert />
-                                    </button>
-                                    {openMenuId === elem.marka_id && (
-                                        <div className="tovabbiak-menu">
-                                            <div className="tovabbiak-item" onClick={(e) => openModalModosit(e, elem.marka_id)}>
-                                                <FaPencil /> Módosítás
-                                            </div>
-                                            <div className="tovabbiak-item tovabbiak-item-danger" onClick={(e) => torlesFuggveny(e, elem.marka_id, elem.marka_nev)}>
-                                                <FaRegTrashCan /> Törlés
-                                            </div>
-                                            {index === 0 && (
-                                                <div className="tovabbiak-item" onClick={(e) => openModalHozzaad(e)}>
-                                                    <FaPlus /> Márka felvitele
-                                                </div>
-                                            )}
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        </>
-                    ) : (
-                        <>
-                            <div className="col-8 text-center">{elem.marka_nev}</div>
-                            <div className="col-1 text-center">
-                                <button
-                                    className="btn btn-danger  ml-2"
-                                    onClick={(e) => torlesFuggveny(e,elem.marka_id, elem.marka_nev)}
-                                >
-                                    <FaRegTrashCan />
-                                </button>
-                            </div>
-                            <div className="col-1 text-center">
-                                <button
-                                    className="btn btn-alert  ml-2"
-                                    onClick={(e) => openModalModosit(e,elem.marka_id)}
-                                >
-                                    <FaPencil />
-                                </button>
-                            </div>
-                            <div className="col-1 text-center">
-                                {index === 0 &&
-                                    <button
-                                        className="btn btn-alert  ml-2"
-                                        onClick={(e) => openModalHozzaad(e)}
-                                    >
-                                        <FaPlus />
-                                    </button>
-                                }
-                            </div>
-                        </>
-                    )}
-                </div>
-            ))}
+            
+            <DataTable config={tableConfig} />
+            
             <Modal isOpen={modalOpenModosit} onClose={() => closeModalModosit(false)}>
                 <MarkaModosit marka_id={selectedMarkaId} onClose={closeModalModosit} />
             </Modal>

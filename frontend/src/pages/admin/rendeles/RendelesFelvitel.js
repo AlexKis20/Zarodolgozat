@@ -14,6 +14,7 @@ const RendelesFelvitel = ({ onClose }) => {
     const [keresettRendelesTermekek, setKeresettRendelesTermekek] = useState([])
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
+    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 1200);
 
     const mezok = [
     {nev: "rendeles_felhasznalo_id", tipus: "select", opciok: {lista: felhasznalok, id_mezo: "felhasznalo_id", nev_mezo: "felhasznalo_nev"}, megjelenit: "Felhasználó:"},
@@ -49,6 +50,15 @@ const RendelesFelvitel = ({ onClose }) => {
     useEffect(() => {
         leToltes()
     }, [])
+
+    useEffect(() => {
+        const handleResize = () => {
+        setIsSmallScreen(window.innerWidth < 1200);
+        };
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     const kezelesInput = (kulcs, ertek) => {
         setFelvittAdat(prev => ({
@@ -128,6 +138,50 @@ const RendelesFelvitel = ({ onClose }) => {
     if (hiba)
         return <div className="text-center">Hiba történt az adatok betöltése közben.</div>
 
+    const felvitelTermekNezet = (elem, index) => {
+        if (isSmallScreen) {
+            return (
+                <>
+                    <div className="row justify-content-center mb-3" key={index}>
+                        <div className="col-10 text-start">
+                            {elem.termek_nev}
+                        </div>
+                        <div className="col-2">
+                            <button className="btn btn-sm btn-light" onClick={() => termekKivalaszt(elem.termek_id, false)}>
+                                &lt;
+                            </button>
+                        </div>
+                    </div>
+                    <div className="row justify-content-center mb-3" key={index}>
+                        <div className="col-7 text-end">Darabszám</div>
+                        <div className="col-5">
+                            <input style={{margin: "0px", maxWidth: "50px"}} type="text" className="form-control" value={elem.darab} onChange={(e) => darabValtoztat(elem.termek_id, e.target.value)} />
+                        </div>
+                    </div>
+                </>
+            )
+        }
+        else {
+            return (
+                <>
+                    <div className="row justify-content-center mb-3" key={index}>
+                        <div className="col-9 text-start">
+                            {elem.termek_nev}
+                        </div>
+                        <div className="col-1">
+                            <button className="btn btn-sm btn-light" onClick={() => termekKivalaszt(elem.termek_id, true)}>
+                                &gt;
+                            </button>
+                        </div>
+                        <div className="col-2">
+                            <input style={{margin: "0px"}} type="text" className="form-control" value={elem.darab} onChange={(e) => darabValtoztat(elem.termek_id, e.target.value)} />
+                        </div>
+                    </div>
+                </>
+            )
+        }
+    }
+
     return (
         <div className="container">
             <div className="row mb-3">
@@ -205,31 +259,21 @@ const RendelesFelvitel = ({ onClose }) => {
                         <div className="col-6">
                             <h5 className="text-center">Rendelés</h5>
                             <div className="row mb-3">
-                                <div className="col-9 text-center">
+                                <div className={`${isSmallScreen ? 'col-10' : 'col-9'} text-center`}>
                                     <input style={{margin: "0px"}} type="text" class="form-control" placeholder="Keresés" onChange={(e) => keresRendeles(termekek, e.target.value, true, setKeresettRendelesTermekek)} />
                                 </div>
-                                <div className="col-1">
+                                <div className={`${isSmallScreen ? 'col-2' : 'col-1'}`}>
                                     <button className="btn btn-sm btn-light" onClick={() => osszesTermekKivalaszt(false)}>
                                         &lt;&lt;
                                     </button>
                                 </div>
-                                <div className="col-2 text-center">Darabszám</div>
+                                {!isSmallScreen && (
+                                    <div className="col-2 text-center">Darabszám</div>
+                                )}
                             </div>
                             {keresettRendelesTermekek.map((elem, index) => (
                                 (elem.kivalaszott && (elem.keresett || elem.keresett === undefined)) && (
-                                    <div className="row justify-content-center mb-3" key={index}>
-                                        <div className="col-9 text-start">
-                                            {elem.termek_nev}
-                                        </div>
-                                        <div className="col-1">
-                                            <button className="btn btn-sm btn-light" onClick={() => termekKivalaszt(elem.termek_id, false)}>
-                                                &lt;
-                                            </button>
-                                        </div>
-                                        <div className="col-2">
-                                            <input style={{margin: "0px"}} type="text" className="form-control" value={elem.darab} onChange={(e) => darabValtoztat(elem.termek_id, e.target.value)} />
-                                        </div>
-                                    </div>
+                                    felvitelTermekNezet(elem, index)
                                 )
                             ))}
                         </div>

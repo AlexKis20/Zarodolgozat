@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react"
-import { FaRegTrashCan } from "react-icons/fa6";
-import { MdMoreVert } from "react-icons/md";
 import Cim from "../../../Cim"
+import DataTable from "../../../components/DataTable"
 import Kereses from "../../../components/Kereses";
 import Rendezes from "../../../components/Rendezes";
 import { datumFuggveny } from "../../../utils/formazas";
-import "../../../utils/Responsive.css";
-
+import "../../../components/DataTable.css"
 
 const Velemeny = () => {
     const [adatok, setAdatok] = useState([])
@@ -15,8 +13,6 @@ const Velemeny = () => {
     const [hiba, setHiba] = useState(false)
     const [siker, setSiker] = useState(false)
     const [ures, setUres] = useState(false)
-    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 1200);
-    const [openMenuId, setOpenMenuId] = useState(null);
 
     const leToltes = async () => {
         try {
@@ -46,33 +42,11 @@ const Velemeny = () => {
         leToltes()
     }, [siker])
 
-    useEffect(() => {
-        const handleResize = () => {
-            setIsSmallScreen(window.innerWidth < 1200);
-        };
-
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
-    useEffect(() => {
-        const handleClickOutside = () => {
-            setOpenMenuId(null);
-        };
-
-        if (openMenuId) {
-            document.addEventListener("click", handleClickOutside);
-            return () => document.removeEventListener("click", handleClickOutside);
-        }
-    }, [openMenuId]);
-
-
-    const torlesFuggveny = async (e, velemeny_id) => {
-        e.stopPropagation();
+    const torlesFuggveny = async (rowData) => {
         const biztos = window.confirm(`Biztosan törölni szeretnéd a véleményt?`)
 
         if (biztos) {
-            const response = await fetch(Cim.Cim + "/velemenyTorles/" + velemeny_id, {
+            const response = await fetch(Cim.Cim + "/velemenyTorles/" + rowData.velemeny_id, {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" }
             })
@@ -86,17 +60,58 @@ const Velemeny = () => {
                 alert(data["error"])
             }
         }
-        setOpenMenuId(null);
     }
 
     if (tolt)
         return <div className="text-center">Adatok betöltése folyamatban...</div>
 
+    if (hiba)
+        return <div className="text-center">Hiba történt az adatok betöltése közben.</div>
+
     if (ures)
         return <div className="text-center">Nincs adat!</div>
 
-    if (hiba)
-        return <div className="text-center">Hiba történt az adatok betöltése közben.</div>
+    // DataTable oszlopok konfigurálása
+    const columns = [
+        {
+            key: 'velemeny_datum',
+            label: 'Dátum',
+            formatter: (value) => datumFuggveny(value),
+        },
+        {
+            key: 'felhasznalo_nev',
+            label: 'Felhasználó'
+        },
+        {
+            key: 'termek_nev',
+            label: 'Termék'
+        },
+        {
+            key: 'velemeny_szoveg',
+            label: 'Vélemény'
+        },
+        {
+            key: 'velemeny_ertekeles',
+            label: 'Értékelés',
+            formatter: (value) => `${value} / 5`
+        }
+    ]
+
+    // DataTable konfiguráció
+    const tableConfig = {
+        data: keresettAdatok,
+        columns: columns,
+        visibleColumnsSmall: ['felhasznalo_nev', 'velemeny_szoveg'],  // Kis képernyőn csak a felhasználó és vélemény legyen látható
+        hiddenColumns: [],  // Ezek a lenyíló sorban jelenjenek meg
+        actions: {
+            view: false,
+            edit: false,
+            delete: true,
+            add: false,
+        },
+        onDelete: torlesFuggveny,
+        primaryKey: 'velemeny_id',
+    }
 
     return (
         <div className="container">
@@ -117,74 +132,10 @@ const Velemeny = () => {
                     </Rendezes>
                 </div>
             </div>
-            { isSmallScreen ? (
-                <div className="row mb-3">
-                    <div className="col-2 text-center fw-bold">Dátum</div>
-                    <div className="col-2 text-center fw-bold">Felhasználó</div>
-                    <div className="col-3 text-center fw-bold">Termék</div>
-                    <div className="col-3 text-center fw-bold">Vélemény</div>
-                    <div className="col-2 text-center fw-bold">Továbbiak</div>
-                </div>
-            ) : (
-                 <div className="row mb-3">
-                    <div className="col-2 text-center fw-bold">Dátum</div>
-                    <div className="col-2 text-center fw-bold">Felhasználó</div>
-                    <div className="col-3 text-center fw-bold">Termék</div>
-                    <div className="col-3 text-center fw-bold">Vélemény</div>
-                    <div className="col-2 text-center fw-bold">Törlés</div>
-                </div>
-            )}
-            {keresettAdatok.map((elem, index) => (
-                <div className="row justify-content-center mb-3">
-                    { isSmallScreen ? (
-                        <>
-                            <div className="col-2 text-center">{datumFuggveny(elem.velemeny_datum)}</div>
-                            <div className="col-2 text-center">{elem.felhasznalo_nev}</div>
-                            <div className="col-3 text-center">{elem.termek_nev}</div>
-                            <div className="col-3 text-center">{elem.velemeny_szoveg}</div>
-                            <div className="col-2 text-center">
-                                <div className="tovabbiak-dropdown-container" onClick={(e) => e.stopPropagation()}>
-                                    <button 
-                                        className="tovabbiak-btn"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            setOpenMenuId(openMenuId === elem.velemeny_id ? null : elem.velemeny_id);
-                                        }}
-                                        title="Továbbiak"
-                                    >
-                                        <MdMoreVert />
-                                    </button>
-                                    {openMenuId === elem.velemeny_id && (
-                                        <div className="tovabbiak-menu">
-                                            <div className="tovabbiak-item tovabbiak-item-danger" onClick={(e) => torlesFuggveny(e, elem.velemeny_id)}>
-                                                <FaRegTrashCan /> Törlés
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        </>
-                    ) : (
-                        <>
-                            <div className="col-2 text-center">{datumFuggveny(elem.velemeny_datum)}</div>
-                            <div className="col-2 text-center">{elem.felhasznalo_nev}</div>
-                            <div className="col-3 text-center">{elem.termek_nev}</div>
-                            <div className="col-3 text-center">{elem.velemeny_szoveg}</div>
-                            <div className="col-2 text-center">
-                                <button
-                                    className="btn btn-danger  ml-2"
-                                    onClick={(e) => torlesFuggveny(e, elem.velemeny_id)}
-                                >
-                                    <FaRegTrashCan />
-                                </button>
-                            </div>
-                        </>
-                    )}
-                </div>
-            ))}
+
+            <DataTable config={tableConfig} />
         </div>
     )
 }
 
 export default Velemeny
-

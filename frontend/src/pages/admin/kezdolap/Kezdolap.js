@@ -1,17 +1,14 @@
 import { useState, useEffect } from "react"
-import { FaRegTrashCan, FaPencil } from "react-icons/fa6";
-import { MdMoreVert } from "react-icons/md";
 import Cim from "../../../Cim"
 import Modal from "../../../components/Modal"
+import DataTable from "../../../components/DataTable"
 import KezdolapModosit from "./KezdolapModosit";
 import KezdolapFelvitel from "./KezdolapFelvitel";
-import { FaPlus } from "react-icons/fa";
 import Kereses from "../../../components/Kereses";
 import Rendezes from "../../../components/Rendezes";
-import "../../../utils/Responsive.css";
+import "../../../components/DataTable.css"
 
-
-const Kezdolap= () => {
+const Kezdolap = () => {
     const [adatok, setAdatok] = useState([])
     const [fajtak, setFajtak] = useState([])
     const [keresettAdatok, setKeresettAdatok] = useState([])
@@ -22,9 +19,7 @@ const Kezdolap= () => {
     const [modalOpenModosit, setModalOpenModosit] = useState(false)
     const [modalOpenHozzaad, setModalOpenHozzaad] = useState(false)
     const [selectedBlogId, setSelectedBlogId] = useState(null)
-    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 1200);
-    const [openMenuId, setOpenMenuId] = useState(null);
-        
+
     const leToltes = async () => {
         try {
             const response = await fetch(Cim.Cim + "/kezdolap")
@@ -61,33 +56,11 @@ const Kezdolap= () => {
         leToltes()
     }, [siker])
 
-    useEffect(() => {
-        const handleResize = () => {
-            setIsSmallScreen(window.innerWidth < 1200);
-        };
-
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
-    useEffect(() => {
-        const handleClickOutside = () => {
-            setOpenMenuId(null);
-        };
-
-        if (openMenuId) {
-            document.addEventListener("click", handleClickOutside);
-            return () => document.removeEventListener("click", handleClickOutside);
-        }
-    }, [openMenuId]);
-
-
-    const torlesFuggveny = async (e, blog_id, blog_cim) => {
-        e.stopPropagation();
-        const biztos = window.confirm(`Biztosan törölni szeretnéd a(z) ${blog_cim} kezdőlapot?`)
+    const torlesFuggveny = async (rowData) => {
+        const biztos = window.confirm(`Biztosan törölni szeretnéd a(z) ${rowData.blog_cim} kezdőlapot?`)
 
         if (biztos) {
-            const response = await fetch(Cim.Cim + "/kezdolapTorles/" + blog_id, {
+            const response = await fetch(Cim.Cim + "/kezdolapTorles/" + rowData.blog_id, {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" }
             })
@@ -101,14 +74,11 @@ const Kezdolap= () => {
                 alert(data["error"])
             }
         }
-        setOpenMenuId(null);
     }
     
-    const openModalModosit = (e, blog_id) => {
-        e.stopPropagation();
-        setSelectedBlogId(blog_id)
+    const handleEdit = (rowData) => {
+        setSelectedBlogId(rowData.blog_id)
         setModalOpenModosit(true)
-        setOpenMenuId(null);
     }
 
     const closeModalModosit = (frissit) => {
@@ -119,10 +89,8 @@ const Kezdolap= () => {
         }
     }
 
-    const openModalHozzaad = (e) => {
-        e.stopPropagation();
+    const handleAdd = () => {
         setModalOpenHozzaad(true)
-        setOpenMenuId(null);
     }
 
     const closeModalHozzaad = (frissit) => {
@@ -132,9 +100,11 @@ const Kezdolap= () => {
         }
     }
 
-
     if (tolt)
         return <div className="text-center">Adatok betöltése folyamatban...</div>
+    
+    if (hiba)
+        return <div className="text-center">Hiba történt az adatok betöltése közben.</div>
     
     if (ures)
         return (
@@ -143,27 +113,46 @@ const Kezdolap= () => {
                     <div className="col-5"></div>
                     <div className="col-2 text-center">Nincs adat!</div>
                     <div className="col-5 text-center">
-                        Felvitel
-                        <div>
-                            <button
-                            className="btn btn-alert  ml-2"
-                                onClick={() => openModalHozzaad()} >      
-                                <FaPlus />
+                        <button
+                            className="btn btn-alert ml-2"
+                            onClick={() => handleAdd()}>      
+                            Új kezdőlap felvitele
                         </button>
-                        </div>
                     </div>
                 </div>
-                <Modal isOpen={modalOpenHozzaad} onClose={closeModalHozzaad}>
-                    <KezdolapFelvitel onClose={closeModalHozzaad} />
+                <Modal isOpen={modalOpenHozzaad} onClose={() => closeModalHozzaad(false)}>
+                    <KezdolapFelvitel onClose={closeModalHozzaad} fajtak={fajtak} />
                 </Modal>
             </div>
         )
-    
-    if (hiba)
-        return <div className="text-center">Hiba történt az adatok betöltése közben.</div>
+
+    // DataTable oszlopok konfigurálása
+    const columns = [
+        {
+            key: 'blog_cim',
+            label: 'Kezdőlap címe',
+        }
+    ]
+
+    // DataTable konfiguráció
+    const tableConfig = {
+        data: keresettAdatok,
+        columns: columns,
+        hiddenColumns: [],
+        actions: {
+            view: false,
+            edit: true,
+            delete: true,
+            add: true,
+        },
+        onEdit: handleEdit,
+        onDelete: torlesFuggveny,
+        onAdd: handleAdd,
+        primaryKey: 'blog_id',
+    }
 
     return (
-        <div className="container-fluid">
+        <div className="container">
             <div className="row justify-content-center mb-3">
                 <div className="col-6 text-center">
                     <Kereses adatok={adatok} keresettMezok={["blog_cim"]} setKeresettAdatok={setKeresettAdatok} />
@@ -175,87 +164,9 @@ const Kezdolap= () => {
                     </Rendezes>
                 </div>
             </div>
-            { isSmallScreen ? (
-                <div className="row mb-3">
-                    <div className="col-8 text-center fw-bold">Kezdőlap címe</div>
-                    <div className="col-3 text-center fw-bold">Továbbiak</div>
-                </div>
-            ) : (
-                <div className="row mb-3">
-                    <div className="col-8 text-center fw-bold">Kezdőlap címe</div>
-                    <div className="col-1 text-center fw-bold">Törlés</div>
-                    <div className="col-1 text-center fw-bold">Módosítás</div>
-                    <div className="col-1 text-center fw-bold">Felvitel</div>
-                </div>
-            )}
-            {keresettAdatok.map((elem, index) => (
-                <div key={elem.blog_id} className="row mb-3">
-                    {isSmallScreen ? (
-                        <>
-                            <div className="col-8 text-center">{elem.blog_cim}</div>
-                            <div className="col-3 text-center">
-                                <div className="tovabbiak-dropdown-container" onClick={(e) => e.stopPropagation()}>
-                                    <button 
-                                        className="tovabbiak-btn"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            setOpenMenuId(openMenuId === elem.blog_id ? null : elem.blog_id);
-                                        }}
-                                        title="Továbbiak"
-                                    >
-                                        <MdMoreVert />
-                                    </button>
-                                    {openMenuId === elem.blog_id && (
-                                        <div className="tovabbiak-menu">
-                                            <div className="tovabbiak-item" onClick={(e) => openModalModosit(e, elem.blog_id)}>
-                                                <FaPencil /> Módosítás
-                                            </div>
-                                            <div className="tovabbiak-item tovabbiak-item-danger" onClick={(e) => torlesFuggveny(e, elem.blog_id, elem.blog_cim)}>
-                                                <FaRegTrashCan /> Törlés
-                                            </div>
-                                            {index === 0 && (
-                                                <div className="tovabbiak-item" onClick={(e) => openModalHozzaad(e)}>
-                                                    <FaPlus /> Kezdőlap felvitele
-                                                </div>
-                                            )}
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        </>
-                    ) : (
-                        <>   
-                            <div className="col-8 text-center">{elem.blog_cim}</div>
-                            <div className="col-1 text-center">
-                                <button
-                                    className="btn btn-danger  ml-2"
-                                    onClick={() => torlesFuggveny(elem.blog_id, elem.blog_cim)}
-                                >
-                                    <FaRegTrashCan />
-                                </button>
-                            </div>
-                            <div className="col-1 text-center">
-                                <button
-                                    className="btn btn-alert  ml-2"
-                                    onClick={() => openModalModosit(elem.blog_id)}
-                                >
-                                    <FaPencil />
-                                </button>
-                            </div>
-                            <div className="col-1 text-center">
-                                {index === 0 &&
-                                    <button
-                                        className="btn btn-alert  ml-2"
-                                        onClick={() => openModalHozzaad()}
-                                    >
-                                        <FaPlus />
-                                    </button>
-                                }
-                            </div>
-                        </>
-                    )}
-                </div>
-            ))}
+
+            <DataTable config={tableConfig} />
+
             <Modal isOpen={modalOpenModosit} onClose={() => closeModalModosit(false)}>
                 <KezdolapModosit blog_id={selectedBlogId} onClose={closeModalModosit} fajtak={fajtak} />
             </Modal>

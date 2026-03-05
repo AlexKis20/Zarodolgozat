@@ -1,0 +1,201 @@
+.tovabbiak-dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+.tovabbiak-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+}
+
+.tovabbiak-btn:hover {
+    background-color: #0056b3;
+}
+
+.tovabbiak-btn:active {
+    background-color: #004085;
+}
+
+.tovabbiak-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    min-width: 220px;
+    margin-top: 5px;
+}
+
+.tovabbiak-item {
+    padding: 12px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #333;
+    transition: background-color 0.2s ease;
+}
+
+.tovabbiak-item:last-child {
+    border-bottom: none;
+}
+
+.tovabbiak-item:hover {
+    background-color: #f5f5f5;
+}
+
+.tovabbiak-item-danger {
+    color: #dc3545;
+}
+
+.tovabbiak-item-danger:hover {
+    background-color: #fff5f5;
+}
+
+.tovabbiak-item svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* DataTable komponens stílusa */
+.datatable-container {
+    width: 100%;
+    padding: 0 15px;
+}
+
+.datatable-header,
+.datatable-header-small {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    margin-bottom: 10px;
+}
+
+.datatable-header-small {
+    background-color: #f0f0f0;
+}
+
+.datatable-row {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    align-items: center;
+    transition: background-color 0.2s ease;
+}
+
+.datatable-row:hover {
+    background-color: #f8f9fa;
+}
+
+.datatable-dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+.datatable-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+}
+
+.datatable-btn:hover {
+    background-color: #0056b3;
+}
+
+.datatable-btn:active {
+    background-color: #004085;
+}
+
+.datatable-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    min-width: 220px;
+    margin-top: 5px;
+}
+
+.datatable-item {
+    padding: 12px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #333;
+    transition: background-color 0.2s ease;
+}
+
+.datatable-item:last-child {
+    border-bottom: none;
+}
+
+.datatable-item:hover {
+    background-color: #f5f5f5;
+}
+
+.datatable-item-danger {
+    color: #dc3545;
+}
+
+.datatable-item-danger:hover {
+    background-color: #fff5f5;
+}
+
+.datatable-item svg {
+    width: 16px;
+    height: 16px;
+}
+
+.datatable-expanded {
+    display: flex;
+    gap: 10px;
+    padding: 15px 15px 15px 45px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+}
+
+.datatable-expanded-item {
+    padding: 8px 0;
+    font-size: 14px;
+    line-height: 1.6;
+}
