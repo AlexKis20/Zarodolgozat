@@ -20,13 +20,14 @@ A bejelentkezett felhasználók azok mellett amit a nem bejelentkezett felhaszn�
 
 ### Admin rész:
 
+---
+### Architektúra
+backend-express,
 
-## Architektúra
+### Frontend:
+react, 
 
-
-
-
-
-
+### adatb:
+mysql
 
 
