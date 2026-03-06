@@ -7,7 +7,7 @@ Célunk nem csak egy sima telefont árúsító weboldal, hanem a jövő teknoló
 
 ## Készítők:
 - Kis Alex János
-- Váradi Kornélia
+- Várady Kornélia Ibolya
 
 ## Főbb funkciók:
 
