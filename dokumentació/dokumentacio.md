@@ -18,6 +18,12 @@ A nem bejelentkezett felhasználó is tud böngészni a webshopban és rá tud k
 ### Bejelentkezett user:
 A bejelentkezett felhasználók azok mellett amit a nem bejelentkezett felhasználókon kívül még többet tudnak az az hogy ők meg is tudják rendelni az adott terméket és mondani sem kell hogy emiatt is csak a bejelentkezett felhasználók tudnak a kosárba rakni a termékeket és ki is tudják a kosárból törölni a termékeket.
 
+### Nem bejelentkezett Admin:
+A nem bejelentkezett Admin nem tud semmit módositani felvinni pld: termékeket. 
+
+### Bejelentkezett Admin:
+A bejelentkezett Adminnál megjelenik az Admin menü és számos olyan funkcó jelenik meg ami az User felületen nem jelenik meg. Az User nem tud átlépni az Admin felületre. 
+
 ### Admin rész:
 
 ---
