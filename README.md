@@ -30,4 +30,5 @@ react,
 ### adatb:
 mysql
 
+![Adatbázis kapcsolatok](kepek/adatbaziskapcsolatok.PNG)
 
