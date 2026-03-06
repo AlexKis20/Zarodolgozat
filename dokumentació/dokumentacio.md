@@ -6,8 +6,8 @@
 Célunk nem csak egy sima telefont árusító weboldal, hanem a jövő technológiáját szeretné biztosítani a vásárlóknak. Törekedtünk az egyszerűségre, a minimalista és modern kinézetre és a responzitásra, hogy több eszközön ugyanolyan élményt tudjunk nyújtani. 
 
 ## Készítők:
-- Kis Alex János
-- Várady Kornélia Ibolya
+- Kis Alex János (User)
+- Várady Kornélia Ibolya (Admin)
 
 ## Főbb funkciók:
 
@@ -24,7 +24,7 @@ A nem bejelentkezett Admin nem tud semmit módositani felvinni pld: termékeket.
 ### Bejelentkezett Admin:
 A bejelentkezett Adminnál megjelenik az Admin menü és számos olyan funkcó jelenik meg ami az User felületen nem jelenik meg. Az User nem tud átlépni az Admin felületre. 
 
-### Admin rész:
+
 
 ---
 ### Architektúra
