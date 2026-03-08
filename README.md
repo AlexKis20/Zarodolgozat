@@ -12,6 +12,9 @@ Célunk nem csak egy sima telefont árusító weboldal, hanem a jövő technoló
 
 # Futtatás
 
+## Letöltés
+1. `git clone https://github.com/AlexKis20/Zarodolgozat.git`
+
 ## Adatbázis futtatása
 1. Nyisd meg az XAMPP-ot.
 2. Indítsd el az Apache webszervert.
@@ -359,7 +362,7 @@ Készítette:
 
 # Képek
 
-## Felhasználói felület képei
+## Képek a felhasználó felületről
 
 | Kép | Leírás |
 |-----|--------|
@@ -373,19 +376,22 @@ Készítette:
 | ![Admin gomb látszik](kepek/user_admin_gomb_latszik.png) | Az admin gomb megjelenítése bejelentkezett adminisztrátor számára. |
 | ![Admin gomb nem látszik](kepek/user_admin_gomb_nem_latszik.png) | Az admin gomb nem jelenik meg normál felhasználó számára. |
 
-## Admin felület képei
+## Képek az Admin felületről
 
 | Kép | Leírás |
 |-----|--------|
-| ![Vezérlőpult](kepek/admin_vezerlopult.png) | Az admin panel vezérlőpultja a bejövő rendelésekkel és véleményekkel. |
+| ![Vezérlőpult](kepek/admin_vezerlopult.png) | Az admin panel vezérlőpultja a bejövő rendelésekkel és véleményekkel. ||
+| ![Fájl feltöltés](kepek/admin_fajl_feltoltes.png) | Képfájl feltöltésének funkciója az admin panelen. |
+| ![Termék oldal](kepek/admin_termek.png) | Termékek oldala. |
+| ![Keresés márkánál](kepek/admin_kereses.png) | Az admin panelen a keresési funkció. |
+| ![Tipus oldal](kepek/admin_tipus.png) | Az admin panelen tipus oldala. |
+| ![Rendelés oldal](kepek/admin_rendeles.png) | Az admin panelen rendelés oldala. |
 | ![Akciók](kepek/admin_akcio.png) | Az admin akciókezelési oldala. |
 | ![Akciók felvitel](kepek/admin_akcio_felvitel.png) | Új akció felvitelének oldala. |
 | ![Akciók módosítása](kepek/admin_akcio_modositas.png) | Akció módosításának oldala. |
 | ![Akciók termékei](kepek/admin_akcio_termekek.png) | Az akcióhoz tartozó termékek kezelésének oldala. |
 | ![Akciók törlése](kepek/admin_akcio_torles.png) | Az akció törlésére vonatkozó megerősítési dialógus. |
-| ![Keresés](kepek/admin_kereses.png) | Az admin panelen a keresési funkció. |
 | ![Rendezés](kepek/admin_rendezes.png) | Az admin panelen a rendezési funkció. |
-| ![Fájl feltöltés](kepek/admin_fajl_feltoltes.png) | Képfájl feltöltésének funkciója az admin panelen. |
 | ![Akciók mobil nézet](kepek/admin_akcio_mobil_nezet.png) | Az akciók oldala mobil eszközön. |
 | ![Akciók mobil nézet műveleti gomb](kepek/admin_akcio_mobil_nezet_muveletek.png) | A műveletek gomb mobil nézeten. |
 

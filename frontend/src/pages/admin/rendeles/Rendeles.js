@@ -185,7 +185,7 @@ const Rendeles = () => {
         },
         {
             key: 'rendeles_teljesitve',
-            label: 'Státusz',
+            label: 'Teljesítve',
             render: (rowData) => (
                 <input 
                     type="checkbox" 
