@@ -74,24 +74,31 @@ const Sidebar = ({ sidebar, setSidebar }) => {
         <>
             <IconContext.Provider value={{ color: "#fff" }}>
                 <Nav>
-                    <NavIcon to="#">
-                        <FaIcons.FaBars onClick={showSidebar} />
-                    </NavIcon>
-                    <h1
-                        style={{
-                            textAlign: "center",
-                            marginLeft: "200px",
-                            color: "green",
-                        }}
-                    >
-                        Nextify Admin
-                    </h1>
-                    <Link
-                        style={{ marginLeft: "auto", fontSize: "50px" }}
-                        to="/"
-                    >
-                        <HiArrowCircleLeft />
-                    </Link>
+                    <div className="row w-100">
+                        <div className="col-3">
+                            <NavIcon to="#">
+                                <FaIcons.FaBars onClick={showSidebar} />
+                            </NavIcon> 
+                        </div>
+                        <div className="col-6 align-items-center justify-content-center d-flex">
+                            <h1
+                                className="text-center"
+                                style={{
+                                    color: "#2fb5e9"
+                                }}
+                            >
+                                Nextify Admin
+                            </h1>
+                        </div>
+                        <div className="col-3 text-end">
+                            <Link
+                                style={{ fontSize: "50px" }}
+                                to="/"
+                            >
+                                <HiArrowCircleLeft />
+                            </Link>
+                        </div>
+                    </div>
                 </Nav>
                 <Overlay sidebar={sidebar} onClick={showSidebar} />
                 <SidebarNav sidebar={sidebar}>
