@@ -346,6 +346,7 @@ textarea.form-control {
   pointer-events: none; /* ne legyen kattintható */
 
   background: linear-gradient(90deg, #e0f2fe, #c7d2fe);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
