@@ -5,12 +5,12 @@ import { mezoValidalas } from "../../../components/BeviteliMezo"
 import BeviteliMezo from "../../../components/BeviteliMezo"
 import Cim from "../../../Cim"
 
-const  KezdolapModosit= ({ blog_id, fajtak, onClose }) => {
+const  KezdolapModosit= ({ kezdolap_id, fajtak, onClose }) => {
     const mezok = [
-        {nev: "blog_cim", tipus: "input", megjelenit: "Kezdőlap cím:"},
-        {nev: "blog_szoveg", tipus: "textarea", megjelenit: "Kezdőlap szöveg:"},
-        {nev: "blog_fajta", tipus: "select", opciok: {lista: fajtak, id_mezo: "fajta_id", nev_mezo: "fajta_nev"}, megjelenit: "Kezdőlap fajta:"},
-        {nev: "blog_kep", tipus: "file", megjelenit: "Kezdőlap kép:"}
+        {nev: "kezdolap_cim", tipus: "input", megjelenit: "Kezdőlap cím:"},
+        {nev: "kezdolap_szoveg", tipus: "textarea", megjelenit: "Kezdőlap szöveg:"},
+        {nev: "kezdolap_fajta", tipus: "select", opciok: {lista: fajtak, id_mezo: "fajta_id", nev_mezo: "fajta_nev"}, megjelenit: "Kezdőlap fajta:"},
+        {nev: "kezdolap_kep", tipus: "file", megjelenit: "Kezdőlap kép:"}
     ]
     const [modositottAdat, setModositottAdat] = useState({})
     const [tolt, setTolt] = useState(true)
@@ -19,7 +19,7 @@ const  KezdolapModosit= ({ blog_id, fajtak, onClose }) => {
     useEffect(() => {
         const leToltes = async () => {
             try {
-                const response = await fetch(Cim.Cim + "/kezdolap/" + blog_id)
+                const response = await fetch(Cim.Cim + "/kezdolap/" + kezdolap_id)
                 const data = await response.json()
 
                 if (response.ok) {
@@ -36,7 +36,7 @@ const  KezdolapModosit= ({ blog_id, fajtak, onClose }) => {
             }
         }
         leToltes()
-    }, [blog_id])
+    }, [kezdolap_id])
 
     const kezelesInput = (kulcs, ertek) => {
         setModositottAdat(prev => ({
@@ -46,7 +46,7 @@ const  KezdolapModosit= ({ blog_id, fajtak, onClose }) => {
     }
 
     const modositFuggveny = async () => {
-        const biztos = window.confirm(`Biztosan módosítani szeretnéd a(z) ${modositottAdat.blog_cim} kezdőlapot?`)
+        const biztos = window.confirm(`Biztosan módosítani szeretnéd a(z) ${modositottAdat.kezdolap_cim} kezdőlapot?`)
 
         if (biztos) {
             if (!mezok.every(mezo => mezoValidalas(modositottAdat, mezo, true))) {
@@ -55,15 +55,15 @@ const  KezdolapModosit= ({ blog_id, fajtak, onClose }) => {
             }
 
             const formData = new FormData()
-            formData.append("blog_cim", modositottAdat.blog_cim)
-            formData.append("blog_szoveg", modositottAdat.blog_szoveg)
-            formData.append("blog_fajta", modositottAdat.blog_fajta)
+            formData.append("kezdolap_cim", modositottAdat.kezdolap_cim)
+            formData.append("kezdolap_szoveg", modositottAdat.kezdolap_szoveg)
+            formData.append("kezdolap_fajta", modositottAdat.kezdolap_fajta)
             
-            if (modositottAdat.blog_kep instanceof File) {
-                formData.append("blog_kep", modositottAdat.blog_kep)
+            if (modositottAdat.kezdolap_kep instanceof File) {
+                formData.append("kezdolap_kep", modositottAdat.kezdolap_kep)
             }
 
-            const response = await fetch(Cim.Cim + "/kezdolapModosit/" + blog_id, {
+            const response = await fetch(Cim.Cim + "/kezdolapModosit/" + kezdolap_id, {
                 method: "PUT",
                 body: formData
             })

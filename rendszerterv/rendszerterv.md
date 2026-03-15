@@ -57,13 +57,13 @@ tipus Tábla:
 - tipus_nev
 
 
-blog Tábla:
-- blog_id (elsődleges kulcs)
-- blog_cim 	
-- blog_szoveg 		
-- blog_datum 	
-- blog_kep 	
-- blog_fajta (idegen kulcs)	
+kezdolap Tábla:
+- kezdolap_id (elsődleges kulcs)
+- kezdolap_cim 	
+- kezdolap_szoveg 		
+- kezdolap_datum 	
+- kezdolap_kep 	
+- kezdolap_fajta (idegen kulcs)	
 
 fajta Tábla:
 - fajta_id (elsődleges kulcs)

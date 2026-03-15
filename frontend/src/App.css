@@ -261,7 +261,7 @@ textarea.form-control {
   border-radius: 999px;
 }
 
-.blogTitle {
+.kezdolapTitle {
   font-size: 2rem;
   font-weight: 800;
   letter-spacing: -0.02em;
@@ -271,7 +271,7 @@ textarea.form-control {
 }
 
 /* finom aláhúzás */
-.blogTitle::after {
+.kezdolapTitle::after {
   content: "";
   display: block;
   width: auto;
@@ -281,7 +281,7 @@ textarea.form-control {
   margin-top: 8px;
 }
 
-.blogText {
+.kezdolapText {
   font-size: 1.15rem;
   line-height: 1.75;
   color: #374151;

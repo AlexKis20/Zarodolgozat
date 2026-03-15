@@ -61,6 +61,7 @@ const Termek = () => {
         } catch (error) {
             console.log(error)
             setHiba(true)
+            setTolt(false)
         }
     }
 

@@ -40,6 +40,7 @@ const Marka = () => {
         } catch (error) {
             console.log(error)
             setHiba(true)
+            setTolt(false)
         }
     }
 

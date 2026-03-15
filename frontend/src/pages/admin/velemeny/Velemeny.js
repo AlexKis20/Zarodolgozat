@@ -35,6 +35,7 @@ const Velemeny = () => {
         } catch (error) {
             console.log(error)
             setHiba(true)
+            setTolt(false)
         }
     }
 

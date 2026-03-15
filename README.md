@@ -327,9 +327,9 @@ Készítette:
 | GET          | /velemenyek/:termekId          | Vélemények lekérdezése termék alapján                   | User  |
 | GET          | /felhasznalo                   | Összes felhasználó lekérdezése                          | Admin |
 | GET          | /kezdolap                      | Összes kezdőlap/blog bejegyzés lekérdezése              | Admin |
-| GET          | /kezdolap/:blog_id             | Egy kezdőlap/blog bejegyzés lekérdezése                 | Admin |
-| DELETE       | /kezdolapTorles/:blog_id       | Kezdőlap/blog bejegyzés törlése                         | Admin |
-| PUT          | /kezdolapModosit/:blog_id      | Kezdőlap/blog bejegyzés módosítása                      | Admin |
+| GET          | /kezdolap/:kezdolap_id         | Egy kezdőlap/blog bejegyzés lekérdezése                 | Admin |
+| DELETE       | /kezdolapTorles/:kezdolap_id   | Kezdőlap/blog bejegyzés törlése                         | Admin |
+| PUT          | /kezdolapModosit/:kezdolap_id  | Kezdőlap/blog bejegyzés módosítása                      | Admin |
 | POST         | /kezdolapHozzaad               | Új kezdőlap/blog bejegyzés hozzáadása                   | Admin |
 | GET          | /fajta                         | Összes fajta lekérdezése                                | Admin |
 | DELETE       | /termekTorles/:termek_id       | Termék törlése                                          | Admin |

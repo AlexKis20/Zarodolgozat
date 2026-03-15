@@ -32,7 +32,7 @@ const SidebarNav = styled.nav`
     justify-content: center;
     position: fixed;
     top: 0;
-    left: ${({ sidebar }) => (sidebar ? "0" : "-100%")};
+    left: ${({ $sidebar }) => ($sidebar ? "0" : "-100%")};
     transition: 350ms;
     z-index: 10;
 
@@ -47,7 +47,7 @@ const SidebarWrap = styled.div`
 `;
 
 const Overlay = styled.div`
-    display: ${({ sidebar }) => (sidebar && window.innerWidth <= 768 ? "block" : "none")};
+    display: ${({ $sidebar }) => ($sidebar && window.innerWidth <= 768 ? "block" : "none")};
     position: fixed;
     top: 0;
     left: 0;
@@ -100,8 +100,8 @@ const Sidebar = ({ sidebar, setSidebar }) => {
                         </div>
                     </div>
                 </Nav>
-                <Overlay sidebar={sidebar} onClick={showSidebar} />
-                <SidebarNav sidebar={sidebar}>
+                <Overlay $sidebar={sidebar} onClick={showSidebar} />
+                <SidebarNav $sidebar={sidebar}>
                     <SidebarWrap>
                         <NavIcon to="#">
                             <AiIcons.AiOutlineClose onClick={showSidebar} />

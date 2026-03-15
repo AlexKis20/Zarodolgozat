@@ -45,6 +45,7 @@ const Akcio = () => {
         } catch (error) {
             console.log(error)
             setHiba(true)
+            setTolt(false)
         }
     }
 

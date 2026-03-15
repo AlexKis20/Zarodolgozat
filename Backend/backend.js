@@ -24,7 +24,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use("/kepek", express.static("kepek"))
 app.use("/termekKep", express.static("termekKep"))
-app.use("/blogKep", express.static("blogKep"))
+app.use("/kezdolapKep", express.static("kezdolapKep"))
 
 const pool = mysql.createPool({
   host: 'localhost',
@@ -199,7 +199,7 @@ app.post('/termeknevKeres', (req, res) => {
 
 //Hírekhez (akció)
 app.get('/hirek1', (req, res) => {
-    const sql=`SELECT * FROM blog WHERE blog_fajta=1 `
+    const sql=`SELECT * FROM kezdolap WHERE kezdolap_fajta=1 `
     pool.query(sql, ( err, result) => {
         if (err){
             console.log(err)
@@ -218,7 +218,7 @@ app.get('/hirek1', (req, res) => {
 })
 
  app.get('/hirek2', (req, res) => {
-    const sql=`SELECT * FROM blog WHERE blog_fajta=2 `
+    const sql=`SELECT * FROM kezdolap WHERE kezdolap_fajta=2 `
     pool.query(sql, ( err, result) => {
         if (err){
             console.log(err)
@@ -237,7 +237,7 @@ app.get('/hirek1', (req, res) => {
 }) 
 
 app.get('/hirek3', (req, res) => {
-    const sql=`SELECT * FROM blog WHERE blog_fajta=3 `
+    const sql=`SELECT * FROM kezdolap WHERE kezdolap_fajta=3 `
     pool.query(sql, ( err, result) => {
         if (err){
             console.log(err)
@@ -405,7 +405,7 @@ app.get('/felhasznalo', (req, res) => {
 
 // minden kezdőlap lekérdezése
 app.get('/kezdolap', (req, res) => {
-    const sql=`SELECT * FROM  blog `
+    const sql=`SELECT * FROM  kezdolap `
     pool.query(sql, ( err, result) => {
         if (err){
             console.log(err)
@@ -420,10 +420,10 @@ app.get('/kezdolap', (req, res) => {
 })
 
 // egy  kezdőlap lekérdezése
-app.get('/kezdolap/:blog_id', (req, res) => {
-    const sql=`SELECT blog_cim, blog_szoveg, blog_kep, blog_fajta, blog_datum FROM blog WHERE blog_id=?`
-    const {blog_id} = req.params
-    pool.query(sql,[blog_id], ( err, result) => {
+app.get('/kezdolap/:kezdolap_id', (req, res) => {
+    const sql=`SELECT kezdolap_cim, kezdolap_szoveg, kezdolap_kep, kezdolap_fajta, kezdolap_datum FROM kezdolap WHERE kezdolap_id=?`
+    const {kezdolap_id} = req.params
+    pool.query(sql,[kezdolap_id], ( err, result) => {
     if (err){
             console.log(err)
             return res.status(500).json({error:"Hiba!"})
@@ -436,20 +436,20 @@ app.get('/kezdolap/:blog_id', (req, res) => {
 })
 
 // kezdőlap törlés id alapján
-app.delete('/kezdolapTorles/:blog_id', (req, res) => {
-    const {blog_id} = req.params
+app.delete('/kezdolapTorles/:kezdolap_id', (req, res) => {
+    const {kezdolap_id} = req.params
     
     // Lekérdezzük a kép fájlnevét
-    const selectSql = `SELECT blog_kep FROM blog WHERE blog_id=?`
-    pool.query(selectSql, [blog_id], (err, result) => {
+    const selectSql = `SELECT kezdolap_kep FROM kezdolap WHERE kezdolap_id=?`
+    pool.query(selectSql, [kezdolap_id], (err, result) => {
         if (err) {
             console.log(err)
             return res.status(500).json({error:"Hiba"})
         }
         
-        // Kép törlése a blogKep mappából
-        if (result.length > 0 && result[0].blog_kep) {
-            const imagePath = path.join('blogKep/', result[0].blog_kep)
+        // Kép törlése a kezdolapKep mappából
+        if (result.length > 0 && result[0].kezdolap_kep) {
+            const imagePath = path.join('kezdolapKep/', result[0].kezdolap_kep)
             if (fs.existsSync(imagePath)) {
                 fs.unlink(imagePath, (err) => {
                     if (err) console.log('Kép törlési hiba:', err)
@@ -458,8 +458,8 @@ app.delete('/kezdolapTorles/:blog_id', (req, res) => {
         }
         
         // Adatbázisban törlés
-        const deleteSql = `DELETE FROM blog WHERE blog_id=?`
-        pool.query(deleteSql, [blog_id], (err, result) => {
+        const deleteSql = `DELETE FROM kezdolap WHERE kezdolap_id=?`
+        pool.query(deleteSql, [kezdolap_id], (err, result) => {
             if (err) {
                 console.log(err)
                 return res.status(500).json({error:"Hiba"})
@@ -470,16 +470,16 @@ app.delete('/kezdolapTorles/:blog_id', (req, res) => {
 })
 
 // kezdőlap módosítás id alapján
-app.put('/kezdolapModosit/:blog_id', upload("blogKep/").single('blog_kep'), (req, res) => {
-    const {blog_id} = req.params
-    const {blog_cim,blog_szoveg,blog_fajta} = req.body
+app.put('/kezdolapModosit/:kezdolap_id', upload("kezdolapKep/").single('kezdolap_kep'), (req, res) => {
+    const {kezdolap_id} = req.params
+    const {kezdolap_cim,kezdolap_szoveg,kezdolap_fajta} = req.body
 
     if (req.file) {
         // Régi kép törlése
-        const oldImageSql = `SELECT blog_kep FROM blog WHERE blog_id=?`
-        pool.query(oldImageSql, [blog_id], (err, result) => {
-            if (!err && result.length > 0 && result[0].blog_kep) {
-                const oldImagePath = path.join('blogKep/', result[0].blog_kep)
+        const oldImageSql = `SELECT kezdolap_kep FROM kezdolap WHERE kezdolap_id=?`
+        pool.query(oldImageSql, [kezdolap_id], (err, result) => {
+            if (!err && result.length > 0 && result[0].kezdolap_kep) {
+                const oldImagePath = path.join('kezdolapKep/', result[0].kezdolap_kep)
                 if (fs.existsSync(oldImagePath)) {
                     fs.unlink(oldImagePath, (err) => {
                         if (err) console.log('Régi kép törlési hiba:', err)
@@ -488,9 +488,9 @@ app.put('/kezdolapModosit/:blog_id', upload("blogKep/").single('blog_kep'), (req
             }
         })
         
-        const blog_kep = req.file.originalname
-        const sql=`UPDATE blog SET blog_cim=?,blog_szoveg=?,blog_kep=?,blog_fajta=? WHERE blog_id=?`
-        pool.query(sql,[blog_cim,blog_szoveg,blog_kep,blog_fajta,blog_id], (err, result) => {
+        const kezdolap_kep = req.file.originalname
+        const sql=`UPDATE kezdolap SET kezdolap_cim=?,kezdolap_szoveg=?,kezdolap_kep=?,kezdolap_fajta=? WHERE kezdolap_id=?`
+        pool.query(sql,[kezdolap_cim,kezdolap_szoveg,kezdolap_kep,kezdolap_fajta,kezdolap_id], (err, result) => {
             if (err) {
                 console.log(err)
                 return res.status(500).json({error:"Hiba!"})
@@ -499,8 +499,8 @@ app.put('/kezdolapModosit/:blog_id', upload("blogKep/").single('blog_kep'), (req
         })
     } else {
         // Ha nincs új kép, csak a többi mező update-lése
-        const sql=`UPDATE blog SET blog_cim=?,blog_szoveg=?,blog_fajta=? WHERE blog_id=?`
-        pool.query(sql,[blog_cim,blog_szoveg,blog_fajta,blog_id], (err, result) => {
+        const sql=`UPDATE kezdolap SET kezdolap_cim=?,kezdolap_szoveg=?,kezdolap_fajta=? WHERE kezdolap_id=?`
+        pool.query(sql,[kezdolap_cim,kezdolap_szoveg,kezdolap_fajta,kezdolap_id], (err, result) => {
             if (err) {
                 console.log(err)
                 return res.status(500).json({error:"Hiba!"})
@@ -511,17 +511,17 @@ app.put('/kezdolapModosit/:blog_id', upload("blogKep/").single('blog_kep'), (req
 })
 
 //kezdőlap hozzáadás
-app.post('/kezdolapHozzaad', upload("blogKep/").single('blog_kep'), (req, res) => {
-    const {blog_cim,blog_szoveg,blog_fajta} = req.body
-    const blog_datum = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    let blog_kep = ""
+app.post('/kezdolapHozzaad', upload("kezdolapKep/").single('kezdolap_kep'), (req, res) => {
+    const {kezdolap_cim,kezdolap_szoveg,kezdolap_fajta} = req.body
+    const kezdolap_datum = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    let kezdolap_kep = ""
 
     if (req.file) {
-        blog_kep = req.file.originalname
+        kezdolap_kep = req.file.originalname
     }
 
-    const sql=`INSERT INTO blog (blog_cim,blog_szoveg,blog_datum,blog_kep,blog_fajta) VALUES (?,?,?,?,?)`
-    pool.query(sql,[blog_cim,blog_szoveg,blog_datum,blog_kep,blog_fajta], (err, result) => {
+    const sql=`INSERT INTO kezdolap (kezdolap_cim,kezdolap_szoveg,kezdolap_datum,kezdolap_kep,kezdolap_fajta) VALUES (?,?,?,?,?)`
+    pool.query(sql,[kezdolap_cim,kezdolap_szoveg,kezdolap_datum,kezdolap_kep,kezdolap_fajta], (err, result) => {
     if (err) {
         console.log(err)
         return res.status(500).json({error:"Hiba!"})

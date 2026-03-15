@@ -18,7 +18,7 @@ const Kezdolap = () => {
     const [ures, setUres] = useState(false)
     const [modalOpenModosit, setModalOpenModosit] = useState(false)
     const [modalOpenHozzaad, setModalOpenHozzaad] = useState(false)
-    const [selectedBlogId, setSelectedBlogId] = useState(null)
+    const [selectedKezdolapId, setSelectedKezdolapId] = useState(null)
 
     const leToltes = async () => {
         try {
@@ -49,6 +49,7 @@ const Kezdolap = () => {
         } catch (error) {
             console.log(error)
             setHiba(true)
+            setTolt(false)
         }
     }
 
@@ -57,10 +58,10 @@ const Kezdolap = () => {
     }, [siker])
 
     const torlesFuggveny = async (rowData) => {
-        const biztos = window.confirm(`Biztosan törölni szeretnéd a(z) ${rowData.blog_cim} kezdőlapot?`)
+        const biztos = window.confirm(`Biztosan törölni szeretnéd a(z) ${rowData.kezdolap_cim} kezdőlapot?`)
 
         if (biztos) {
-            const response = await fetch(Cim.Cim + "/kezdolapTorles/" + rowData.blog_id, {
+            const response = await fetch(Cim.Cim + "/kezdolapTorles/" + rowData.kezdolap_id, {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" }
             })
@@ -77,13 +78,13 @@ const Kezdolap = () => {
     }
     
     const handleEdit = (rowData) => {
-        setSelectedBlogId(rowData.blog_id)
+        setSelectedKezdolapId(rowData.kezdolap_id)
         setModalOpenModosit(true)
     }
 
     const closeModalModosit = (frissit) => {
         setModalOpenModosit(false)
-        setSelectedBlogId(null)
+        setSelectedKezdolapId(null)
         if (frissit) {
             leToltes()
         }
@@ -129,7 +130,7 @@ const Kezdolap = () => {
     // DataTable oszlopok konfigurálása
     const columns = [
         {
-            key: 'blog_cim',
+            key: 'kezdolap_cim',
             label: 'Kezdőlap címe',
         }
     ]
@@ -148,19 +149,19 @@ const Kezdolap = () => {
         onEdit: handleEdit,
         onDelete: torlesFuggveny,
         onAdd: handleAdd,
-        primaryKey: 'blog_id',
+        primaryKey: 'kezdolap_id',
     }
 
     return (
         <div className="container">
             <div className="row justify-content-center mb-3">
                 <div className="col-6 text-center">
-                    <Kereses adatok={adatok} keresettMezok={["blog_cim"]} setKeresettAdatok={setKeresettAdatok} />
+                    <Kereses adatok={adatok} keresettMezok={["kezdolap_cim"]} setKeresettAdatok={setKeresettAdatok} />
                 </div>
                 <div className="col-4 text-center">
                     <Rendezes adatok={keresettAdatok} setKeresettAdatok={setKeresettAdatok}>
-                        <option value="blog_cim|1">Kezdőlap címe növekvő</option>
-                        <option value="blog_cim|2">Kezdőlap címe csökkenő</option>
+                        <option value="kezdolap_cim|1">Kezdőlap címe növekvő</option>
+                        <option value="kezdolap_cim|2">Kezdőlap címe csökkenő</option>
                     </Rendezes>
                 </div>
             </div>
@@ -168,7 +169,7 @@ const Kezdolap = () => {
             <DataTable config={tableConfig} />
 
             <Modal isOpen={modalOpenModosit} onClose={() => closeModalModosit(false)}>
-                <KezdolapModosit blog_id={selectedBlogId} onClose={closeModalModosit} fajtak={fajtak} />
+                <KezdolapModosit kezdolap_id={selectedKezdolapId} onClose={closeModalModosit} fajtak={fajtak} />
             </Modal>
             <Modal isOpen={modalOpenHozzaad} onClose={() => closeModalHozzaad(false)}>
                 <KezdolapFelvitel onClose={closeModalHozzaad} fajtak={fajtak} />

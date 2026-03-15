@@ -7,10 +7,10 @@ import Cim from "../../../Cim"
 
 const KezdolapFelvitel= ({ fajtak, onClose }) => {
     const mezok = [
-        {nev: "blog_cim", tipus: "input", megjelenit: "Kezdőlap cím:"},
-        {nev: "blog_szoveg", tipus: "textarea", megjelenit: "Kezdőlap szöveg:"},
-        {nev: "blog_fajta", tipus: "select", opciok: {lista: fajtak, id_mezo: "fajta_id", nev_mezo: "fajta_nev"}, megjelenit: "Kezdőlap fajta:"},
-        {nev: "blog_kep", tipus: "file", megjelenit: "Kezdőlap kép:"}
+        {nev: "kezdolap_cim", tipus: "input", megjelenit: "Kezdőlap cím:"},
+        {nev: "kezdolap_szoveg", tipus: "textarea", megjelenit: "Kezdőlap szöveg:"},
+        {nev: "kezdolap_fajta", tipus: "select", opciok: {lista: fajtak, id_mezo: "fajta_id", nev_mezo: "fajta_nev"}, megjelenit: "Kezdőlap fajta:"},
+        {nev: "kezdolap_kep", tipus: "file", megjelenit: "Kezdőlap kép:"}
     ]
     const [felvittAdat, setFelvittAdat] = useState({})
     const kezelesInput = (kulcs, ertek) => {
@@ -21,7 +21,7 @@ const KezdolapFelvitel= ({ fajtak, onClose }) => {
     }
 
     const felvittFuggveny = async () => {
-        const biztos = window.confirm(`Biztosan hozzá szeretnéd adni a(z) ${felvittAdat.blog_cim} kezdőlapot?`)
+        const biztos = window.confirm(`Biztosan hozzá szeretnéd adni a(z) ${felvittAdat.kezdolap_cim} kezdőlapot?`)
 
         if (biztos) {
             if (!mezok.every(mezo => mezoValidalas(felvittAdat, mezo))) {
@@ -30,12 +30,12 @@ const KezdolapFelvitel= ({ fajtak, onClose }) => {
             }
 
             const formData = new FormData()
-            formData.append("blog_cim", felvittAdat.blog_cim)
-            formData.append("blog_szoveg", felvittAdat.blog_szoveg)
-            formData.append("blog_fajta", felvittAdat.blog_fajta)
+            formData.append("kezdolap_cim", felvittAdat.kezdolap_cim)
+            formData.append("kezdolap_szoveg", felvittAdat.kezdolap_szoveg)
+            formData.append("kezdolap_fajta", felvittAdat.kezdolap_fajta)
 
-            if (felvittAdat.blog_kep instanceof File) {
-                formData.append("blog_kep", felvittAdat.blog_kep)
+            if (felvittAdat.kezdolap_kep instanceof File) {
+                formData.append("kezdolap_kep", felvittAdat.kezdolap_kep)
             }
 
             const response = await fetch(Cim.Cim + "/kezdolapHozzaad", {

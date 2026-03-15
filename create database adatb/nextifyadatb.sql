@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2026. Feb 24. 20:08
+-- Létrehozás ideje: 2026. Már 15. 17:42
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -49,34 +49,6 @@ INSERT INTO `akcio` (`akcio_id`, `akcio_nev`, `akcio_kedvezmeny`, `akcio_tipus`,
 -- --------------------------------------------------------
 
 --
--- Tábla szerkezet ehhez a táblához `blog`
---
-
-CREATE TABLE `blog` (
-  `blog_id` int(11) NOT NULL,
-  `blog_cim` varchar(255) NOT NULL,
-  `blog_szoveg` text NOT NULL,
-  `blog_datum` date NOT NULL,
-  `blog_kep` varchar(255) NOT NULL,
-  `blog_fajta` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
-
---
--- A tábla adatainak kiíratása `blog`
---
-
-INSERT INTO `blog` (`blog_id`, `blog_cim`, `blog_szoveg`, `blog_datum`, `blog_kep`, `blog_fajta`) VALUES
-(1, 'Megnyílt az új üzletünk!', 'Megnyílt Debrecen belvárosában az új épületünk.', '2026-01-21', '18.jpg', 2),
-(2, 'Nálunk is elérhető az Iphone 17!', 'Szerezd be nálunk az okostelefonodat jó áron!', '2026-02-02', 'iphone17.jpg', 3),
-(3, 'Tavaszváró akció Samsung okostelefonra!', '20% kedvezmény minden Samsung okostelefonra! Más kedvezménnyel nem összevonható. A készlet erejéig érvényes.', '2026-02-03', '19.jpg', 1),
-(4, 'USB-C', '2024-től szinte minden elektronikai eszköz — okostelefonok, tabletek, kamerák és fülhallgatók — már USB-C töltőcsatlakozóval érkezik! Szerezd be nálunk az új készülékeket!', '2026-03-11', 'usbc.jpg', 3),
-(5, 'Tudtad?', '2026 tavaszától hatályba lép, hogy a laptopoknak is USB-C töltő kábel kell. Szerezd be nálunk!', '2026-04-08', 'usbc2.jpg', 3),
-(7, 'Új tablet a kínálatunkban!', 'A Lenovo 12,7\" Idea Tab Pro Tablet USB-C töltéssel!', '2026-05-01', '21.webp', 2),
-(8, 'Lenovo tablet akció!', '30% kedvezmény minden Lenovo tabletre. Más kedvezménnyel nem összevonható. A készlet erejéig érvényes.', '2026-05-15', '20.png', 1);
-
--- --------------------------------------------------------
-
---
 -- Tábla szerkezet ehhez a táblához `fajta`
 --
 
@@ -118,6 +90,34 @@ INSERT INTO `felhasznalo` (`felhasznalo_id`, `felhasznalo_nev`, `felhasznalo_jel
 (9, 'Proba', '$2b$10$eAcFZ8OKIz8KgAzEGhsJxeZyLcNb4Lfe2bfgfTmygINASTzN9jCxq', 1),
 (10, 'NagyKatalin', '$2b$10$.AmZdgjyIr7QbCVvfLkTwO/Kd.FQ7DP4AZAjb4wgpt/8lorEXEd4.', 0),
 (11, 'Alex', '$2b$10$4mkbT7f7tv7OSWJz5G3UduumDBDHsKp88J3nPcRf.G5.d1WhcJCWW', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `kezdolap`
+--
+
+CREATE TABLE `kezdolap` (
+  `kezdolap_id` int(11) NOT NULL,
+  `kezdolap_cim` varchar(255) NOT NULL,
+  `kezdolap_szoveg` text NOT NULL,
+  `kezdolap_datum` date NOT NULL,
+  `kezdolap_kep` varchar(255) NOT NULL,
+  `kezdolap_fajta` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `kezdolap`
+--
+
+INSERT INTO `kezdolap` (`kezdolap_id`, `kezdolap_cim`, `kezdolap_szoveg`, `kezdolap_datum`, `kezdolap_kep`, `kezdolap_fajta`) VALUES
+(1, 'Megnyílt az új üzletünk!', 'Megnyílt Debrecen belvárosában az új épületünk.', '2026-01-21', '18.jpg', 2),
+(2, 'Nálunk is elérhető az Iphone 17!', 'Szerezd be nálunk az okostelefonodat jó áron!', '2026-02-02', 'iphone17.jpg', 3),
+(3, 'Tavaszváró akció Samsung okostelefonra!', '20% kedvezmény minden Samsung okostelefonra! Más kedvezménnyel nem összevonható. A készlet erejéig érvényes.', '2026-02-03', '19.jpg', 1),
+(4, 'USB-C', '2024-től szinte minden elektronikai eszköz — okostelefonok, tabletek, kamerák és fülhallgatók — már USB-C töltőcsatlakozóval érkezik! Szerezd be nálunk az új készülékeket!', '2026-03-11', 'usbc.jpg', 3),
+(5, 'Tudtad?', '2026 tavaszától hatályba lép, hogy a laptopoknak is USB-C töltő kábel kell. Szerezd be nálunk!', '2026-04-08', 'usbc2.jpg', 3),
+(7, 'Új tablet a kínálatunkban!', 'A Lenovo 12,7\" Idea Tab Pro Tablet USB-C töltéssel!', '2026-05-01', '21.webp', 2),
+(8, 'Lenovo tablet akció!', '30% kedvezmény minden Lenovo tabletre. Más kedvezménnyel nem összevonható. A készlet erejéig érvényes.', '2026-05-15', '20.png', 1);
 
 -- --------------------------------------------------------
 
@@ -357,13 +357,6 @@ ALTER TABLE `akcio`
   ADD PRIMARY KEY (`akcio_id`);
 
 --
--- A tábla indexei `blog`
---
-ALTER TABLE `blog`
-  ADD PRIMARY KEY (`blog_id`),
-  ADD KEY `blog_fajta` (`blog_fajta`) USING BTREE;
-
---
 -- A tábla indexei `fajta`
 --
 ALTER TABLE `fajta`
@@ -375,6 +368,13 @@ ALTER TABLE `fajta`
 ALTER TABLE `felhasznalo`
   ADD PRIMARY KEY (`felhasznalo_id`),
   ADD KEY `felhasznalo_rang` (`felhasznalo_rang`);
+
+--
+-- A tábla indexei `kezdolap`
+--
+ALTER TABLE `kezdolap`
+  ADD PRIMARY KEY (`kezdolap_id`),
+  ADD KEY `kezdolap_fajta` (`kezdolap_fajta`) USING BTREE;
 
 --
 -- A tábla indexei `marka`
@@ -433,12 +433,6 @@ ALTER TABLE `akcio`
   MODIFY `akcio_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT a táblához `blog`
---
-ALTER TABLE `blog`
-  MODIFY `blog_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
 -- AUTO_INCREMENT a táblához `fajta`
 --
 ALTER TABLE `fajta`
@@ -449,6 +443,12 @@ ALTER TABLE `fajta`
 --
 ALTER TABLE `felhasznalo`
   MODIFY `felhasznalo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT a táblához `kezdolap`
+--
+ALTER TABLE `kezdolap`
+  MODIFY `kezdolap_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT a táblához `marka`
@@ -466,7 +466,7 @@ ALTER TABLE `rang`
 -- AUTO_INCREMENT a táblához `rendeles`
 --
 ALTER TABLE `rendeles`
-  MODIFY `rendeles_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `rendeles_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT a táblához `termek`
@@ -491,10 +491,10 @@ ALTER TABLE `velemeny`
 --
 
 --
--- Megkötések a táblához `blog`
+-- Megkötések a táblához `kezdolap`
 --
-ALTER TABLE `blog`
-  ADD CONSTRAINT `blog_ibfk_1` FOREIGN KEY (`blog_fajta`) REFERENCES `fajta` (`fajta_id`);
+ALTER TABLE `kezdolap`
+  ADD CONSTRAINT `kezdolap_ibfk_1` FOREIGN KEY (`kezdolap_fajta`) REFERENCES `fajta` (`fajta_id`);
 
 --
 -- Megkötések a táblához `rang`

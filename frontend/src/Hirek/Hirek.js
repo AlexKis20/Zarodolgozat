@@ -78,7 +78,7 @@ if (tolt)
 else return (
 <div>
 <div className="d-flex flex-column align-items-center ">
-                  <div className="blogTitle">Akció</div>
+                  <div className="kezdolapTitle">Akció</div>
           
           {/* Gombok sorban, középre igazítva */}
           <div className="d-flex justify-content-center mb-3 gap-3">
@@ -124,7 +124,7 @@ else return (
                 <div className="w-[340px] h-[320px] overflow-hidden">
                 <AnimatePresence mode="wait">
                 <motion.div
-                key={adatok[index].blog_id}
+                key={adatok[index].kezdolap_id}
                 initial={{ x: direction > 0 ? 100 : -100, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: direction > 0 ? -100 : 100, opacity: 0 }}
@@ -134,13 +134,13 @@ else return (
                   p-4 text-center text-black"
                 >
                 <img
-                src={`${Cim.Cim}/blogKep/${adatok[index].blog_kep}`}
-                /*src={adatok[index].blog_kep}*/
+                src={`${Cim.Cim}/kezdolapKep/${adatok[index].kezdolap_kep}`}
+                /*src={adatok[index].kezdolap_kep}*/
                 alt="slide"
                 className="kep"
                 />
-                <p className="blogText">
-                {adatok[index].blog_szoveg}
+                <p className="kezdolapText">
+                {adatok[index].kezdolap_szoveg}
                 </p>
                 </motion.div>
                 </AnimatePresence>
@@ -153,7 +153,7 @@ else return (
 
 
         <div className="d-flex flex-column align-items-center ">
-                  <div className="blogTitle">Új megjelenés</div>
+                  <div className="kezdolapTitle">Új megjelenés</div>
           
           {/* Gombok sorban, középre igazítva */}
           <div className="d-flex justify-content-center mb-3 gap-3">
@@ -199,7 +199,7 @@ else return (
                 <div className="w-[340px] h-[320px] overflow-hidden">
                 <AnimatePresence mode="wait">
                 <motion.div
-                key={adatok2[index2].blog_id}
+                key={adatok2[index2].kezdolap_id}
                 initial={{ x: direction2 > 0 ? 100 : -100, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: direction2 > 0 ? -100 : 100, opacity: 0 }}
@@ -209,14 +209,14 @@ else return (
                   p-4 text-center text-black"
                 >
                 <img
-                src={`${Cim.Cim}/blogKep/${adatok2[index2].blog_kep}`}
-                /*src={adatok[index].blog_kep}*/
+                src={`${Cim.Cim}/kezdolapKep/${adatok2[index2].kezdolap_kep}`}
+                /*src={adatok[index].kezdolap_kep}*/
                 
                 alt="slide"
                 className="kep"
                 />
-                <p className="blogText">
-                {adatok2[index2].blog_szoveg}
+                <p className="kezdolapText">
+                {adatok2[index2].kezdolap_szoveg}
                 </p>
                 </motion.div>
                 </AnimatePresence>
@@ -235,7 +235,7 @@ else return (
 
 
         <div className="d-flex flex-column align-items-center ">
-                  <h2 className="blogTitle">Blog</h2>
+                  <h2 className="kezdolapTitle">Blog</h2>
           
           {/* Gombok sorban, középre igazítva */}
           <div className="d-flex justify-content-center mb-3 gap-3">
@@ -281,7 +281,7 @@ else return (
                 <div className="w-[340px] h-[320px] overflow-hidden">
                 <AnimatePresence mode="wait">
                 <motion.div
-                key={adatok3[index3].blog_id}
+                key={adatok3[index3].kezdolap_id}
                 initial={{ x: direction3 > 0 ? 100 : -100, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: direction3 > 0 ? -100 : 100, opacity: 0 }}
@@ -291,14 +291,14 @@ else return (
                   p-4 text-center text-black"
                 >
                 <img
-                src={`${Cim.Cim}/blogKep/${adatok3[index3].blog_kep}`}
-                /*src={adatok[index].blog_kep}*/
-                
+                src={`${Cim.Cim}/kezdolapKep/${adatok3[index3].kezdolap_kep}`}
+                /*src={adatok[index].kezdolap_kep}*/
+
                 alt="slide"
                 className="kep"
                 />
-                <p className="blogText">
-                  {adatok3[index3].blog_szoveg}
+                <p className="kezdolapText">
+                  {adatok3[index3].kezdolap_szoveg}
                 </p>
                 </motion.div>
                 </AnimatePresence>
