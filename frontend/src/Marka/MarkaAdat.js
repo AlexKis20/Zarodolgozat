@@ -8,7 +8,7 @@ const MarkaAdat = ({ kivalasztott }) => {
   const [hiba, setHiba] = useState(false);
 
   const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
+    //const role = localStorage.getItem("role");
     const loggedIn = !!token;
 // ⭐ Értékelések state
   const [ertekelesek, setErtekelesek] = useState({});

@@ -12,7 +12,7 @@ const KeresNev=()=>{
     const [hiba,setHiba]=useState(false)
 
     const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
+    //const role = localStorage.getItem("role");
     const loggedIn = !!token;
 
     // ⭐ Értékelések state
