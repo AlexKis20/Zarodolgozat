@@ -75,26 +75,26 @@ const Velemeny = () => {
     // DataTable oszlopok konfigurálása
     const columns = [
         {
-            key: 'velemeny_datum',
-            label: 'Dátum',
-            formatter: (value) => datumFuggveny(value),
-        },
-        {
             key: 'felhasznalo_nev',
             label: 'Felhasználó'
         },
         {
-            key: 'termek_nev',
-            label: 'Termék'
+            key: 'velemeny_ertekeles',
+            label: 'Értékelés',
+            formatter: (value) => `${value} / 5`
         },
         {
             key: 'velemeny_szoveg',
             label: 'Vélemény'
         },
         {
-            key: 'velemeny_ertekeles',
-            label: 'Értékelés',
-            formatter: (value) => `${value} / 5`
+            key: 'termek_nev',
+            label: 'Termék'
+        },
+        {
+            key: 'velemeny_datum',
+            label: 'Dátum',
+            formatter: (value) => datumFuggveny(value),
         }
     ]
 
@@ -102,8 +102,8 @@ const Velemeny = () => {
     const tableConfig = {
         data: keresettAdatok,
         columns: columns,
-        visibleColumnsSmall: ['felhasznalo_nev', 'velemeny_szoveg'],  // Kis képernyőn csak a felhasználó és vélemény legyen látható
-        hiddenColumns: [],  // Ezek a lenyíló sorban jelenjenek meg
+        visibleColumnsSmall: ['felhasznalo_nev', 'velemeny_ertekeles'],
+        hiddenColumns: [],
         actions: {
             view: false,
             edit: false,
@@ -118,14 +118,16 @@ const Velemeny = () => {
         <div className="container">
             <div className="row justify-content-center mb-3">
                 <div className="col-6 text-center">
-                    <Kereses adatok={adatok} keresettMezok={["velemeny_szoveg","felhasznalo_nev","termek_nev","velemeny_datum"]} setKeresettAdatok={setKeresettAdatok} />
+                    <Kereses adatok={adatok} keresettMezok={["velemeny_szoveg","felhasznalo_nev","termek_nev","velemeny_datum","velemeny_ertekeles"]} setKeresettAdatok={setKeresettAdatok} />
                 </div>
                 <div className="col-4 text-center">
                     <Rendezes adatok={keresettAdatok} setKeresettAdatok={setKeresettAdatok}>
-                        <option value="velemeny_szoveg|1">Vélemény szövege növekvő</option>
-                        <option value="velemeny_szoveg|2">Vélemény szövege csökkenő</option>
                         <option value="felhasznalo_nev|1">Felhasználó neve növekvő</option>
                         <option value="felhasznalo_nev|2">Felhasználó neve csökkenő</option>
+                        <option value="velemeny_ertekeles|1">Értékelés növekvő</option>
+                        <option value="velemeny_ertekeles|2">Értékelés csökkenő</option>
+                        <option value="velemeny_szoveg|1">Vélemény szövege növekvő</option>
+                        <option value="velemeny_szoveg|2">Vélemény szövege csökkenő</option>
                         <option value="termek_nev|1">Termék neve növekvő</option>
                         <option value="termek_nev|2">Termék neve csökkenő</option>
                         <option value="velemeny_datum|1">Dátum növekvő</option>

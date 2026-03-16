@@ -33,6 +33,7 @@ const DataTable = ({ config }) => {
     columns = [],
     visibleColumnsSmall = [],
     hiddenColumns = [],
+    showExpandRow = true,
     actions = {},
     onView,
     onEdit,
@@ -133,7 +134,7 @@ const DataTable = ({ config }) => {
             <div className="datatable-row row mb-2">
               {isSmallScreen ? (
                 <>
-                  {hiddenColumnsSmall.length > 0 && (
+                  {hiddenColumnsSmall.length > 0 && showExpandRow && (
                     <div className="col-1 text-center">
                       <button
                         className="btn btn-sm"
@@ -195,7 +196,7 @@ const DataTable = ({ config }) => {
                               <FaPencil /> Módosítás
                             </div>
                           )}
-                          {actions.add && onAdd && index === 0 && (
+                          {actions.add && onAdd && (
                             <div
                               className="datatable-item"
                               onClick={(e) => handleActionClick(e, () => onAdd())}
@@ -266,7 +267,7 @@ const DataTable = ({ config }) => {
             </div>
 
             {/* Expandált sor (kis képernyőn) */}
-            {isSmallScreen && isExpanded && hiddenColumnsSmall.length > 0 && (
+            {isSmallScreen && isExpanded && hiddenColumnsSmall.length > 0 && showExpandRow && (
               <div className="datatable-expanded row ms-4">
                 <div className="col-12">
                   {hiddenColumnsSmall

@@ -5,6 +5,7 @@ import Modal from "../../../components/Modal"
 import DataTable from "../../../components/DataTable"
 import TermekModosit from "./TermekModosit"
 import TermekFelvitel from "./TermekFelvitel";
+import TermekMegtekintes from "./TermekMegtekintes";
 import Kereses from "../../../components/Kereses";
 import Rendezes from "../../../components/Rendezes";
 import "../../../components/DataTable.css"
@@ -20,6 +21,7 @@ const Termek = () => {
     const [ures, setUres] = useState(false)
     const [modalOpenModosit, setModalOpenModosit] = useState(false)
     const [modalOpenHozzaad, setModalOpenHozzaad] = useState(false)
+    const [modalOpenMegtekintes, setModalOpenMegtekintes] = useState(false)
     const [selectedTermekId, setSelectedTermekId] = useState(null)
 
     const leToltes = async () => {
@@ -87,6 +89,16 @@ const Termek = () => {
                 alert(data["error"])
             }
         }
+    }
+
+    const handleView = (rowData) => {
+        setSelectedTermekId(rowData.termek_id)
+        setModalOpenMegtekintes(true)
+    }
+
+    const closeModalMegtekintes = () => {
+        setModalOpenMegtekintes(false)
+        setSelectedTermekId(null)
     }
 
     const handleEdit = (rowData) => {
@@ -184,14 +196,16 @@ const Termek = () => {
     const tableConfig = {
         data: keresettAdatok,
         columns: columns,
-        visibleColumnsSmall: ['termek_nev'],  // Kis képernyőn csak a név és ár legyen látható
-        hiddenColumns: ['termek_ar', 'termek_szin', 'termek_kijelzo', 'termek_processzor', 'termek_kapacitas', 'termek_oprendszer', 'termek_meret', 'termek_leiras'],  // Ezek a lenyíló sorban jelenjenek meg
+        visibleColumnsSmall: ['termek_nev'],
+        hiddenColumns: ['termek_ar', 'termek_szin', 'termek_kijelzo', 'termek_processzor', 'termek_kapacitas', 'termek_oprendszer', 'termek_meret', 'termek_leiras'],
+        showExpandRow: false,
         actions: {
-            view: false,
+            view: true,
             edit: true,
             delete: true,
             add: true,
         },
+        onView: handleView,
         onEdit: handleEdit,
         onDelete: torlesFuggveny,
         onAdd: handleAdd,
@@ -202,7 +216,7 @@ const Termek = () => {
         <div className="container">
             <div className="row justify-content-center mb-3">
                 <div className="col-6 text-center">
-                    <Kereses adatok={adatok} keresettMezok={["termek_nev"]} setKeresettAdatok={setKeresettAdatok} />
+                    <Kereses adatok={adatok} keresettMezok={["termek_nev", "termek_ar"]} setKeresettAdatok={setKeresettAdatok} />
                 </div>
                 <div className="col-4 text-center">
                     <Rendezes adatok={keresettAdatok} setKeresettAdatok={setKeresettAdatok}>
@@ -214,6 +228,9 @@ const Termek = () => {
 
             <DataTable config={tableConfig} />
 
+            <Modal isOpen={modalOpenMegtekintes} onClose={() => closeModalMegtekintes()}>
+                <TermekMegtekintes termek_id={selectedTermekId} onClose={closeModalMegtekintes} />
+            </Modal>
             <Modal isOpen={modalOpenModosit} onClose={() => closeModalModosit(false)}>
                 <TermekModosit termek_id={selectedTermekId} onClose={closeModalModosit} markak={markak} tipusok={tipusok} />
             </Modal>

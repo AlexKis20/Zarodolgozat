@@ -4,6 +4,7 @@ import Modal from "../../../components/Modal"
 import DataTable from "../../../components/DataTable"
 import KezdolapModosit from "./KezdolapModosit";
 import KezdolapFelvitel from "./KezdolapFelvitel";
+import KezdolapMegtekintes from "./KezdolapMegtekintes";
 import Kereses from "../../../components/Kereses";
 import Rendezes from "../../../components/Rendezes";
 import "../../../components/DataTable.css"
@@ -18,6 +19,7 @@ const Kezdolap = () => {
     const [ures, setUres] = useState(false)
     const [modalOpenModosit, setModalOpenModosit] = useState(false)
     const [modalOpenHozzaad, setModalOpenHozzaad] = useState(false)
+    const [modalOpenMegtekintes, setModalOpenMegtekintes] = useState(false)
     const [selectedKezdolapId, setSelectedKezdolapId] = useState(null)
 
     const leToltes = async () => {
@@ -75,6 +77,16 @@ const Kezdolap = () => {
                 alert(data["error"])
             }
         }
+    }
+
+    const handleView = (rowData) => {
+        setSelectedKezdolapId(rowData.kezdolap_id)
+        setModalOpenMegtekintes(true)
+    }
+
+    const closeModalMegtekintes = () => {
+        setModalOpenMegtekintes(false)
+        setSelectedKezdolapId(null)
     }
     
     const handleEdit = (rowData) => {
@@ -140,12 +152,14 @@ const Kezdolap = () => {
         data: keresettAdatok,
         columns: columns,
         hiddenColumns: [],
+        showExpandRow: false,
         actions: {
-            view: false,
+            view: true,
             edit: true,
             delete: true,
             add: true,
         },
+        onView: handleView,
         onEdit: handleEdit,
         onDelete: torlesFuggveny,
         onAdd: handleAdd,
@@ -168,6 +182,9 @@ const Kezdolap = () => {
 
             <DataTable config={tableConfig} />
 
+            <Modal isOpen={modalOpenMegtekintes} onClose={() => closeModalMegtekintes()}>
+                <KezdolapMegtekintes kezdolap_id={selectedKezdolapId} onClose={closeModalMegtekintes} />
+            </Modal>
             <Modal isOpen={modalOpenModosit} onClose={() => closeModalModosit(false)}>
                 <KezdolapModosit kezdolap_id={selectedKezdolapId} onClose={closeModalModosit} fajtak={fajtak} />
             </Modal>

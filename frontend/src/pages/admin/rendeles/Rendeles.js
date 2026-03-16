@@ -219,11 +219,10 @@ const Rendeles = () => {
         <div className="container">
             <div className="row justify-content-center mb-3">
                 <div className="col-6 text-center">
-                    <Kereses adatok={adatok} keresettMezok={["rendeles_nev"]} setKeresettAdatok={setKeresettAdatok} />
+                    <Kereses adatok={adatok} keresettMezok={["rendeles_nev", "rendeles_telefonszam", "rendeles_cim"]} setKeresettAdatok={setKeresettAdatok} />
                 </div>
                 <div className="col-4 text-center">
                     <Rendezes adatok={keresettAdatok} setKeresettAdatok={setKeresettAdatok}>
-                        <option value="0" disabled hidden>Rendezés</option>
                         <option value="rendeles_datum|1">Dátum növekvő</option>
                         <option value="rendeles_datum|2">Dátum csökkenő</option>
                         <option value="rendeles_teljesitve|2">Teljesített rendelés</option>

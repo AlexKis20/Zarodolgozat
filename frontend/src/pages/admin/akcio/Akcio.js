@@ -189,7 +189,6 @@ const Akcio = () => {
                 </div>
                 <div className="col-4 text-center">
                     <Rendezes adatok={keresettAdatok} setKeresettAdatok={setKeresettAdatok}>
-                        <option value="0" disabled hidden>Rendezés</option>
                         <option value="akcio_nev|1">Akció neve növekvő</option>
                         <option value="akcio_nev|2">Akció neve csökkenő</option>
                         <option value="akcio_kezdete|1">Akció kezdete növekvő</option>

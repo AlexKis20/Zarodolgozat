@@ -9,7 +9,7 @@ const Kereses = ({ adatok, keresettMezok, setKeresettAdatok}) => {
                 let kivalasztott = false
                 const keresettSzoveg = keresett.toLowerCase();
                 keresettMezok.forEach(k => {
-                    if (elem[k].toLowerCase().includes(keresettSzoveg)) {
+                    if (elem[k].toString().toLowerCase().includes(keresettSzoveg)) {
                         kivalasztott = true
                         return;
                     }
@@ -29,4 +29,4 @@ const Kereses = ({ adatok, keresettMezok, setKeresettAdatok}) => {
     );
 };
 
-export default Kereses
+export default Kereses;

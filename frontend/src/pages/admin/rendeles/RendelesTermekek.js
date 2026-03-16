@@ -81,10 +81,10 @@ const RendelesTermekek= ({ rendeles_id, onClose }) => {
 
             <div className="row mt-3">
                 <div className="col-8 text-start">
-                    <h4>Bruttó ár:</h4>
+                    <h5>Bruttó ár:</h5>
                 </div>
                 <div className="col-4 text-center">
-                    <h4>{arFuggveny(osszArSzamitas())} Ft</h4>
+                    <h5>{arFuggveny(osszArSzamitas())} Ft</h5>
                 </div>
             </div>
 
