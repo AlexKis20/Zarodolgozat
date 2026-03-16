@@ -103,7 +103,7 @@ const DataTable = ({ config }) => {
         <div className="datatable-header-small row mb-3">
           <div className="col-1 "></div> {/* Üres hely a nyíl ikon számára */}
           {visibleColumnsSmallFiltered.map((col) => (
-            <div key={col.key} className="col text-center fw-bold">
+            <div key={col.key} className="col text-center text-sm fw-bold">
               {col.label}
             </div>
           ))}

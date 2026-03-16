@@ -82,8 +82,7 @@
 .datatable-header,
 .datatable-header-small {
     display: flex;
-    gap: 10px;
-    padding: 15px;
+    padding: 10px 0px;
     background-color: #f8f9fa;
     border-radius: 8px;
     border: 1px solid #dee2e6;
@@ -96,8 +95,7 @@
 
 .datatable-row {
     display: flex;
-    gap: 10px;
-    padding: 15px;
+    padding: 10px 0px;
     background-color: #ffffff;
     border: 1px solid #dee2e6;
     border-radius: 4px;
@@ -152,7 +150,7 @@
 }
 
 .datatable-item {
-    padding: 12px 16px;
+    padding: 10px 0px;
     cursor: pointer;
     border-bottom: 1px solid #f0f0f0;
     display: flex;
@@ -186,8 +184,7 @@
 
 .datatable-expanded {
     display: flex;
-    gap: 10px;
-    padding: 15px 15px 15px 45px;
+    padding: 15px 10px 15px 45px;
     background-color: #f8f9fa;
     border: 1px solid #dee2e6;
     border-top: none;

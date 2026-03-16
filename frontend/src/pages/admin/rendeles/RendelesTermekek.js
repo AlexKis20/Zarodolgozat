@@ -67,23 +67,23 @@ const RendelesTermekek= ({ rendeles_id, onClose }) => {
 
             <div className="row justify-content-center mb-3">
                 <div className="col-4 text-center fw-bold">Termék név</div>
-                <div className="col-4 text-center fw-bold">Darabszám</div>
-                <div className="col-4 text-center fw-bold">Rendelési ár</div>
+                <div className="col-3 text-center fw-bold">Darab</div>
+                <div className="col-5 text-center fw-bold">Rendelési ár</div>
             </div>
 
             {keresettAdatok.map((elem, index) => (
                 <div className="row justify-content-center mb-3" key={index}>
                     <div className="col-4 text-center">{elem.termek_nev}</div>
-                    <div className="col-4 text-center">{elem.rendeles_darab}</div>
-                    <div className="col-4 text-center">{arFuggveny(elem.rendeles_ar)} Ft</div>
+                    <div className="col-3 text-center">{elem.rendeles_darab}</div>
+                    <div className="col-5 text-center">{arFuggveny(elem.rendeles_ar)} Ft</div>
                 </div>
             ))}
 
             <div className="row mt-3">
-                <div className="col-8 text-start">
+                <div className="col-7 text-start">
                     <h5>Bruttó ár:</h5>
                 </div>
-                <div className="col-4 text-center">
+                <div className="col-5 text-center">
                     <h5>{arFuggveny(osszArSzamitas())} Ft</h5>
                 </div>
             </div>

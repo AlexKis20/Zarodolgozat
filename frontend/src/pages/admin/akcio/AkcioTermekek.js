@@ -37,7 +37,7 @@ const AkcioTermekek= ({ akcio_id, akcio_kedvezmeny, akcio_tipus, onClose }) => {
         leToltes()
     }, [akcio_id])
 
-    const kedvezmenyesArSzamitas = (ar) => {
+    const akciosArSzamitas = (ar) => {
         if (akcio_tipus === "szazalek") {
             return ar - (ar * (akcio_kedvezmeny / 100))
         } else {
@@ -56,7 +56,7 @@ const AkcioTermekek= ({ akcio_id, akcio_kedvezmeny, akcio_tipus, onClose }) => {
         <div className="container-fluid">
             <div className="row mb-3">
                 <div className="col-12 text-center">
-                    <h4>Akció termékek</h4>
+                    <h4>Akciós termékek</h4>
                 </div>
             </div>
 
@@ -70,14 +70,14 @@ const AkcioTermekek= ({ akcio_id, akcio_kedvezmeny, akcio_tipus, onClose }) => {
                 <div className="col-3 text-center fw-bold">Termék név</div>
                 <div className="col-3 text-center fw-bold">Eredeti ár</div>
                 <div className="col-3 text-center fw-bold">Akciós ár</div>
-                <div className="col-3 text-center fw-bold">Kedvezmény</div>
+                <div className="col-3 text-center fw-bold">Akció</div>
             </div>
 
             {keresettAdatok.map((elem, index) => (
                 <div className="row justify-content-center mb-3" key={index}>
                     <div className="col-3 text-center">{elem.termek_nev}</div>
                     <div className="col-3 text-center">{arFuggveny(elem.termek_ar)} Ft</div>
-                    <div className="col-3 text-center">{arFuggveny(kedvezmenyesArSzamitas(elem.termek_ar))} Ft</div>
+                    <div className="col-3 text-center">{arFuggveny(akciosArSzamitas(elem.termek_ar))} Ft</div>
                     <div className="col-3 text-center">{akcio_tipus === "szazalek" ? akcio_kedvezmeny + "%" : akcio_kedvezmeny + " Ft"} </div>
                 </div>
             ))}

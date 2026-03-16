@@ -261,7 +261,6 @@ Az alkalmazás **Mysql**-t használ.
 | phpmyadmin | Az adatbázis kezelése.                                                    |
 
 ![Adatbázis kapcsolatok](kepek/adatbaziskapcsolatok.PNG)
-
 ## Backend
 
 **Fejlesztői eszközök:**
