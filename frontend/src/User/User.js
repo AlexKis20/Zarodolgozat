@@ -1,15 +1,12 @@
 //useState, useEffect,state-be le tárolni,
 import { useState,useEffect } from "react"
 import Cim from "../Cim"
-import { div } from "framer-motion/m";
+//import { div } from "framer-motion/m";
 
 const User=()=>{
-    const [kosar, setKosar] = useState([]);
+    //const [kosar, setKosar] = useState([]);
     const [kosarSzoveg, setKosarSzoveg] = useState("");
-    const [adatok,setAdatok]=useState([])
-    const [tolt,setTolt]=useState(true)
-    const [hiba,setHiba]=useState(false)
-
+    const [adatok,setAdatok] = useState([])
     const [vegosszeg, setVegosszeg] = useState(0);
     const [megrendeles, setMegrendeles] = useState(false);
     const [nev, setNev] = useState("");
@@ -41,19 +38,13 @@ const User=()=>{
             const data=await response.json()
             //alert(JSON.stringify(data))
             //console.log(data)
-            if (response.ok)
-                {
-                    setAdatok(data)
-                    setTolt(false)}
-            else 
-                {
-                    setHiba(true)
-                    setTolt(false)
-                }
-            }
+            if (response.ok) {
+                setAdatok(data);
+} // response.ok
+        }
         catch (error){
             console.log(error)
-            setHiba(true)
+            //setHiba(true)
         }
         
     }
