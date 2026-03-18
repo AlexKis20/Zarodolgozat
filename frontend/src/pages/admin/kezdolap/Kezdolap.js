@@ -183,7 +183,7 @@ const Kezdolap = () => {
             <DataTable config={tableConfig} />
 
             <Modal isOpen={modalOpenMegtekintes} onClose={() => closeModalMegtekintes()}>
-                <KezdolapMegtekintes kezdolap_id={selectedKezdolapId} onClose={closeModalMegtekintes} />
+                <KezdolapMegtekintes kezdolap_id={selectedKezdolapId} onClose={closeModalMegtekintes} fajtak={fajtak} />
             </Modal>
             <Modal isOpen={modalOpenModosit} onClose={() => closeModalModosit(false)}>
                 <KezdolapModosit kezdolap_id={selectedKezdolapId} onClose={closeModalModosit} fajtak={fajtak} />

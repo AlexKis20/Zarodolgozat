@@ -2,10 +2,11 @@ import { useState, useEffect } from "react"
 import { IoCloseSharp } from "react-icons/io5";
 import Cim from "../../../Cim"
 
-const TermekMegtekintes = ({ kezdolap_id, onClose }) => {
+const KezdolapMegtekintes = ({ kezdolap_id, onClose, fajtak }) => {
     const [adat, setAdat] = useState({})
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)
+    const [fajtaNev, setFajtaNev] = useState("")
 
     useEffect(() => {
         const leToltes = async () => {
@@ -27,7 +28,8 @@ const TermekMegtekintes = ({ kezdolap_id, onClose }) => {
             }
         }
         leToltes()
-    }, [kezdolap_id])
+        setFajtaNev(fajtak.find(f => f.fajta_id === adat.kezdolap_fajta)?.fajta_nev || "")
+    }, [kezdolap_id, fajtak, adat.kezdolap_fajta])
 
     if (tolt)
         return <div className="text-center">Adat betöltése folyamatban...</div>
@@ -65,7 +67,7 @@ const TermekMegtekintes = ({ kezdolap_id, onClose }) => {
                     <strong>Kezdőlap fajta:</strong>
                 </div>
                 <div className="col-6">
-                    {adat.kezdolap_fajta}
+                    {fajtaNev}
                 </div>
             </div>
 
@@ -94,4 +96,4 @@ const TermekMegtekintes = ({ kezdolap_id, onClose }) => {
     )
 }
 
-export default TermekMegtekintes
+export default KezdolapMegtekintes
