@@ -17,7 +17,7 @@ const RendelesFelvitel = ({ onClose }) => {
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 1200);
 
     const mezok = [
-    {nev: "rendeles_felhasznalo_id", tipus: "select", opciok: {lista: felhasznalok, id_mezo: "felhasznalo_id", nev_mezo: "felhasznalo_nev"}, megjelenit: "Felhasználó:", kotelezo: true},
+    {nev: "rendeles_felhasznalo_id", tipus: "select", opciok: {lista: felhasznalok, id_mezo: "felhasznalo_id", nev_mezo: "felhasznalo_nev"}, megjelenit: "Felhasználó", kotelezo: true},
     {nev: "rendeles_nev", tipus: "input", megjelenit: "Név", kotelezo: true},
     {nev: "rendeles_cim", tipus: "input", megjelenit: "Cím", kotelezo: true},
     {nev: "rendeles_telefonszam", tipus: "input", megjelenit: "Telefonszám", kotelezo: true}
