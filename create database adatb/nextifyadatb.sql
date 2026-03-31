@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2026. Már 15. 17:42
+-- Létrehozás ideje: 2026. Már 31. 22:20
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -43,7 +43,7 @@ CREATE TABLE `akcio` (
 --
 
 INSERT INTO `akcio` (`akcio_id`, `akcio_nev`, `akcio_kedvezmeny`, `akcio_tipus`, `akcio_kezdete`, `akcio_vege`) VALUES
-(4, 'Tavaszváró akció Samsung okostelefonra!', 20, 'szazalek', '2026-02-02 23:00:00', '2026-02-28 22:59:59'),
+(4, 'Tavaszváró akció Samsung okostelefonra!', 20, 'szazalek', '2026-02-02 22:00:00', '2026-02-28 21:59:59'),
 (6, 'Lenovo tablet akció', 30, 'szazalek', '2026-05-15 21:59:59', '2026-05-23 21:59:59');
 
 -- --------------------------------------------------------
@@ -188,7 +188,7 @@ INSERT INTO `rendeles` (`rendeles_id`, `rendeles_felhasznalo_id`, `rendeles_nev`
 (20, 8, 'Gergő', '4150 Püspökladány Damjanich utca 1', '06202384774', '2026-05-10 12:12:13', 0),
 (21, 11, 'Alex', '4251 Hajdúsámson, Hadházi út 8', '06302212356', '2026-02-06 05:00:00', 1),
 (22, 11, 'Dani', '4030 Debrecen, Budai Ézsaiás u. 8/A', '06309561023', '2026-01-28 00:00:00', 1),
-(23, 11, 'Kiss Béla', '4030 Debrecen, Budai Ézsaiás u. 8/A', 'Nincs', '2026-03-18 11:26:00', 1);
+(23, 11, 'Kiss Béla', '4030 Debrecen, Budai Ézsaiás u. 8/A', '06305555555', '2026-03-18 11:26:00', 1);
 
 -- --------------------------------------------------------
 
@@ -243,7 +243,7 @@ CREATE TABLE `termek` (
 --
 
 INSERT INTO `termek` (`termek_id`, `termek_nev`, `termek_ar`, `termek_szin`, `termek_kijelzo`, `termek_processzor`, `termek_kapacitas`, `termek_oprendszer`, `termek_meret`, `termek_leiras`, `termek_kep`, `termek_marka`, `termek_tipus`, `termek_akcio_id`) VALUES
-(1, 'Samsung Galaxy S25 FE 5G 256GB 8GB RAM Dual (SM-S731B) Mobiltelefon', 199990, 'fekete', 'legfeljebb 120 Hz-es\r\n2340 x 1080 pixel', 'SoC/CPU: Samsung Exynos 2400\r\nGPU: Xclipse 940', 'Tárhely mérete: 256 GB\r\nRAM mérete: 8 GB', 'Android', 'Hosszúság: 161.3 mm\r\nSzélesség: 76.6 mm\r\nVastagság: 7.4 mm\r\nTömeg: 190 g', 'Vékonyabb kivitel, nagyobb élvezet! 7,4 mm vastagságával és 190 g tömegével az eddigi legvékonyabb és legkönnyebb FE telefon. Az eddigi legvékonyabb kerettel is rendelkezik, ami a letisztult kamera dizájnnal párosulva elegáns megjelenést és még magával ragadóbb élményt nyújt.', '1.png', 1, 1, 7),
+(1, 'Samsung Galaxy S25 FE 5G 256GB 8GB RAM Dual (SM-S731B) Mobiltelefon', 199990, 'fekete', 'legfeljebb 120 Hz-es\r\n2340 x 1080 pixel', 'SoC/CPU: Samsung Exynos 2400\r\nGPU: Xclipse 940', 'Tárhely mérete: 256 GB\r\nRAM mérete: 8 GB', 'Android', 'Hosszúság: 161.3 mm\r\nSzélesség: 76.6 mm\r\nVastagság: 7.4 mm\r\nTömeg: 190 g', 'Vékonyabb kivitel, nagyobb élvezet! 7,4 mm vastagságával és 190 g tömegével az eddigi legvékonyabb és legkönnyebb FE telefon. Az eddigi legvékonyabb kerettel is rendelkezik, ami a letisztult kamera dizájnnal párosulva elegáns megjelenést és még magával ragadóbb élményt nyújt.', '1.png', 1, 1, 4),
 (2, 'Apple iPhone 17 256GB Mobiltelefon', 389900, 'zöld', 'legfeljebb 120 Hz-es\r\n2622 x 1206 pixel', 'SoC/CPU: Apple A19', 'Tárhely mérete: 256 GB\r\nRAM mérete: 8 GB', 'iOS', 'Hosszúság: 149.6 mm\r\nSzélesség: 71.5 mm\r\nVastagság: 8 mm\r\nTömeg: 177 g', 'Megérkezett az új iPhone 17. Ívelt élekkel, keskenyebb peremekkel és olyan ellenálló anyagokkal alkottuk meg, mint az előlapon használt Ceramic Shield 2 – így hosszú időn át megőrzi szépségét. A 6,3 hüvelykes Super Retina XDR-kijelzőn4 többet láthatsz, és többet foglalkozhatsz azzal, amit szeretsz.', '2.png', 2, 1, 0),
 (3, 'Samsung Gyári USB-C 25W Telefon és Tablet Adapter Töltő + 1m USB-C töltőkábel (EP-TA800EWE + EP-DG977BWE)', 6999, 'fehér', '', '', '', '', 'USB-C kábel 1m', '-Samsung Galaxy telefonok és tabletek (Tab) töltéséhez\r\n-Samsung USB-C telefon vagy tablet töltő\r\n- Teljesítmény: 25W', '3.png', 1, 6, 0),
 (4, 'Samsung EHS64AVFWE Vezetékes Fülhallgató Mini Jack 3.5mm Sztereó Hi-Fi (Bulk - Cserélhető Csomagolás) - Fehér ', 3700, 'fehér', '', '', '', '', '1,2 m', 'Samsung EHS64AVFWE Vezetékes Fülhallgató Mini Jack 3.5mm Sztereó Hi-Fi (Bulk - Cserélhető Csomagolás) - Fehér Fedezd fel a különleges Samsung EHS64AVFWE fülhallgatókat, amelyek ötvözik a stílust a funkcionalitással. A hangerőszabályzóval és a beépített mikrofonnal tökéletesek mind telefonhívások lebonyolítására, mind kedvenc zenéid hallgatására. A 3.5 mm-es csatlakozó maximális kompatibilitást biztosít sokféle eszközzel, így rendkívül sokoldalúak. Ezek az elegáns, fehér fülhallgatók garantálják a legmagasabb hangminőséget, ami kiemeli Hi-Fi osztályukat. A termék cserélhető csomagolásban kerül forgalomba - egy húzós gyöngyvászon táska. ', '4.png', 1, 4, 0),
@@ -282,7 +282,7 @@ INSERT INTO `termek` (`termek_id`, `termek_nev`, `termek_ar`, `termek_szin`, `te
 (37, 'Sony USB-C 30W Töltő', 12990, 'fehér', '', '', '', '', '', 'Sony gyors töltő adapter.', '37.png', 5, 6, 0),
 (38, 'Sony 20000 mAh Powerbank', 24990, 'szürke', '', '', '', '', '', 'Nagy kapacitású Sony powerbank.', '38.png', 5, 7, 0),
 (39, 'Xiaomi Redmi Note 13 Pro 5G', 129990, 'fekete', '120 Hz AMOLED 2712x1220', 'Snapdragon 7s Gen 2', '256 GB / 8 GB RAM', 'HyperOS', '161.2 x 74.3 x 8 mm', 'Xiaomi középkategóriás bestseller okostelefon.', '39.png', 6, 1, 0),
-(40, 'Xiaomi Redmi A3', 29990, 'kék', '', '', '', '', '', 'Egyszerű gombos telefon alapfunkciókkal.', '40.png', 6, 2, 0),
+(40, 'Xiaomi Redmi A3', 29990, 'kék', '', '', '', '', '', 'Egyszerű gombos telefon alapfunkciókkal.', '40.png', 6, 2, 12),
 (41, 'Xiaomi Pad 6 256GB', 159990, 'szürke', '144 Hz 2880x1800', 'Snapdragon 870', '256 GB / 8 GB RAM', 'Android', '254 x 165 x 6.5 mm', 'Nagy teljesítményű Xiaomi tablet.', '41.png', 6, 3, 0),
 (42, 'Xiaomi Buds 3', 24990, 'fehér', '', '', '', '', '', 'Xiaomi vezeték nélküli fülhallgató.', '42.png', 6, 4, 0),
 (43, 'Xiaomi 33W USB-C Töltő', 6990, 'fehér', '', '', '', '', '', 'Xiaomi gyári gyorstöltő.', '43.png', 6, 6, 0),
@@ -430,7 +430,7 @@ ALTER TABLE `velemeny`
 -- AUTO_INCREMENT a táblához `akcio`
 --
 ALTER TABLE `akcio`
-  MODIFY `akcio_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `akcio_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT a táblához `fajta`
@@ -448,13 +448,13 @@ ALTER TABLE `felhasznalo`
 -- AUTO_INCREMENT a táblához `kezdolap`
 --
 ALTER TABLE `kezdolap`
-  MODIFY `kezdolap_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `kezdolap_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT a táblához `marka`
 --
 ALTER TABLE `marka`
-  MODIFY `marka_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `marka_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT a táblához `rang`
@@ -466,19 +466,19 @@ ALTER TABLE `rang`
 -- AUTO_INCREMENT a táblához `rendeles`
 --
 ALTER TABLE `rendeles`
-  MODIFY `rendeles_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `rendeles_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT a táblához `termek`
 --
 ALTER TABLE `termek`
-  MODIFY `termek_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `termek_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT a táblához `tipus`
 --
 ALTER TABLE `tipus`
-  MODIFY `tipus_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `tipus_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT a táblához `velemeny`

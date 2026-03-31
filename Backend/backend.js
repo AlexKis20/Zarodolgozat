@@ -13,7 +13,10 @@ const storage = (mappa) => multer.diskStorage({
         cb(null, mappa)
     },
     filename: (req, file, cb) => {
-        cb(null, file.originalname)
+        const fixedName = Buffer
+            .from(file.originalname, "latin1")
+            .toString("utf8");
+        cb(null, fixedName)
     }
 })
 
@@ -488,7 +491,7 @@ app.put('/kezdolapModosit/:kezdolap_id', upload("kezdolapKep/").single('kezdolap
             }
         })
         
-        const kezdolap_kep = req.file.originalname
+        const kezdolap_kep = req.file.filename
         const sql=`UPDATE kezdolap SET kezdolap_cim=?,kezdolap_szoveg=?,kezdolap_kep=?,kezdolap_fajta=? WHERE kezdolap_id=?`
         pool.query(sql,[kezdolap_cim,kezdolap_szoveg,kezdolap_kep,kezdolap_fajta,kezdolap_id], (err, result) => {
             if (err) {
@@ -517,7 +520,7 @@ app.post('/kezdolapHozzaad', upload("kezdolapKep/").single('kezdolap_kep'), (req
     let kezdolap_kep = ""
 
     if (req.file) {
-        kezdolap_kep = req.file.originalname
+        kezdolap_kep = req.file.filename
     }
 
     const sql=`INSERT INTO kezdolap (kezdolap_cim,kezdolap_szoveg,kezdolap_datum,kezdolap_kep,kezdolap_fajta) VALUES (?,?,?,?,?)`
@@ -618,7 +621,7 @@ app.put('/termekModosit/:termek_id', upload("termekKep/").single('termek_kep'), 
             }
         })
 
-        let termek_kep = req.file.originalname
+        let termek_kep = req.file.filename
         let sql=`UPDATE termek SET termek_nev=?, termek_ar=?, termek_szin=?, termek_kijelzo=?, termek_processzor=?,
             termek_kapacitas=?, termek_oprendszer=?, termek_meret=?, termek_leiras=?, termek_kep=?, termek_marka=?,
             termek_tipus=?
@@ -657,7 +660,7 @@ app.post('/termekHozzaad', upload("termekKep/").single('termek_kep'), (req, res)
     let termek_kep = ""
     
     if (req.file) {
-        termek_kep = req.file.originalname
+        termek_kep = req.file.filename
     }
     
     const sql=`INSERT INTO termek (termek_id, termek_nev, termek_ar, termek_szin, termek_kijelzo, termek_processzor,

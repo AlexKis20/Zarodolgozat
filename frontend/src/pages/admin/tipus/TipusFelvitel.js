@@ -3,11 +3,11 @@ import { FaSave } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
 import "./Tipus.css"
 import BeviteliMezo from "../../../components/BeviteliMezo"
-import { mezoValidalas } from "../../../components/BeviteliMezo"
+import { validalas } from "../../../utils/validalas";
 import Cim from "../../../Cim"
 
 const TipusFelvitel= ({  onClose }) => {
-    const mezok= [{nev: "tipus_nev", tipus: "input", megjelenit: "Típus név:"}]
+    const mezok= [{nev: "tipus_nev", tipus: "input", megjelenit: "Típus név", kotelezo: true}]
     const [felvittAdat, setFelvittAdat] = useState({})
     const kezelesInput = (kulcs, ertek) => {
         setFelvittAdat(prev => ({
@@ -17,14 +17,21 @@ const TipusFelvitel= ({  onClose }) => {
     }
 
     const felvittFuggveny = async () => {
+        try {
+            validalas(felvittAdat, mezok)
+        } catch (error) {
+            if (error.name === "ValidationError") {
+                alert(error.message)
+                return
+            } else {
+                alert("Hiba történt a validálás során!")
+                return
+            }
+        }
+
         const biztos = window.confirm(`Biztosan hozzá szeretnéd adni a(z) ${felvittAdat.tipus_nev} típust?`)
 
         if (biztos) {
-            if (!mezok.every(mezo => mezoValidalas(felvittAdat, mezo))) {
-                alert("Minden mezőt ki kell tölteni!")
-                return
-            }
-
             const response = await fetch(Cim.Cim + "/tipusHozzaad", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -53,7 +60,7 @@ const TipusFelvitel= ({  onClose }) => {
             {mezok.map((elem, index) => (
                 <div className="row mb-2 align-items-center" key={index}>
                     <div className="col-sm-4">
-                        <label className="form-label" htmlFor={elem.nev}>{elem.megjelenit}</label>
+                        <label className="form-label" htmlFor={elem.nev}>{elem.megjelenit}:</label>
                     </div>
                     <div className="col-sm-8">
                         <BeviteliMezo elem={elem} adatModFel={felvittAdat} kezelesInput={kezelesInput}/>

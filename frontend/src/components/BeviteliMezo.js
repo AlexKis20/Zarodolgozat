@@ -94,17 +94,4 @@ const BeviteliMezo = ({ elem, adatModFel, kezelesInput}) => {
     }
 }
 
-export const mezoValidalas = (adatModFel, mezo, modositas = false) => {
-    if (adatModFel === undefined || adatModFel === null) {
-        return false
-    }
-
-    let kulcs = mezo.nev
-        let ertek = adatModFel[kulcs];
-        if (modositas && mezo.tipus === "file") {
-            return true;
-        }
-        return ertek !== "" && ertek !== undefined && ertek !== null
-}
-
 export default BeviteliMezo

@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react"
 import { FaSave } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
-import { mezoValidalas } from "../../../components/BeviteliMezo"
 import BeviteliMezo from "../../../components/BeviteliMezo"
+import { validalas } from "../../../utils/validalas";
 import Cim from "../../../Cim"
 
 const  KezdolapModosit= ({ kezdolap_id, fajtak, onClose }) => {
     const mezok = [
-        {nev: "kezdolap_cim", tipus: "input", megjelenit: "Kezdőlap cím:"},
-        {nev: "kezdolap_szoveg", tipus: "textarea", megjelenit: "Kezdőlap szöveg:"},
-        {nev: "kezdolap_fajta", tipus: "select", opciok: {lista: fajtak, id_mezo: "fajta_id", nev_mezo: "fajta_nev"}, megjelenit: "Kezdőlap fajta:"},
-        {nev: "kezdolap_kep", tipus: "file", megjelenit: "Kezdőlap kép:"}
+        {nev: "kezdolap_cim", tipus: "input", megjelenit: "Kezdőlap cím", kotelezo: true},
+        {nev: "kezdolap_szoveg", tipus: "textarea", megjelenit: "Kezdőlap szöveg", kotelezo: true},
+        {nev: "kezdolap_fajta", tipus: "select", opciok: {lista: fajtak, id_mezo: "fajta_id", nev_mezo: "fajta_nev"}, megjelenit: "Kezdőlap fajta", kotelezo: true},
+        {nev: "kezdolap_kep", tipus: "file", megjelenit: "Kezdőlap kép", kotelezo: true}
     ]
     const [modositottAdat, setModositottAdat] = useState({})
     const [tolt, setTolt] = useState(true)
@@ -46,14 +46,21 @@ const  KezdolapModosit= ({ kezdolap_id, fajtak, onClose }) => {
     }
 
     const modositFuggveny = async () => {
+        try {
+            validalas(modositottAdat, mezok, true)
+        } catch (error) {
+            if (error.name === "ValidationError") {
+                alert(error.message)
+                return
+            } else {
+                alert("Hiba történt a validálás során!")
+                return
+            }
+        }
+
         const biztos = window.confirm(`Biztosan módosítani szeretnéd a(z) ${modositottAdat.kezdolap_cim} kezdőlapot?`)
 
         if (biztos) {
-            if (!mezok.every(mezo => mezoValidalas(modositottAdat, mezo, true))) {
-                alert("Minden mezőt ki kell tölteni!")
-                return
-            }
-
             const formData = new FormData()
             formData.append("kezdolap_cim", modositottAdat.kezdolap_cim)
             formData.append("kezdolap_szoveg", modositottAdat.kezdolap_szoveg)
@@ -96,7 +103,7 @@ const  KezdolapModosit= ({ kezdolap_id, fajtak, onClose }) => {
             {mezok.map((elem, index) => (
                 <div className="row mb-2 align-items-center" key={index}>
                     <div className="col-sm-4">
-                        <label className="form-label" htmlFor={elem.nev}>{elem.megjelenit}</label>
+                        <label className="form-label" htmlFor={elem.nev}>{elem.megjelenit}:</label>
                     </div>
                     <div className="col-sm-8">
                         <BeviteliMezo elem={elem} adatModFel={modositottAdat} kezelesInput={kezelesInput}/>

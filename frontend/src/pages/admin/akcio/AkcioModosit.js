@@ -4,15 +4,15 @@ import { IoCloseSharp } from "react-icons/io5";
 import Cim from "../../../Cim"
 import { keresAkcio } from "./keresAkcio";
 import BeviteliMezo from "../../../components/BeviteliMezo";
-import { mezoValidalas } from "../../../components/BeviteliMezo";
+import { validalas, ValidationError } from "../../../utils/validalas";
 
 const AkcioModosit= ({ akcio_id, onClose }) => {
     const mezok = [
-        {nev: "akcio_nev", tipus: "input", megjelenit: "Akció név:"},
-        {nev: "akcio_kedvezmeny", tipus: "input", megjelenit: "Kedvezmény:"},
-        {nev: "akcio_tipus", tipus: "select"},
-        {nev: "akcio_kezdete", tipus: "datetime-local", megjelenit: "Akció kezdete:"},
-        {nev: "akcio_vege", tipus: "datetime-local", megjelenit: "Akció vége:"}
+        {nev: "akcio_nev", tipus: "input", megjelenit: "Akció név", kotelezo: true},
+        {nev: "akcio_kedvezmeny", tipus: "input", megjelenit: "Kedvezmény", kotelezo: true, formatum: "number"},
+        {nev: "akcio_tipus", tipus: "select", megjelenit: "Kedvezmény típusa", kotelezo: true},
+        {nev: "akcio_kezdete", tipus: "datetime-local", megjelenit: "Akció kezdete" , kotelezo: true, formatum: "datetime"},
+        {nev: "akcio_vege", tipus: "datetime-local", megjelenit: "Akció vége", kotelezo: true, formatum: "datetime"}
     ]
     const [modositottAdat, setModositottAdat] = useState({})
     const [termekek, setTermekek] = useState([])
@@ -81,14 +81,27 @@ const AkcioModosit= ({ akcio_id, onClose }) => {
     }
 
     const modositFuggveny = async () => {
+        try {
+            validalas(modositottAdat, mezok, true, [
+                () => { 
+                    if (keresettAkciosTermekek.filter(t => t.kivalaszott).length === 0) {
+                        throw new ValidationError("Legalább egy terméket hozzá kell adni az akcióhoz!")
+                    }
+                }]
+            )
+        } catch (error) {
+            if (error.name === "ValidationError") {
+                alert(error.message)
+                return
+            } else {
+                alert("Hiba történt a validálás során!")
+                return
+            }
+        }
+        
         const biztos = window.confirm(`Biztosan módosítani szeretnéd a(z) ${modositottAdat.akcio_nev} akciót?`)
 
         if (biztos) {
-            if (!mezok.every(mezo => mezoValidalas(modositottAdat, mezo, true))) {
-                alert("Minden mezőt ki kell tölteni!")
-                return
-            }
-
             let body = {...modositottAdat}
             const kivalasztottTermekIdLista = termekek.filter(t => t.kivalaszott).map(t => t.termek_id)
             body.termek_id_lista = kivalasztottTermekIdLista

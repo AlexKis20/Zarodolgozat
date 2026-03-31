@@ -4,7 +4,7 @@ import { IoCloseSharp } from "react-icons/io5";
 import Cim from "../../../Cim"
 import { keresRendeles } from "./keresRendeles";
 import BeviteliMezo from "../../../components/BeviteliMezo";
-import { mezoValidalas } from "../../../components/BeviteliMezo";
+import { validalas, ValidationError } from "../../../utils/validalas";
 
 const RendelesFelvitel = ({ onClose }) => {
     const [felvittAdat, setFelvittAdat] = useState({})
@@ -17,10 +17,10 @@ const RendelesFelvitel = ({ onClose }) => {
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 1200);
 
     const mezok = [
-    {nev: "rendeles_felhasznalo_id", tipus: "select", opciok: {lista: felhasznalok, id_mezo: "felhasznalo_id", nev_mezo: "felhasznalo_nev"}, megjelenit: "Felhasználó:"},
-    {nev: "rendeles_nev", tipus: "input", megjelenit: "Név:"},
-    {nev: "rendeles_cim", tipus: "input", megjelenit: "Cím:"},
-    {nev: "rendeles_telefonszam", tipus: "input", megjelenit: "Telefonszám:"}
+    {nev: "rendeles_felhasznalo_id", tipus: "select", opciok: {lista: felhasznalok, id_mezo: "felhasznalo_id", nev_mezo: "felhasznalo_nev"}, megjelenit: "Felhasználó:", kotelezo: true},
+    {nev: "rendeles_nev", tipus: "input", megjelenit: "Név", kotelezo: true},
+    {nev: "rendeles_cim", tipus: "input", megjelenit: "Cím", kotelezo: true},
+    {nev: "rendeles_telefonszam", tipus: "input", megjelenit: "Telefonszám", kotelezo: true}
     ]
 
     const leToltes = async () => {
@@ -98,14 +98,27 @@ const RendelesFelvitel = ({ onClose }) => {
     }
 
     const felvittFuggveny = async () => {
+        try {
+            validalas(felvittAdat, mezok, false, [
+                () => { 
+                    if (keresettRendelesTermekek.filter(t => t.kivalaszott).length === 0) {
+                        throw new ValidationError("Legalább egy terméket hozzá kell adni a rendeléshez!")
+                    }
+                }]
+            )
+        } catch (error) {
+            if (error.name === "ValidationError") {
+                alert(error.message)
+                return
+            } else {
+                alert("Hiba történt a validálás során!")
+                return
+            }
+        }
+
         const biztos = window.confirm(`Biztosan hozzá szeretnéd adni a rendelést?`)
 
         if (biztos) {
-            if (!mezok.every(mezo => mezoValidalas(felvittAdat, mezo))) {
-                alert("Minden mezőt ki kell tölteni!")
-                return
-            }
-
             let body = {...felvittAdat}
             const kivalasztottTermekek = termekek.filter(t => t.kivalaszott).map(t => ({rendeles_termek_id: t.termek_id, rendeles_ar: t.termek_ar, rendeles_darab: t.darab}))
             body.rendeles_termekek = kivalasztottTermekek
@@ -169,8 +182,8 @@ const RendelesFelvitel = ({ onClose }) => {
                             {elem.termek_nev}
                         </div>
                         <div className="col-1">
-                            <button className="btn btn-sm btn-light" onClick={() => termekKivalaszt(elem.termek_id, true)}>
-                                &gt;
+                            <button className="btn btn-sm btn-light" onClick={() => termekKivalaszt(elem.termek_id, false)}>
+                                &lt;
                             </button>
                         </div>
                         <div className="col-2">
