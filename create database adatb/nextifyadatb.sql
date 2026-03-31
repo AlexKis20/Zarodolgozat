@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2026. Már 31. 22:20
+-- Létrehozás ideje: 2026. Már 31. 22:49
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -292,7 +292,7 @@ INSERT INTO `termek` (`termek_id`, `termek_nev`, `termek_ar`, `termek_szin`, `te
 (47, 'Huawei SuperCharge 66W', 15990, 'fehér', '', '', '', '', '', 'Huawei szupergyors töltő adapter.', '47.png', 7, 6, 0),
 (48, 'Huawei 12000 mAh Powerbank', 17990, 'szürke', '', '', '', '', '', 'Huawei kompakt powerbank.', '48.png', 7, 7, 0),
 (49, 'Lenovo Tab P12 256GB', 149990, 'szürke', '120 Hz 2944x1840', 'MediaTek Dimensity 7050', '256 GB / 8 GB RAM', 'Android', '293 x 190 x 6.9 mm', 'Nagy kijelzős Lenovo tablet.', '49.png', 8, 3, 6),
-(50, 'Lenovo Tab M10 Tok', 5990, 'kék', '', '', '', '', '', 'Védőtok Lenovo Tab M10 készülékhez.', '50.png', 8, 5, 6),
+(50, 'Lenovo Tab M10 Tok', 5990, 'kék', '', '', '', '', '', 'Védőtok Lenovo Tab M10 készülékhez.', '50.png', 8, 5, 0),
 (51, 'Lenovo USB-C 65W Töltő', 19990, 'fekete', '', '', '', '', '', 'Lenovo nagy teljesítményű USB-C töltő.', '51.png', 8, 6, 0),
 (52, 'Lenovo Bluetooth Fülhallgató', 14990, 'fekete', '', '', '', '', '', 'Lenovo vezeték nélküli fülhallgató.', '52.png', 8, 4, 0),
 (53, 'Lenovo 20000 mAh Powerbank', 22990, 'fekete', '', '', '', '', '', 'Lenovo nagy kapacitású powerbank.', '53.png', 8, 7, 0);
