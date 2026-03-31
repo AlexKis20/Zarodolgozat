@@ -10,7 +10,7 @@ const RendelesModosit = ({ rendeles_id, onClose }) => {
     const mezok = [
         { nev: "rendeles_nev", tipus: "input", megjelenit: "Rendelő neve", kotelezo: true },
         { nev: "rendeles_cim", tipus: "input", megjelenit: "Szállítási cím", kotelezo: true },
-        { nev: "rendeles_telefonszam", tipus: "input", megjelenit: "Telefonszám", kotelezo: true }
+        { nev: "rendeles_telefonszam", tipus: "input", megjelenit: "Telefonszám", kotelezo: true, formatum: "phone" }
     ]
     const [tolt, setTolt] = useState(true)
     const [hiba, setHiba] = useState(false)

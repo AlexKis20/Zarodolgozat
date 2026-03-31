@@ -29,10 +29,18 @@ const datumValidalas = (mezo, ertek) => {
     }
 }
 
+const telefonszamValidalas = (mezo, ertek) => {
+    uresValidalas(mezo, ertek)
+    if (!/^(\+\d+|\d+)$/.test(ertek)) {
+        throw new ValidationError(`A(z) "${mezo.megjelenit}" mező csak érvényes telefonszámot tartalmazhat!`)
+    }
+}
+
 const validalasTipusok = {
     string: szovegValidalas,
     number: szamValidalas,
-    datetime: datumValidalas
+    datetime: datumValidalas,
+    phone: telefonszamValidalas
 }
 
 const mezoValidalas = (adatModFel, mezo, modositas = false) => {
