@@ -7,7 +7,7 @@ import RendelesTermekek from "./RendelesTermekek";
 import Kereses from "../../../components/Kereses";
 import Rendezes from "../../../components/Rendezes";
 import RendelesFelvitel from "./RendelesFelvitel";
-import { telefonszamFuggveny } from "../../../utils/formazas";
+import { datumFuggveny, telefonszamFuggveny } from "../../../utils/formazas";
 import "../../../components/DataTable.css"
 
 const Rendeles = () => {
@@ -181,7 +181,7 @@ const Rendeles = () => {
         {
             key: 'rendeles_datum',
             label: 'Dátum',
-            formatter: (value) => new Date(value).toLocaleString('hu-HU'),
+            formatter: (value) => datumFuggveny(value),
         },
         {
             key: 'rendeles_teljesitve',

@@ -33,7 +33,8 @@ const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'nextifyadatb'
+  database: 'nextifyadatb',
+  timezone: 'Z'
 })
 
 app.get('/', (req, res) => {
