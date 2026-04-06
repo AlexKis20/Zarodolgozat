@@ -23,9 +23,8 @@ const szamValidalas = (mezo, ertek) => {
 }
 
 const datumValidalas = (mezo, ertek) => {
-    uresValidalas(mezo, ertek)
     if (isNaN(Date.parse(ertek))) {
-        throw new ValidationError(`A(z) "${mezo.megjelenit}" mező csak érvényes dátumot tartalmazhat!`)
+        throw new ValidationError(`A(z) "${mezo.megjelenit}" mezőbe mindent meg kell adni (év, hónap, nap, óra, perc)!`)
     }
 }
 
