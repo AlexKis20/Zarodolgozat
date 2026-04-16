@@ -433,3 +433,5 @@ A projekt **csak oktatási és személyes tanulmányi célokra** használható. 
 ## Felelősség korlátozása
 
 A projekt **"JELENLEGI ÁLLAPOTBAN"** kerül biztosításra, anélkül hogy bármilyen garancia vagy szavatosság lenne. A szerzők **nem felelősek** az alkalmazás használatából eredő közvetlen vagy közvetett károkért.
+
+https://nextify2026.netlify.app/
