@@ -3,11 +3,13 @@
 ## Bevezetés
 A társammal egy olyan webshopot készítettünk amiben főként telefont és a telefonokhoz tartozó eszközöket árusítjuk. A Nextify webshopunk neve a jövő webáruházat jelenti.
 
-Célunk nem csak egy sima telefont árusító weboldal, hanem a jövő technológiáját szeretné biztosítani a vásárlóknak. Törekedtünk az egyszerűségre, a minimalista és modern kinézetre és a responzitásra, hogy több eszközön ugyanolyan élményt tudjunk nyújtani.
+Célunk nem csak egy sima telefont árusító weboldal, hanem a jövő technológiáját szeretné biztosítani a vásárlóknak. Törekedtünk az egyszerűségre, a minimalista és modern kinézetre és a reszponzivitásra, hogy több eszközön ugyanolyan élményt tudjunk nyújtani.
 
 A Nextify webshop egy teljes funkcionalitású webalkalmazás, amely lehetővé teszi a termékek böngészését, keresését, szűrését, valamint felhasználói vélemények megtekintését és írását.
 
 A rendszer támogatja a kosárkezelést, rendelésleadást, valamint egy külön admin felületen keresztül a termékek, típusok, márkák, rendelések, akciók, vélemények teljes körű kezelését.
+
+Elérhetőek vagyunk honlapon az alábbi linken: https://nextify2026.netlify.app/
 
 ## Készítők
 
@@ -50,7 +52,7 @@ A bejelentkezett felhasználók a vendégekkel szemben többletfunkciókat érhe
 
 **Admin:**
 
-A bejelentkezett Adminnál megjelenik az Admin menü és számos olyan funkcó jelenik meg, ami az User felületen nem jelenik meg. Az User nem tud átlépni az Admin felületre.
+A bejelentkezett Adminnál megjelenik az Admin menü és számos olyan funkció jelenik meg, ami az User felületen nem jelenik meg. Az User nem tud átlépni az Admin felületre.
 
 ## Felhasználói felület
 A felhasználói felületet **Kiss Alex János** készítette.
@@ -95,7 +97,7 @@ Lehetséges műveletek:
 - a termékhez tartozó összes vélemény megtekintése
 - új vélemény hozzáadása (értékeléssel és szöveggel)
 
-### Hírek és blog
+### Hírek, blogok és akciók
 
 A felhasználó megtekintheti a weboldal hírek és blogbejegyzéseit három kategóriában:
 - Hír bejegyzések
@@ -256,13 +258,13 @@ Az adminisztrátor ezeket a véleményeket:
 # Architektúra
 
 ## Adatbázis
-Az alkalmazás **Mysql**-t használ.
+Az alkalmazás **MySQL**-t használ.
 
 **Fejlesztői eszközök:**
 | Eszköz     | Feladata                                                                  |
 |------------|---------------------------------------------------------------------------|
-| XAMPP      | Az adatbázis szerver és a phpmyadmin-hoz szükséges webszerver elindítása. |
-| phpmyadmin | Az adatbázis kezelése.                                                    |
+| XAMPP      | Az adatbázis szerver és a phpMyAdmin-hoz szükséges webszerver elindítása. |
+| phpMyAdmin | Az adatbázis kezelése.                                                    |
 
 ![Adatbázis kapcsolatok](kepek/readmeKepek/adatbaziskapcsolatok.PNG)
 ## Backend
@@ -280,7 +282,7 @@ Az alkalmazás **Mysql**-t használ.
 | cors         | CORS fejlécek beállítása a HTTP válaszokban.   |
 | express      | Node.js web keretrendszer.                     |
 | jsonwebtoken | Tokenek kezelése az authentikációhoz.          |
-| mysql        | Lehetővé teszi a csatlakozást az adatbázishoz. |
+| MySQL      | Lehetővé teszi a csatlakozást az adatbázishoz.   |
 | multer       | Fájl feltöltések kezelése.                     |
 
 ## Frontend
@@ -433,5 +435,3 @@ A projekt **csak oktatási és személyes tanulmányi célokra** használható. 
 ## Felelősség korlátozása
 
 A projekt **"JELENLEGI ÁLLAPOTBAN"** kerül biztosításra, anélkül hogy bármilyen garancia vagy szavatosság lenne. A szerzők **nem felelősek** az alkalmazás használatából eredő közvetlen vagy közvetett károkért.
-
-https://nextify2026.netlify.app/
