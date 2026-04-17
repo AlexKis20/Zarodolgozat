@@ -661,7 +661,7 @@ Admin kitölti az adatokat
 └─ Kép feltöltése (Multer)
   │
   ▼
-Forma validáció
+Form validáció
   │
   ├─ NEM (Hibás adatok)
   │  │
