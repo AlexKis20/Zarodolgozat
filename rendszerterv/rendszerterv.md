@@ -545,7 +545,8 @@ UI: Bootstrap + Styled Components
                  │    ├─ Velemeny.js (lista)
                  │    ├─ Vélemény szövegének megtekintése
                  │    ├─ Értékelés megtekintése
-                 │    ├─ Szerző neve
+                 │    ├─ Dátum megtekintése                 
+                 │    ├─ Felhasználó neve
                  │    ├─ Termék neve
                  │    ├─ Törlés (nem megfelelő vélemények)
                  │    ├─ Keresés
