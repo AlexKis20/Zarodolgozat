@@ -520,7 +520,6 @@ UI: Bootstrap + Styled Components
                  │    │  ├─ Kategória dropdown (Akció/Megjelenés/Blog)
                  │    │  ├─ Kép feltöltés (Multer)
                  │    │  └─ Mentés gomb
-                 │    │
                  │    ├─ KezdolapModosit.js (szerkesztés)
                  │    ├─ Törlés megerősítéssel
                  │    ├─ Keresés
